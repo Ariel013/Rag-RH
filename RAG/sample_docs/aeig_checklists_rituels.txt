@@ -1,0 +1,87 @@
+Checklists des rituels AEIG
+
+Ces checklists récapitulent les rituels par département avec leur fréquence et le responsable (lead).
+
+---
+
+CHECKLIST RH
+
+- Bilan social
+  Fréquence : Annuelle
+  Lead : Christelle
+
+- Planification des congés
+  Fréquence : Biannuelle
+  Lead : Carmen
+
+- Mise à jour des rituels
+  Fréquence : Annuelle
+  Lead : Carmen
+
+- Open Hours
+  Fréquence : Semestrielle
+  Lead : Emmanuel
+
+---
+
+CHECKLIST MANAGERS
+
+- Team Building d'équipe
+  Fréquence : Trimestrielle
+  Participants : Membres des équipes
+  Lead : Managers ou leads
+
+---
+
+CHECKLIST DIRECTION
+
+- Lunch d'onboarding
+  Fréquence : 5 fois par an
+  Participants : DG + Newcomers
+  Lead : Emmanuel
+
+- Rapport d'activités
+  Fréquence : Annuelle
+  Participants : Direction + Partenaires Institutionnels
+  Lead : Stéphanie
+
+- Revue stratégique
+  Fréquence : Bimestrielle
+  Participants : DG + Managers
+  Lead : Stéphanie
+
+- Comité stratégique
+  Fréquence : Semestrielle
+  Participants : Direction + Partenaires Externes
+  Lead : Stéphanie
+
+- Booster Inspi/Action
+  Fréquence : À la demande
+  Participants : Direction + Managers ou collaborateurs référents
+  Lead : Stéphanie
+
+---
+
+CHECKLIST RAF (Responsable Administratif et Financier)
+
+- Bilan comptable
+  Fréquence : Annuelle
+  Participants : Conseil d'Administration + Partenaires
+  Lead : RAF
+
+- Impôts
+  Fréquence : Mensuel
+  Acteurs : RAF
+
+- CNSS
+  Fréquence : Mensuel
+  Acteurs : RAF
+
+- CAC
+  Fréquence : Biannuelle
+  Participants : RAF + Direction + CAC
+  Lead : RAF
+
+- Paiement salaires
+  Fréquence : Mensuelle
+  Lead : RAF

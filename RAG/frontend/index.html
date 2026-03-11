@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Assistant RH</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#1F485E",
+          "highlight": "#1F485E",
+          "background-light": "#f5f7f8",
+          "background-dark": "#0f1d23",
+        },
+        fontFamily: { "display": ["Manrope", "sans-serif"] },
+        borderRadius: {
+          "DEFAULT": "0.5rem", "lg": "1rem",
+          "xl": "1.5rem", "full": "9999px"
+        },
+      },
+    },
+  }
+</script>
+<style>
+  body { font-family: 'Manrope', sans-serif; font-size: 14px; min-height: max(884px, 100dvh); }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .tab-content { display: none; }
+  .tab-content.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  #messages-container { scrollbar-width: thin; scrollbar-color: #c1c9d2 transparent; }
+  #messages-container::-webkit-scrollbar { width: 4px; }
+  #messages-container::-webkit-scrollbar-thumb { background: #c1c9d2; border-radius: 4px; }
+  .typing-dot { animation: bounce 1.2s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+  .source-chip { transition: all .15s; }
+  .source-chip:hover { transform: translateY(-1px); }
+  .bot-message { animation: fadeInUp .25s ease; }
+  @keyframes fadeInUp { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+  .upload-zone.dragover { border-color: #1F485E; background: #e8f0f4; }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  pre { white-space: pre-wrap; word-break: break-word; }
+  code { background: rgba(0,0,0,0.06); padding: 1px 4px; border-radius: 4px; font-size: 0.85em; }
+</style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex flex-col h-screen max-w-md mx-auto shadow-2xl relative overflow-hidden">
+
+<!-- ═══ HEADER ═══ -->
+<header class="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-900 border-b border-primary/10 sticky top-0 z-10">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-primary text-white">
+      <span class="material-symbols-outlined text-[20px]">smart_toy</span>
+    </div>
+    <div>
+      <h1 class="font-bold text-base leading-tight text-highlight">Assistant RH</h1>
+      <div class="flex items-center gap-1.5">
+        <span id="status-dot" class="w-2 h-2 rounded-full bg-amber-400 transition-colors"></span>
+        <span id="status-text" class="text-xs font-medium text-slate-500 dark:text-slate-400">Initialisation…</span>
+      </div>
+    </div>
+  </div>
+  <button onclick="toggleDark()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Mode sombre">
+    <span class="material-symbols-outlined text-highlight dark:text-slate-100 text-[22px]" id="dark-icon">dark_mode</span>
+  </button>
+</header>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="flex-1 overflow-hidden flex flex-col min-h-0">
+
+  <!-- ── CHAT TAB ── -->
+  <div id="tab-chat" class="tab-content active">
+
+    <!-- Messages container -->
+    <div id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-4">
+
+      <!-- Date divider -->
+      <div class="flex justify-center">
+        <span id="today-label" class="text-xs font-semibold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full uppercase tracking-wider"></span>
+      </div>
+
+      <!-- Welcome bot message -->
+      <div class="flex items-start gap-3">
+        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-white text-sm">smart_toy</span>
+        </div>
+        <div class="flex flex-col gap-1 max-w-[85%]">
+          <div class="bg-primary text-white p-4 rounded-xl rounded-tl-none text-[15px] leading-relaxed">
+            Bonjour ! Je suis votre assistant RH. Comment puis-je vous aider aujourd'hui ?
+          </div>
+          <span class="text-[10px] text-slate-400 ml-1">Assistant • <span class="msg-time"></span></span>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="sendQuickAction('Quelles sont les politiques de congés de l\'entreprise ?')"
+          class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+          <span class="material-symbols-outlined text-primary text-[20px]">policy</span>
+          <span>Politiques</span>
+        </button>
+        <button onclick="sendQuickAction('Quels sont mes avantages sociaux et ma mutuelle ?')"
+          class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+          <span class="material-symbols-outlined text-primary text-[20px]">featured_seasonal_and_gifts</span>
+          <span>Avantages</span>
+        </button>
+        <button onclick="sendQuickAction('Comment poser des congés et combien de jours ai-je ?')"
+          class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+          <span class="material-symbols-outlined text-primary text-[20px]">event_busy</span>
+          <span>Congés</span>
+        </button>
+        <button onclick="sendQuickAction('Quelle est la procédure de remboursement des frais professionnels ?')"
+          class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+          <span class="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
+          <span>Frais</span>
+        </button>
+      </div>
+
+      <!-- Suggestion chips -->
+      <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <button onclick="sendQuickAction('Quel est mon solde de congés payés ?')"
+          class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
+          Solde de congés ?
+        </button>
+        <button onclick="sendQuickAction('Comment fonctionne ma mutuelle santé ?')"
+          class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
+          Mutuelle santé
+        </button>
+        <button onclick="sendQuickAction('Comment obtenir ma fiche de paie ?')"
+          class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
+          Fiche de paie
+        </button>
+        <button onclick="sendQuickAction('Comment fonctionne le télétravail ?')"
+          class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
+          Télétravail
+        </button>
+      </div>
+
+    </div><!-- /messages-container -->
+
+    <!-- Input area -->
+    <div class="px-4 pt-3 pb-3 bg-white dark:bg-slate-900 border-t border-primary/10">
+      <div class="flex items-center gap-2">
+        <div class="flex-1 flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-4 py-2.5 border border-transparent focus-within:border-primary/50 focus-within:bg-white dark:focus-within:bg-slate-800 transition-all">
+          <input id="chat-input"
+            class="bg-transparent border-none focus:ring-0 text-slate-900 dark:text-slate-100 w-full placeholder:text-slate-400 text-[15px] outline-none"
+            placeholder="Tapez votre message…"
+            type="text"
+            autocomplete="off"/>
+          <button onclick="triggerFileUpload()" class="text-slate-400 hover:text-primary transition-colors ml-2" title="Ajouter un document">
+            <span class="material-symbols-outlined text-[20px]">attach_file</span>
+          </button>
+        </div>
+        <button id="send-btn" onclick="handleSend()"
+          class="bg-primary hover:bg-primary/90 text-white w-11 h-11 flex items-center justify-center rounded-xl shadow-lg transition-all active:scale-95">
+          <span class="material-symbols-outlined">send</span>
+        </button>
+      </div>
+      <!-- Hidden file input -->
+      <input id="file-input" type="file" accept=".pdf,.docx,.doc,.txt,.md" class="hidden" onchange="handleFileSelected(event)"/>
+    </div>
+
+  </div><!-- /tab-chat -->
+
+  <!-- ── BASE TAB (Documents) ── -->
+  <div id="tab-base" class="tab-content overflow-y-auto p-4 gap-4">
+
+    <!-- Upload zone -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10">
+      <h2 class="font-bold text-base text-highlight mb-3 flex items-center gap-2">
+        <span class="material-symbols-outlined text-[20px]">upload_file</span>
+        Ajouter un document
+      </h2>
+      <div id="upload-zone"
+        class="upload-zone border-2 border-dashed border-primary/30 rounded-xl p-6 text-center cursor-pointer hover:border-primary/60 hover:bg-primary/5 transition-all mb-3"
+        onclick="triggerFileUpload()"
+        ondragover="event.preventDefault(); this.classList.add('dragover')"
+        ondragleave="this.classList.remove('dragover')"
+        ondrop="handleDrop(event)">
+        <span class="material-symbols-outlined text-primary/50 text-[40px] mb-2">cloud_upload</span>
+        <p class="text-sm font-semibold text-slate-600 dark:text-slate-300">Glissez un fichier ici</p>
+        <p class="text-xs text-slate-400 mt-1">ou cliquez pour sélectionner</p>
+        <p class="text-xs text-slate-400 mt-1">PDF, DOCX, TXT, MD</p>
+      </div>
+      <!-- Upload form (hidden until file selected) -->
+      <div id="upload-form" class="hidden space-y-3">
+        <div class="flex items-center gap-2 p-2 bg-primary/5 rounded-lg">
+          <span class="material-symbols-outlined text-primary text-[18px]">description</span>
+          <span id="selected-filename" class="text-sm font-medium text-slate-700 dark:text-slate-200 truncate flex-1"></span>
+          <button onclick="cancelUpload()" class="text-slate-400 hover:text-red-500">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+          </button>
+        </div>
+        <input id="upload-title" type="text" placeholder="Titre du document (optionnel)"
+          class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 focus:outline-none focus:border-primary/50"/>
+        <select id="upload-category"
+          class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 focus:outline-none focus:border-primary/50">
+          <option value="Général">Général</option>
+          <option value="Congés">Congés</option>
+          <option value="Avantages sociaux">Avantages sociaux</option>
+          <option value="Procédures">Procédures</option>
+          <option value="Règlement intérieur">Règlement intérieur</option>
+          <option value="Formation">Formation</option>
+          <option value="Paie">Paie</option>
+          <option value="Télétravail">Télétravail</option>
+        </select>
+        <button onclick="submitUpload()"
+          class="w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">upload</span>
+          Indexer le document
+        </button>
+      </div>
+      <!-- Upload progress -->
+      <div id="upload-progress" class="hidden mt-2">
+        <div class="flex items-center gap-2 text-sm text-primary">
+          <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <span id="upload-status">Analyse en cours…</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documents list -->
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-bold text-base text-highlight flex items-center gap-2">
+          <span class="material-symbols-outlined text-[20px]">menu_book</span>
+          Base de connaissances
+        </h2>
+        <button onclick="loadDocuments()" class="text-slate-400 hover:text-primary transition-colors" title="Actualiser">
+          <span class="material-symbols-outlined text-[18px]">refresh</span>
+        </button>
+      </div>
+      <div id="docs-list" class="space-y-2">
+        <div class="text-center py-4 text-slate-400 text-sm">Chargement…</div>
+      </div>
+    </div>
+
+  </div><!-- /tab-base -->
+
+  <!-- ── PROFIL TAB ── -->
+  <div id="tab-profil" class="tab-content overflow-y-auto p-4 gap-4">
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-primary/10 flex flex-col items-center gap-3">
+      <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary text-[32px]">account_circle</span>
+      </div>
+      <div class="text-center">
+        <p class="font-bold text-base">Employé</p>
+        <p class="text-xs text-slate-500">Utilisateur de l'Assistant RH</p>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10 space-y-3">
+      <h3 class="font-bold text-sm text-highlight">À propos de cet assistant</h3>
+      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        Cet assistant utilise la technologie RAG (Retrieval-Augmented Generation) pour
+        répondre à vos questions en s'appuyant sur les documents RH officiels de l'entreprise.
+      </p>
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <div class="bg-primary/5 rounded-lg p-3 text-center">
+          <p class="text-xs text-slate-500">Modèle IA</p>
+          <p id="model-name" class="text-sm font-bold text-primary mt-0.5">Ollama</p>
+        </div>
+        <div class="bg-primary/5 rounded-lg p-3 text-center">
+          <p class="text-xs text-slate-500">Documents</p>
+          <p id="doc-count-profil" class="text-sm font-bold text-primary mt-0.5">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10 space-y-2">
+      <h3 class="font-bold text-sm text-highlight">Contacts RH</h3>
+      <a href="mailto:rh@entreprise.com" class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-primary/5 transition-colors">
+        <span class="material-symbols-outlined text-primary text-[20px]">mail</span>
+        <div>
+          <p class="text-sm font-semibold">rh@entreprise.com</p>
+          <p class="text-xs text-slate-400">Service Ressources Humaines</p>
+        </div>
+      </a>
+      <div class="flex items-center gap-3 p-2.5 rounded-lg">
+        <span class="material-symbols-outlined text-primary text-[20px]">call</span>
+        <div>
+          <p class="text-sm font-semibold">Poste interne : 0042</p>
+          <p class="text-xs text-slate-400">Lun–Ven, 9h–17h</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10">
+      <h3 class="font-bold text-sm text-highlight mb-3">Préférences</h3>
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium">Mode sombre</p>
+          <p class="text-xs text-slate-400">Thème de l'interface</p>
+        </div>
+        <button onclick="toggleDark()" id="dark-toggle"
+          class="w-11 h-6 rounded-full transition-colors relative bg-slate-200 dark:bg-primary">
+          <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform dark:translate-x-5"></span>
+        </button>
+      </div>
+    </div>
+  </div><!-- /tab-profil -->
+
+</main>
+
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav class="flex border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pb-2 pt-1 justify-around shrink-0">
+  <button id="nav-chat" onclick="switchTab('chat')"
+    class="flex flex-col items-center gap-0.5 p-2 text-primary transition-colors">
+    <span class="material-symbols-outlined text-[24px]">chat_bubble</span>
+    <span class="text-[10px] font-bold">Chat</span>
+  </button>
+  <button id="nav-base" onclick="switchTab('base')"
+    class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors">
+    <span class="material-symbols-outlined text-[24px]">menu_book</span>
+    <span class="text-[10px] font-bold">Base</span>
+  </button>
+  <button id="nav-profil" onclick="switchTab('profil')"
+    class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors">
+    <span class="material-symbols-outlined text-[24px]">account_circle</span>
+    <span class="text-[10px] font-bold">Profil</span>
+  </button>
+</nav>
+
+<!-- ═══ TOAST ═══ -->
+<div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 hidden">
+  <div id="toast-inner" class="px-4 py-2 rounded-full text-sm font-semibold shadow-lg text-white bg-slate-700 whitespace-nowrap"></div>
+</div>
+
+<script>
+// ─── State ────────────────────────────────────────────────────────────────
+const state = {
+  chatHistory: [],       // [{role, content}, ...]
+  isStreaming: false,
+  selectedFile: null,
+  currentTab: 'chat',
+};
+
+// ─── Init ─────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Today label
+  document.getElementById('today-label').textContent =
+    new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+
+  // Time on welcome message
+  document.querySelectorAll('.msg-time').forEach(el => {
+    el.textContent = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+  });
+
+  // Enter key
+  document.getElementById('chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+  });
+
+  // Poll status
+  pollStatus();
+  setInterval(pollStatus, 5000);
+
+  // Apply saved dark mode
+  if (localStorage.getItem('dark') === '1') {
+    document.documentElement.classList.add('dark');
+    document.getElementById('dark-icon').textContent = 'light_mode';
+  }
+});
+
+async function pollStatus() {
+  try {
+    const r = await fetch('/api/health');
+    const d = await r.json();
+    const dot  = document.getElementById('status-dot');
+    const text = document.getElementById('status-text');
+    if (d.status === 'ready') {
+      dot.className  = 'w-2 h-2 rounded-full bg-green-500 transition-colors';
+      text.textContent = 'En ligne';
+      const el = document.getElementById('doc-count-profil');
+      if (el) el.textContent = d.documents + ' doc' + (d.documents > 1 ? 's' : '');
+      const mn = document.getElementById('model-name');
+      if (mn && d.model) mn.textContent = d.model.replace('ollama/', '');
+    } else {
+      dot.className  = 'w-2 h-2 rounded-full bg-amber-400 transition-colors animate-pulse';
+      text.textContent = 'Initialisation…';
+    }
+  } catch {
+    const dot = document.getElementById('status-dot');
+    dot.className = 'w-2 h-2 rounded-full bg-red-500 transition-colors';
+    document.getElementById('status-text').textContent = 'Hors ligne';
+  }
+}
+
+// ─── Tab switching ────────────────────────────────────────────────────────
+function switchTab(tab) {
+  state.currentTab = tab;
+  const tabs = ['chat','base','profil'];
+  tabs.forEach(t => {
+    const content = document.getElementById('tab-' + t);
+    const nav     = document.getElementById('nav-' + t);
+    if (t === tab) {
+      content.classList.add('active');
+      nav.classList.remove('text-slate-400', 'dark:text-slate-500');
+      nav.classList.add('text-primary');
+    } else {
+      content.classList.remove('active');
+      nav.classList.remove('text-primary');
+      nav.classList.add('text-slate-400', 'dark:text-slate-500');
+    }
+  });
+  if (tab === 'base') loadDocuments();
+}
+
+// ─── Dark mode ────────────────────────────────────────────────────────────
+function toggleDark() {
+  const html = document.documentElement;
+  html.classList.toggle('dark');
+  const isDark = html.classList.contains('dark');
+  document.getElementById('dark-icon').textContent = isDark ? 'light_mode' : 'dark_mode';
+  localStorage.setItem('dark', isDark ? '1' : '0');
+}
+
+// ─── Chat ─────────────────────────────────────────────────────────────────
+function handleSend() {
+  const input = document.getElementById('chat-input');
+  const text  = input.value.trim();
+  if (!text || state.isStreaming) return;
+  input.value = '';
+  sendMessage(text);
+}
+
+function sendQuickAction(text) {
+  if (state.isStreaming) return;
+  switchTab('chat');
+  setTimeout(() => sendMessage(text), 50);
+}
+
+async function sendMessage(question) {
+  state.isStreaming = true;
+  document.getElementById('send-btn').disabled = true;
+  document.getElementById('chat-input').disabled = true;
+
+  // Hide quick actions & chips on first real message
+  const qActions = document.querySelector('.grid.grid-cols-2');
+  const chips    = document.querySelector('.flex.gap-2.overflow-x-auto');
+  if (qActions) qActions.style.display = 'none';
+  if (chips)    chips.style.display    = 'none';
+
+  // User bubble
+  appendMessage('user', question);
+  state.chatHistory.push({ role: 'user', content: question });
+
+  // Typing indicator
+  const typingEl = appendTyping();
+  scrollToBottom();
+
+  // History for API (exclude current question, already pushed)
+  const history = state.chatHistory.slice(0, -1);
+
+  let botText  = '';
+  let sources  = null;
+  let streamDone = false;
+
+  try {
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, history }),
+    });
+
+    if (!resp.ok) {
+      throw new Error(`Erreur serveur (${resp.status})`);
+    }
+
+    // Remove typing, add bot bubble
+    typingEl.remove();
+    const botBubble = appendBotBubble();
+    const textNode  = botBubble.querySelector('.bot-text');
+    scrollToBottom();
+
+    // Read SSE stream
+    const reader  = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let   buffer  = '';
+
+    while (!streamDone) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        try {
+          const data = JSON.parse(line.slice(6));
+          if (data.type === 'sources') {
+            sources = data.sources;
+          } else if (data.type === 'text_delta') {
+            botText += data.content;
+            textNode.innerHTML = renderMarkdown(botText);
+            scrollToBottom();
+          } else if (data.type === 'error') {
+            textNode.innerHTML = `<span class="text-red-300">⚠ ${escapeHtml(data.message)}</span>`;
+            streamDone = true;
+            break;
+          } else if (data.type === 'done') {
+            streamDone = true;
+            break;
+          }
+        } catch { /* ignore malformed */ }
+      }
+    }
+
+    // Show sources
+    if (sources && sources.length) {
+      const sourcesEl = botBubble.parentElement.querySelector('.sources-container');
+      if (sourcesEl) {
+        sourcesEl.innerHTML = '';
+        sources.forEach(s => {
+          const chip = document.createElement('div');
+          chip.className = 'source-chip inline-flex items-center gap-1 px-2.5 py-1 bg-primary/10 text-primary rounded-full text-[11px] font-semibold border border-primary/20 cursor-default';
+          chip.innerHTML = `<span class="material-symbols-outlined text-[12px]">description</span>${escapeHtml(s.title)}`;
+          sourcesEl.appendChild(chip);
+        });
+        sourcesEl.classList.remove('hidden');
+      }
+    }
+
+    // Save to history
+    if (botText) {
+      state.chatHistory.push({ role: 'assistant', content: botText });
+      // Keep history manageable (last 10 messages)
+      if (state.chatHistory.length > 10) state.chatHistory = state.chatHistory.slice(-10);
+    }
+
+  } catch (err) {
+    typingEl.remove();
+    appendMessage('bot-error', err.message);
+  }
+
+  state.isStreaming = false;
+  document.getElementById('send-btn').disabled = false;
+  document.getElementById('chat-input').disabled = false;
+  document.getElementById('chat-input').focus();
+  scrollToBottom();
+}
+
+// ─── Message builders ─────────────────────────────────────────────────────
+function appendMessage(role, text) {
+  const container = document.getElementById('messages-container');
+  const time = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+
+  if (role === 'user') {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="flex justify-end">
+        <div class="flex flex-col items-end gap-1 max-w-[80%]">
+          <div class="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 p-3.5 rounded-xl rounded-tr-none text-[15px] leading-relaxed shadow-sm border border-slate-100 dark:border-slate-600">
+            ${escapeHtml(text)}
+          </div>
+          <span class="text-[10px] text-slate-400">Vous • ${time}</span>
+        </div>
+      </div>`);
+  } else {
+    container.insertAdjacentHTML('beforeend', `
+      <div class="flex items-start gap-3 bot-message">
+        <div class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-white text-sm">error</span>
+        </div>
+        <div class="bg-red-50 text-red-700 p-3 rounded-xl text-sm">${escapeHtml(text)}</div>
+      </div>`);
+  }
+}
+
+function appendTyping() {
+  const container = document.getElementById('messages-container');
+  const div = document.createElement('div');
+  div.className = 'flex items-start gap-3';
+  div.innerHTML = `
+    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-white text-sm">smart_toy</span>
+    </div>
+    <div class="bg-primary/10 dark:bg-primary/20 px-4 py-3 rounded-xl rounded-tl-none flex items-center gap-1.5 h-10">
+      <span class="typing-dot w-2 h-2 rounded-full bg-primary/60"></span>
+      <span class="typing-dot w-2 h-2 rounded-full bg-primary/60"></span>
+      <span class="typing-dot w-2 h-2 rounded-full bg-primary/60"></span>
+    </div>`;
+  container.appendChild(div);
+  return div;
+}
+
+function appendBotBubble() {
+  const container = document.getElementById('messages-container');
+  const time = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+  const div  = document.createElement('div');
+  div.className = 'flex items-start gap-3 bot-message';
+  div.innerHTML = `
+    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-white text-sm">smart_toy</span>
+    </div>
+    <div class="flex flex-col gap-1.5 max-w-[85%]">
+      <div class="bg-primary text-white p-4 rounded-xl rounded-tl-none text-[15px] leading-relaxed bot-text"></div>
+      <div class="sources-container hidden flex flex-wrap gap-1.5 px-1"></div>
+      <span class="text-[10px] text-slate-400 ml-1">Assistant • ${time}</span>
+    </div>`;
+  container.appendChild(div);
+  return div;
+}
+
+function scrollToBottom() {
+  const c = document.getElementById('messages-container');
+  requestAnimationFrame(() => { c.scrollTop = c.scrollHeight; });
+}
+
+// ─── Markdown renderer ────────────────────────────────────────────────────
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderMarkdown(raw) {
+  let t = escapeHtml(raw);
+  // Bold
+  t = t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Italic
+  t = t.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  // Inline code
+  t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Bullet lists (•, -, *)
+  t = t.replace(/^[•\-\*] (.+)$/gm, '<li style="margin-left:1rem;list-style-type:disc">$1</li>');
+  // Wrap consecutive <li>
+  t = t.replace(/(<li[^>]*>.*?<\/li>\n?)+/gs, m => `<ul style="margin:.3rem 0">${m}</ul>`);
+  // Line breaks
+  t = t.replace(/\n/g, '<br>');
+  return t;
+}
+
+// ─── File upload ──────────────────────────────────────────────────────────
+function triggerFileUpload() {
+  document.getElementById('file-input').click();
+}
+
+function handleFileSelected(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  state.selectedFile = file;
+  // If we're in chat tab, switch to base and show form
+  switchTab('base');
+  showUploadForm(file.name);
+}
+
+function handleDrop(event) {
+  event.preventDefault();
+  document.getElementById('upload-zone').classList.remove('dragover');
+  const file = event.dataTransfer.files[0];
+  if (!file) return;
+  state.selectedFile = file;
+  showUploadForm(file.name);
+}
+
+function showUploadForm(filename) {
+  document.getElementById('selected-filename').textContent = filename;
+  document.getElementById('upload-form').classList.remove('hidden');
+  document.getElementById('upload-zone').style.display = 'none';
+}
+
+function cancelUpload() {
+  state.selectedFile = null;
+  document.getElementById('upload-form').classList.add('hidden');
+  document.getElementById('upload-zone').style.display = '';
+  document.getElementById('file-input').value = '';
+  document.getElementById('upload-title').value = '';
+}
+
+async function submitUpload() {
+  if (!state.selectedFile) return;
+  const title    = document.getElementById('upload-title').value.trim();
+  const category = document.getElementById('upload-category').value;
+
+  document.getElementById('upload-form').classList.add('hidden');
+  document.getElementById('upload-progress').classList.remove('hidden');
+  document.getElementById('upload-status').textContent = 'Analyse et indexation…';
+
+  try {
+    const fd = new FormData();
+    fd.append('file',     state.selectedFile);
+    fd.append('title',    title);
+    fd.append('category', category);
+
+    const resp = await fetch('/api/documents/upload', { method:'POST', body: fd });
+    const data = await resp.json();
+
+    if (!resp.ok) throw new Error(data.detail || 'Erreur upload');
+
+    document.getElementById('upload-progress').classList.add('hidden');
+    document.getElementById('upload-zone').style.display = '';
+    document.getElementById('file-input').value = '';
+    state.selectedFile = null;
+    document.getElementById('upload-title').value = '';
+
+    showToast(`✓ "${data.title}" indexé (${data.chunks} sections)`, 'success');
+    loadDocuments();
+
+  } catch (err) {
+    document.getElementById('upload-progress').classList.add('hidden');
+    document.getElementById('upload-form').classList.remove('hidden');
+    showToast(`Erreur : ${err.message}`, 'error');
+  }
+}
+
+// ─── Document list ────────────────────────────────────────────────────────
+async function loadDocuments() {
+  const list = document.getElementById('docs-list');
+  list.innerHTML = '<div class="text-center py-4 text-slate-400 text-sm">Chargement…</div>';
+  try {
+    const resp = await fetch('/api/documents');
+    const data = await resp.json();
+    const docs = data.documents || [];
+
+    const el = document.getElementById('doc-count-profil');
+    if (el) el.textContent = docs.length + ' doc' + (docs.length > 1 ? 's' : '');
+
+    if (docs.length === 0) {
+      list.innerHTML = `
+        <div class="text-center py-6 text-slate-400">
+          <span class="material-symbols-outlined text-[36px] mb-2 block">folder_open</span>
+          <p class="text-sm">Aucun document indexé</p>
+        </div>`;
+      return;
+    }
+
+    list.innerHTML = '';
+    const catColors = {
+      'Congés':           'bg-blue-50 text-blue-600 border-blue-100',
+      'Avantages sociaux':'bg-green-50 text-green-600 border-green-100',
+      'Procédures':       'bg-orange-50 text-orange-600 border-orange-100',
+      'Télétravail':      'bg-purple-50 text-purple-600 border-purple-100',
+      'Formation':        'bg-yellow-50 text-yellow-600 border-yellow-100',
+      'Paie':             'bg-red-50 text-red-600 border-red-100',
+    };
+
+    docs.forEach(doc => {
+      const color = catColors[doc.category] || 'bg-slate-50 text-slate-600 border-slate-100';
+      const item  = document.createElement('div');
+      item.className = 'flex items-center gap-3 p-3 rounded-xl border border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors group';
+      item.innerHTML = `
+        <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-primary text-[18px]">description</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold truncate">${escapeHtml(doc.title)}</p>
+          <span class="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full border ${color}">${escapeHtml(doc.category)}</span>
+        </div>
+        <button onclick="deleteDocument('${doc.id}', this)"
+          class="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-50 hover:text-red-500 text-slate-400 transition-all" title="Supprimer">
+          <span class="material-symbols-outlined text-[16px]">delete</span>
+        </button>`;
+      list.appendChild(item);
+    });
+  } catch {
+    list.innerHTML = '<div class="text-center py-4 text-red-400 text-sm">Impossible de charger les documents</div>';
+  }
+}
+
+async function deleteDocument(docId, btnEl) {
+  if (!confirm('Supprimer ce document de la base de connaissances ?')) return;
+  try {
+    const resp = await fetch(`/api/documents/${docId}`, { method: 'DELETE' });
+    if (!resp.ok) throw new Error('Erreur suppression');
+    btnEl.closest('.flex.items-center').remove();
+    showToast('Document supprimé', 'success');
+    // Refresh count
+    loadDocuments();
+  } catch (err) {
+    showToast(`Erreur : ${err.message}`, 'error');
+  }
+}
+
+// ─── Toast ────────────────────────────────────────────────────────────────
+let _toastTimer = null;
+function showToast(msg, type = 'info') {
+  const toast = document.getElementById('toast');
+  const inner = document.getElementById('toast-inner');
+  inner.textContent = msg;
+  inner.className = 'px-4 py-2 rounded-full text-sm font-semibold shadow-lg text-white whitespace-nowrap ' +
+    (type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-slate-700');
+  toast.classList.remove('hidden');
+  if (_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => toast.classList.add('hidden'), 3500);
+}
+</script>
+</body>
+</html>

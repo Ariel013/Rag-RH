@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1F485E",
+                        "highlight": "#1F485E",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1d23",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            font-size: 14px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex flex-col h-screen max-w-md mx-auto shadow-2xl relative overflow-hidden">
+<!-- Top Header -->
+<header class="flex items-center justify-between px-4 py-4 bg-white dark:bg-slate-900 border-b border-primary/10 sticky top-0 z-10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-primary/5">
+<img alt="Company Logo" class="w-full h-full object-contain" data-alt="Corporate company logo minimalist style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5sI2R-mYIWRJvD53Wmtk_V4RyiHhracUhWQTWPZCql6eKtD28s2zhgDwz14NNtWhkxPmTF6fF1p751WC22olX68lpoRGW4e3jXkTzGYuFn8kX-rH_-rMS2sQl9vAny0xx-c51oLSjxp4bK3M9RI-IdX8o2qfsMxYMS3TjIk89qoL7Ps9gSb3KTrkw_-W4i4_m_VaJx44dKXAYQfWiPTi9l7cKHv8r7b2L5nUkYduhcybx7l2BDmN45049qyKGPKs_qZVyyZnGyJWw"/>
+</div>
+<div>
+<h1 class="font-bold text-lg leading-tight text-highlight">Assistant RH</h1>
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">En ligne</span>
+</div>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-highlight dark:text-slate-100">info</span>
+</button>
+</header>
+<!-- Chat Area -->
+<main class="flex-1 overflow-y-auto p-4 space-y-6 flex flex-col">
+<!-- Date Divider -->
+<div class="flex justify-center">
+<span class="text-xs font-semibold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full uppercase tracking-wider">Aujourd'hui</span>
+</div>
+<!-- Bot Message -->
+<div class="flex items-start gap-3 group">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 shadow-sm shadow-highlight/20">
+<span class="material-symbols-outlined text-white text-sm">smart_toy</span>
+</div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<div class="bg-primary text-white p-4 rounded-xl rounded-tl-none text-[15px] leading-relaxed">
+                    Bonjour ! Comment puis-je vous aider aujourd’hui ?
+                </div>
+<span class="text-[10px] text-slate-400 ml-1">Assistant • 09:00</span>
+</div>
+</div>
+<!-- Quick Actions Grid -->
+<div class="grid grid-cols-2 gap-2 mt-4">
+<button class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">policy</span>
+<span>Politiques</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">featured_seasonal_and_gifts</span>
+<span>Avantages</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">event_busy</span>
+<span>Congés</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+<span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+<span>Procédures</span>
+</button>
+</div>
+<!-- Bot Suggestions Chips -->
+<div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+<div class="whitespace-nowrap px-4 py-2 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20">
+                Solde de congés ?
+            </div>
+<div class="whitespace-nowrap px-4 py-2 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20">
+                Mutuelle santé
+            </div>
+<div class="whitespace-nowrap px-4 py-2 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20">
+                Fiche de paie
+            </div>
+</div>
+</main>
+<!-- Bottom Input Area -->
+<footer class="p-4 bg-white dark:bg-slate-900 border-t border-primary/10">
+<div class="flex items-center gap-2">
+<div class="flex-1 flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-4 py-2 border border-transparent focus-within:border-primary/50 focus-within:bg-white dark:focus-within:bg-slate-800 transition-all duration-200">
+<input class="bg-transparent border-none focus:ring-0 text-slate-900 dark:text-slate-100 w-full placeholder:text-slate-400 text-[15px]" placeholder="Tapez votre message..." type="text"/>
+<div class="flex items-center gap-2 ml-2">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">sentiment_satisfied</span>
+</button>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white w-11 h-11 flex items-center justify-center rounded-xl shadow-lg transition-all active:scale-95 shadow-highlight/30">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</footer>
+<!-- Bottom Nav Bar -->
+<div class="flex border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pb-2 pt-2 justify-around">
+<a class="flex flex-col items-center gap-1 text-primary p-2" href="#">
+<span class="material-symbols-outlined text-[24px]">chat_bubble</span>
+<span class="text-[10px] font-bold">Chat</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 p-2" href="#">
+<span class="material-symbols-outlined text-[24px]">menu_book</span>
+<span class="text-[10px] font-bold">Base</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 p-2" href="#">
+<span class="material-symbols-outlined text-[24px]">account_circle</span>
+<span class="text-[10px] font-bold">Profil</span>
+</a>
+</div>
+</body></html>
