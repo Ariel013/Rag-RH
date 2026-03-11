@@ -49,36 +49,33 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   pre { white-space: pre-wrap; word-break: break-word; }
   code { background: rgba(0,0,0,0.06); padding: 1px 4px; border-radius: 4px; font-size: 0.85em; }
-  #sidebar { transition: transform 0.28s cubic-bezier(.4,0,.2,1); }
-  #sidebar-overlay { transition: opacity 0.28s; }
+  #sidebar { transition: opacity 0.18s, transform 0.18s; transform-origin: top left; }
+  #sidebar.sidebar-closed { opacity: 0; transform: scale(0.93) translateY(-6px); pointer-events: none; }
 </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex flex-col h-screen max-w-md mx-auto shadow-2xl relative overflow-hidden">
 
-<!-- ═══ SIDEBAR OVERLAY ═══ -->
-<div id="sidebar-overlay" onclick="closeSidebar()" class="absolute inset-0 bg-black/40 z-20 hidden"></div>
+<!-- ═══ CLICK-OUTSIDE OVERLAY (transparent) ═══ -->
+<div id="sidebar-overlay" onclick="closeSidebar()" class="absolute inset-0 z-20 hidden"></div>
 
-<!-- ═══ SIDEBAR ═══ -->
-<div id="sidebar" class="absolute left-0 top-0 h-full w-64 bg-white dark:bg-slate-900 z-30 -translate-x-full flex flex-col border-r border-primary/10 shadow-2xl">
-  <div class="flex items-center justify-between px-4 py-3 border-b border-primary/10 shrink-0">
-    <h2 class="font-bold text-sm text-highlight">Conversations</h2>
-    <button onclick="closeSidebar()" class="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-      <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 text-[18px]">close</span>
-    </button>
-  </div>
-  <div class="px-3 py-2 border-b border-primary/10 shrink-0">
+<!-- ═══ SIDEBAR DROPDOWN ═══ -->
+<div id="sidebar" class="sidebar-closed absolute left-3 top-[60px] w-64 bg-white dark:bg-slate-900 z-30 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col overflow-hidden">
+  <!-- Nouvelle conversation -->
+  <div class="px-3 pt-3 pb-2 shrink-0">
     <button onclick="newConversation()"
-      class="w-full flex items-center gap-2 px-3 py-2.5 bg-primary/5 hover:bg-primary/10 rounded-xl text-primary font-semibold text-sm transition-colors">
-      <span class="material-symbols-outlined text-[18px]">add</span>
+      class="w-full flex items-center gap-2 px-3 py-2.5 bg-primary hover:bg-primary/90 rounded-xl text-white font-semibold text-sm transition-colors">
+      <span class="material-symbols-outlined text-[18px]">edit_square</span>
       Nouvelle conversation
     </button>
   </div>
-  <div id="conversations-list" class="flex-1 overflow-y-auto p-2 space-y-0.5">
-    <p class="text-xs text-slate-400 text-center py-6">Aucune conversation</p>
+  <!-- Liste -->
+  <div id="conversations-list" class="overflow-y-auto max-h-72 p-2 space-y-0.5">
+    <p class="text-xs text-slate-400 text-center py-4">Aucune conversation</p>
   </div>
-  <div class="px-4 py-2 border-t border-primary/10 shrink-0">
-    <p class="text-[10px] text-slate-400 text-center">Conversations conservées 24h</p>
+  <!-- Footer -->
+  <div class="px-4 py-2 border-t border-slate-100 dark:border-slate-800 shrink-0">
+    <p class="text-[10px] text-slate-400 text-center">Conservées 24h</p>
   </div>
 </div>
 
@@ -558,9 +555,9 @@ function loadConversationIntoDOM(conv) {
 // ─── Sidebar ──────────────────────────────────────────────────────────────
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
-  if (sidebar.classList.contains('-translate-x-full')) {
+  if (sidebar.classList.contains('sidebar-closed')) {
     renderConversationList();
-    sidebar.classList.remove('-translate-x-full');
+    sidebar.classList.remove('sidebar-closed');
     document.getElementById('sidebar-overlay').classList.remove('hidden');
   } else {
     closeSidebar();
@@ -568,7 +565,7 @@ function toggleSidebar() {
 }
 
 function closeSidebar() {
-  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebar').classList.add('sidebar-closed');
   document.getElementById('sidebar-overlay').classList.add('hidden');
 }
 
