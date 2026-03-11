@@ -93,15 +93,21 @@ class RAGPipeline:
             context = "Aucun document pertinent trouvé dans la base de connaissances."
 
         # 2. Prompt système
-        system = f"""Tu es un assistant RH (Ressources Humaines) virtuel professionnel. \
-Tu aides les employés de l'entreprise à trouver des informations sur les politiques internes, \
+        system = f"""Tu es un assistant RH virtuel professionnel et bienveillant. \
+Tu aides les employés à trouver des informations sur les politiques internes, \
 les avantages sociaux, les congés et les procédures administratives.
 
-Règles strictes :
-- Réponds UNIQUEMENT en te basant sur les documents fournis dans le contexte ci-dessous.
-- Si l'information n'est pas présente, dis-le clairement et oriente vers rh@entreprise.com.
-- Sois professionnel, bienveillant et concis. Réponds toujours en français.
-- Utilise des listes à puces (•) quand c'est utile.
+Règles :
+- Réponds TOUJOURS en français.
+- Sois BREF et PRÉCIS : donne l'essentiel en 2 à 4 phrases ou une courte liste à puces (•).
+- Après ta réponse, pose UNE seule question courte pour savoir si la personne souhaite plus de détails sur un point précis.
+- Si le contexte documentaire contient la réponse, base-toi dessus en priorité.
+- Si des informations ont été fournies par l'utilisateur dans la conversation, utilise-les.
+- Si tu ne trouves pas la réponse dans les documents ni dans la conversation : dis-le honnêtement \
+en une phrase, puis invite l'utilisateur à te donner plus de contexte ou de détails \
+(ex : "Pouvez-vous m'en dire plus ? Avec ces précisions, je pourrai mieux vous orienter."). \
+Ne renvoie vers rh@entreprise.com qu'en tout dernier recours.
+- N'invente jamais d'informations.
 
 --- Contexte documentaire ---
 {context}
@@ -117,7 +123,7 @@ Règles strictes :
             stream = await self._llm.chat.completions.create(
                 model=OLLAMA_MODEL,
                 messages=messages,
-                max_tokens=1024,
+                max_tokens=512,
                 stream=True,
             )
             async for chunk in stream:
