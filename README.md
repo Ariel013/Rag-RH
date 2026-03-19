@@ -1,5 +1,3 @@
-# Rag-
-=======
 ---
 title: Assistant RH RAG
 emoji: 🤖
@@ -36,4 +34,3 @@ Définir les variables d'environnement dans les **Secrets** du Space :
 - Upload de documents (PDF, DOCX, TXT, MD)
 - Base de connaissances vectorielle persistante
 - Documents samples RH pré-chargés au démarrage
->>>>>>> dev
