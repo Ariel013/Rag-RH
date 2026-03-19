@@ -47,6 +47,8 @@
   .upload-zone.dragover { border-color: #1F485E; background: #e8f0f4; }
   .no-scrollbar { scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
+  #login-modal { transition: opacity 0.18s; }
+  #login-modal.hidden { opacity: 0; pointer-events: none; }
   pre { white-space: pre-wrap; word-break: break-word; }
   code { background: rgba(0,0,0,0.06); padding: 1px 4px; border-radius: 4px; font-size: 0.85em; }
   #sidebar { transition: opacity 0.18s, transform 0.18s; transform-origin: top left; }
@@ -201,6 +203,19 @@
   <!-- ── BASE TAB (Documents) ── -->
   <div id="tab-base" class="tab-content overflow-y-auto p-4 gap-4">
 
+    <!-- Admin bar -->
+    <div class="flex items-center justify-between px-1 mb-1">
+      <p class="text-xs font-semibold text-primary flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[14px]">admin_panel_settings</span>
+        Mode administrateur
+      </p>
+      <button onclick="logoutAdmin()"
+        class="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition-colors font-medium">
+        <span class="material-symbols-outlined text-[14px]">logout</span>
+        Déconnexion
+      </button>
+    </div>
+
     <!-- Upload zone -->
     <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10">
       <h2 class="font-bold text-base text-highlight mb-3 flex items-center gap-2">
@@ -343,10 +358,11 @@
     <span class="material-symbols-outlined text-[24px]">chat_bubble</span>
     <span class="text-[10px] font-bold">Chat</span>
   </button>
-  <button id="nav-base" onclick="switchTab('base')"
-    class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors">
+  <button id="nav-base" onclick="openBaseTab()"
+    class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors relative">
     <span class="material-symbols-outlined text-[24px]">menu_book</span>
     <span class="text-[10px] font-bold">Base</span>
+    <span id="base-lock" class="absolute -top-0.5 right-1 material-symbols-outlined text-[12px] text-slate-400">lock</span>
   </button>
   <button id="nav-profil" onclick="switchTab('profil')"
     class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors">
@@ -355,6 +371,53 @@
   </button>
 </nav>
 
+<!-- ═══ LOGIN MODAL ═══ -->
+<div id="login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+  <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-xs p-6 flex flex-col gap-5">
+    <!-- Header -->
+    <div class="flex flex-col items-center gap-2">
+      <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-[22px]">admin_panel_settings</span>
+      </div>
+      <h2 class="font-bold text-base text-highlight dark:text-white">Accès Administrateur</h2>
+      <p class="text-xs text-slate-400 text-center">Connectez-vous pour accéder à la base de connaissances</p>
+    </div>
+    <!-- Form -->
+    <div class="flex flex-col gap-3">
+      <div class="flex flex-col gap-1">
+        <label class="text-xs font-semibold text-slate-500 dark:text-slate-400">Email</label>
+        <input id="login-email" type="email" placeholder="admin@rag.com" autocomplete="email"
+          class="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-primary/60 transition-colors"/>
+      </div>
+      <div class="flex flex-col gap-1">
+        <label class="text-xs font-semibold text-slate-500 dark:text-slate-400">Mot de passe</label>
+        <div class="relative">
+          <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password"
+            class="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-primary/60 transition-colors pr-10"
+            onkeydown="if(event.key==='Enter') submitLogin()"/>
+          <button type="button" onclick="togglePasswordVisibility()"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+            <span id="pwd-eye" class="material-symbols-outlined text-[18px]">visibility</span>
+          </button>
+        </div>
+      </div>
+      <p id="login-error" class="hidden text-xs text-red-500 font-medium text-center">Email ou mot de passe incorrect.</p>
+    </div>
+    <!-- Actions -->
+    <div class="flex flex-col gap-2">
+      <button onclick="submitLogin()"
+        class="w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[18px]">login</span>
+        Se connecter
+      </button>
+      <button onclick="closeLoginModal()"
+        class="w-full py-2 rounded-xl text-sm font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+        Annuler
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ TOAST ═══ -->
 <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 hidden">
   <div id="toast-inner" class="px-4 py-2 rounded-full text-sm font-semibold shadow-lg text-white bg-slate-700 whitespace-nowrap"></div>
@@ -362,8 +425,11 @@
 
 <script>
 // ─── Constants ────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'rh_conversations';
-const EXPIRY_MS   = 24 * 60 * 60 * 1000; // 24h
+const STORAGE_KEY  = 'rh_conversations';
+const EXPIRY_MS    = 24 * 60 * 60 * 1000; // 24h
+const ADMIN_EMAIL  = 'admin@rag.com';
+const ADMIN_PWD    = '12345678';
+const ADMIN_SK     = 'aeig_admin_session';
 
 // ─── State ────────────────────────────────────────────────────────────────
 const state = {
@@ -371,7 +437,69 @@ const state = {
   isStreaming:  false,
   selectedFile: null,
   currentTab:   'chat',
+  isAdmin:      false,
 };
+
+// ─── Auth ─────────────────────────────────────────────────────────────────
+function checkAdminSession() {
+  state.isAdmin = sessionStorage.getItem(ADMIN_SK) === '1';
+  updateLockIcon();
+}
+
+function updateLockIcon() {
+  const lock = document.getElementById('base-lock');
+  if (lock) lock.style.display = state.isAdmin ? 'none' : '';
+}
+
+function openBaseTab() {
+  if (state.isAdmin) { switchTab('base'); return; }
+  document.getElementById('login-modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('login-email').focus(), 50);
+}
+
+function closeLoginModal() {
+  document.getElementById('login-modal').classList.add('hidden');
+  document.getElementById('login-error').classList.add('hidden');
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-password').value = '';
+}
+
+function submitLogin() {
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const pwd   = document.getElementById('login-password').value;
+  const err   = document.getElementById('login-error');
+  if (email === ADMIN_EMAIL && pwd === ADMIN_PWD) {
+    state.isAdmin = true;
+    sessionStorage.setItem(ADMIN_SK, '1');
+    updateLockIcon();
+    closeLoginModal();
+    switchTab('base');
+  } else {
+    err.classList.remove('hidden');
+    document.getElementById('login-password').value = '';
+    document.getElementById('login-password').focus();
+  }
+}
+
+function logoutAdmin() {
+  state.isAdmin = false;
+  sessionStorage.removeItem(ADMIN_SK);
+  updateLockIcon();
+  switchTab('chat');
+  showToast('Déconnecté', 'info');
+}
+
+function togglePasswordVisibility() {
+  const input = document.getElementById('login-password');
+  const eye   = document.getElementById('pwd-eye');
+  if (input.type === 'password') {
+    input.type = 'text';
+    eye.textContent = 'visibility_off';
+  } else {
+    input.type = 'password';
+    eye.textContent = 'visibility';
+  }
+}
 
 // Snapshot des messages de la conversation courante (pour la persistance)
 let _msgLog = [];
@@ -484,6 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('dark-icon').textContent = 'light_mode';
   }
 
+  checkAdminSession();
   initSession();
 });
 
@@ -917,6 +1046,7 @@ function renderMarkdown(raw) {
 
 // ─── File upload ──────────────────────────────────────────────────────────
 function triggerFileUpload() {
+  if (!state.isAdmin) { openBaseTab(); return; }
   document.getElementById('file-input').click();
 }
 
