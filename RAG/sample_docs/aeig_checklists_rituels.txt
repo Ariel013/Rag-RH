@@ -1,87 +1,207 @@
-Checklists des rituels AEIG
+================================================================
+AFRICAN EDUCATION AND INNOVATION GROUP (AEIG)
+CHECKLISTS DES RITUELS — PAR PROFIL
+================================================================
 
-Ces checklists récapitulent les rituels par département avec leur fréquence et le responsable (lead).
+Ces checklists permettent à chaque profil de s'assurer qu'il respecte
+l'ensemble de ses responsabilités dans les rituels AEIG.
 
----
+================================================================
+CHECKLIST — DIRECTION GÉNÉRALE
+(CEO / DGA / Directeur Financier)
+================================================================
 
-CHECKLIST RH
+QUOTIDIEN
+□ Consulter et traiter les emails urgents avant 9h30
+□ Valider les décisions bloquantes remontées par les managers
+□ Publier ou approuver le message d'inspiration/communication institutionnelle du jour (si applicable)
 
-- Bilan social
-  Fréquence : Annuelle
-  Lead : Christelle
+HEBDOMADAIRE (lundi)
+□ Tenir ou déléguer la présidence du Weekly Meeting de son entité/pôle de rattachement
+□ Consulter le tableau de bord consolidé du groupe (KPIs)
+□ Valider les priorités stratégiques de la semaine
 
-- Planification des congés
-  Fréquence : Biannuelle
-  Lead : Carmen
+HEBDOMADAIRE (vendredi)
+□ Participer au TRIBE FRIDAY et prendre la parole (mot de clôture ou annonce)
+□ Envoyer un message de remerciement/encouragement à l'équipe
 
-- Mise à jour des rituels
-  Fréquence : Annuelle
-  Lead : Carmen
+MENSUEL — ALL-HANDS
+□ Préparer la présentation du mois (bilan + projections) — délai : J-3
+□ Préparer le mot d'ouverture (5-7 min)
+□ Désigner la "Star du Mois" (collaborateur à mettre à l'honneur)
+□ Répondre aux questions des collaborateurs avec transparence
+□ Valider le compte-rendu de l'ALL-HANDS dans les 48h
+□ Communiquer les éléments RH/Financiers pertinents à partager
 
-- Open Hours
-  Fréquence : Semestrielle
-  Lead : Emmanuel
+TRIMESTRIEL — OKR REVIEW
+□ Préparer le bilan des OKRs de son périmètre (données, analyses)
+□ Proposer des ajustements stratégiques argumentés
+□ Valider les OKRs du trimestre suivant
+□ Communiquer les décisions post-OKR Review aux équipes (dans la semaine)
 
----
+ANNUEL
+□ Piloter la préparation de la stratégie annuelle (N+1)
+□ Présenter la feuille de route annuelle lors de l'ALL-HANDS de décembre
+□ Participer à la cérémonie AEIG Awards (discours, remise de prix)
+□ Signer les lettres de félicitations des collaborateurs primés
 
-CHECKLIST MANAGERS
+================================================================
+CHECKLIST — MANAGERS
+(Responsables de Pôle / Directeurs d'Entité)
+================================================================
 
-- Team Building d'équipe
-  Fréquence : Trimestrielle
-  Participants : Membres des équipes
-  Lead : Managers ou leads
+QUOTIDIEN
+□ Animer le Daily Stand-Up de l'équipe (9h00, 15 min max)
+□ Envoyer/valider le message de début de journée sur le canal du pôle
+□ Identifier et lever les blocages remontés par l'équipe
+□ Mettre à jour le tableau de suivi des tâches de l'équipe (Notion/Trello)
 
----
+HEBDOMADAIRE (lundi — Weekly Meeting)
+□ Préparer l'ordre du jour du Weekly (J-1 vendredi)
+□ Envoyer l'ordre du jour à l'équipe avant 17h le vendredi
+□ Animer le Weekly en respectant l'heure (9h00-10h00)
+□ S'assurer que chaque membre a pu s'exprimer
+□ Rédiger le compte-rendu du Weekly et le partager dans les 2h (Notion/Drive)
+□ Assigner les actions avec des propriétaires et des deadlines claires
 
-CHECKLIST DIRECTION
+HEBDOMADAIRE (en continu — One-on-One)
+□ Tenir son créneau de One-on-One avec chaque membre de l'équipe
+□ Préparer des questions ouvertes sur le bien-être et la performance
+□ Consigner les points clés du One-on-One (outil RH interne)
+□ Remonter à la RH tout signal d'alerte (stress, démotivation, conflit)
 
-- Lunch d'onboarding
-  Fréquence : 5 fois par an
-  Participants : DG + Newcomers
-  Lead : Emmanuel
+HEBDOMADAIRE (vendredi — TRIBE FRIDAY)
+□ Encourager les membres de l'équipe à participer activement
+□ Préparer une "Victoire de la semaine" à partager pour son pôle
+□ Animer le TRIBE FRIDAY si c'est le tour de son pôle (planning RH)
 
-- Rapport d'activités
-  Fréquence : Annuelle
-  Participants : Direction + Partenaires Institutionnels
-  Lead : Stéphanie
+MENSUEL — ALL-HANDS
+□ Préparer la contribution de son pôle au ALL-HANDS (résultats, chiffres, projets) — délai : J-2
+□ Être présent et représenter son pôle avec professionnalisme
+□ Identifier 1 collaborateur à valoriser pour la "Star du Mois" et le soumettre à la DRH (avant le 25 du mois)
 
-- Revue stratégique
-  Fréquence : Bimestrielle
-  Participants : DG + Managers
-  Lead : Stéphanie
+MENSUEL — RÉUNION MANAGERS (si convoquée par la DG)
+□ Préparer son point de suivi (OKRs, équipe, projets en cours)
+□ Apporter des solutions, pas uniquement des problèmes
 
-- Comité stratégique
-  Fréquence : Semestrielle
-  Participants : Direction + Partenaires Externes
-  Lead : Stéphanie
+TRIMESTRIEL — OKR REVIEW
+□ Rédiger le bilan des OKRs de son pôle (avant J-3)
+□ Analyser les écarts entre résultats et objectifs
+□ Préparer les OKRs du trimestre suivant (SMART et ambitieux)
+□ Communiquer les OKRs validés à son équipe dans la semaine suivant l'OKR Review
 
-- Booster Inspi/Action
-  Fréquence : À la demande
-  Participants : Direction + Managers ou collaborateurs référents
-  Lead : Stéphanie
+TRIMESTRIEL — TEAM BUILDING
+□ Participer activement au team building
+□ Encourager tous les membres de l'équipe à participer
 
----
+ANNUEL — ENTRETIENS D'ÉVALUATION
+□ Préparer les entretiens de chaque membre de l'équipe (fiches + données)
+□ Conduire les entretiens selon le guide RH (bienveillance + objectivité)
+□ Rédiger et remettre les Plans de Développement Individuels (PDI)
+□ Transmettre les formulaires complétés à la RH dans les délais (fin janvier)
 
-CHECKLIST RAF (Responsable Administratif et Financier)
+================================================================
+CHECKLIST — RAF
+(Responsable Administratif et Financier — Bénin et CI)
+================================================================
 
-- Bilan comptable
-  Fréquence : Annuelle
-  Participants : Conseil d'Administration + Partenaires
-  Lead : RAF
+QUOTIDIEN
+□ Traiter les demandes de remboursement/avance soumises via le Helpdesk
+□ Vérifier le solde de trésorerie et signaler toute anomalie à la Direction Financière
+□ Valider ou rejeter les dépenses soumises dans le délai de 24h
 
-- Impôts
-  Fréquence : Mensuel
-  Acteurs : RAF
+HEBDOMADAIRE
+□ Participer au Daily Stand-Up du pôle Finance
+□ Préparer le rapport hebdomadaire de trésorerie (vendredi avant 16h)
+□ Mettre à jour le fichier de suivi des dépenses par entité
 
-- CNSS
-  Fréquence : Mensuel
-  Acteurs : RAF
+MENSUEL — RAF MENSUEL (dernier vendredi du mois)
+□ Préparer le rapport financier mensuel par entité (délai : J-2)
+□ Comparer les dépenses réelles vs budget alloué
+□ Présenter les écarts et expliquer les dépassements
+□ Soumettre les notes de frais en attente à la Direction Financière pour validation
+□ Clôturer les opérations du mois (rapprochement bancaire)
+□ Archiver les pièces justificatives du mois (Drive Finance)
 
-- CAC
-  Fréquence : Biannuelle
-  Participants : RAF + Direction + CAC
-  Lead : RAF
+TRIMESTRIEL
+□ Produire le rapport financier trimestriel consolidé
+□ Participer à l'OKR Review pour le volet financier
+□ Actualiser les prévisions budgétaires pour le trimestre suivant
 
-- Paiement salaires
-  Fréquence : Mensuelle
-  Lead : RAF
+ANNUEL
+□ Préparer le bilan financier de l'année
+□ Coordonner avec le commissaire aux comptes (Cabinet ATEX) pour l'audit annuel
+□ Préparer le budget prévisionnel de l'année suivante (soumis à la Direction avant le 15 novembre)
+□ Archiver tous les documents financiers de l'année (physique + numérique)
+
+PROCESSUS SPÉCIFIQUES RAF
+□ Toute dépense > 100 000 FCFA doit être validée par le Directeur Financier
+□ Toute dépense > 500 000 FCFA doit être validée par le CEO
+□ Les avances sur frais doivent être justifiées dans un délai de 5 jours ouvrables
+□ Tout achat de matériel informatique doit être référencé dans l'inventaire Moyens Généraux
+
+================================================================
+CHECKLIST — RH
+(DRH / Responsable RH Bénin / Responsable RH CI)
+================================================================
+
+QUOTIDIEN
+□ Consulter le Helpdesk RH et traiter les demandes dans les 24h ouvrables
+□ Répondre aux messages/emails des collaborateurs dans les 4h ouvrables
+□ Valider ou traiter les demandes de congés soumises (réponse sous 48h)
+□ Mettre à jour le suivi des présences/absences
+
+HEBDOMADAIRE (lundi)
+□ Vérifier les plannings de la semaine (disponibilités, absences prévues)
+□ Envoyer le rappel des rituels de la semaine sur le canal principal
+□ Faire le tour des managers pour détecter les signaux RH de la semaine
+
+HEBDOMADAIRE (vendredi — TRIBE FRIDAY)
+□ Préparer et co-animer le TRIBE FRIDAY
+□ Préparer la "Pépite de la semaine" (info RH, tech ou bonne pratique)
+□ Collecter les retours anonymes de l'équipe si sondage humeur prévu
+□ Rédiger un résumé post-TRIBE FRIDAY pour les absents (publié sur Slack/WhatsApp)
+
+MENSUEL — ALL-HANDS
+□ Coordonner la logistique de l'ALL-HANDS (salle, lien Meet, matériel)
+□ Préparer la section RH de l'ALL-HANDS (chiffres clés RH, annonces)
+□ Collecter les contributions des pôles (résultats du mois) — délai : J-3
+□ Désigner l'animateur de l'ALL-HANDS et lui transmettre le script
+□ Rédiger et diffuser le compte-rendu de l'ALL-HANDS dans les 48h
+
+MENSUEL — RÉUNION RH MENSUELLE (2ème mercredi)
+□ Préparer l'ordre du jour (J-2)
+□ Présenter le tableau de bord RH du mois (effectifs, absences, recrutements)
+□ Présenter les signaux remontés des One-on-One
+□ Valider les plans d'action RH du mois suivant
+□ Rédiger le compte-rendu et le partager (Drive RH)
+
+MENSUEL — RECRUTEMENT
+□ Publier les offres d'emploi validées sur les canaux (LinkedIn, site web, réseaux sociaux)
+□ Organiser les entretiens de recrutement dans les délais convenus
+□ Envoyer les réponses (positive ou négative) à tous les candidats dans les 5 jours après la décision
+□ Assurer l'onboarding des nouveaux collaborateurs (contrat, accès, buddy, matériel)
+
+TRIMESTRIEL
+□ Produire le rapport RH trimestriel (effectifs, turnover, formation, bien-être)
+□ Organiser le Team Building (logistique, communication, inscription)
+□ Faire le point sur les PDI (Plans de Développement Individuels)
+
+ANNUEL — ENTRETIENS
+□ Communiquer le calendrier des entretiens annuels (avant le 1er décembre)
+□ Former les managers au processus d'entretien
+□ Diffuser les formulaires d'évaluation (via le Helpdesk RH)
+□ Consolider les résultats des entretiens et produire un rapport synthèse (fin janvier)
+□ Soumettre les recommandations de révision salariale à la Direction Financière
+
+ANNUEL — AEIG AWARDS
+□ Coordonner l'organisation de la soirée (lieu, traiteur, programme)
+□ Collecter les nominations auprès des managers et de la Direction
+□ Préparer les diplômes/trophées et discours de remise
+□ Gérer les invitations et la liste des présents
+□ Rédiger le compte-rendu post-événement + publication réseaux sociaux
+
+================================================================
+Document maintenu par : Pôle RH & Moyens Généraux AEIG
+DRH Groupe : Mme Aminata Sawadogo — aminata.sawadogo@aeig.africa
+================================================================

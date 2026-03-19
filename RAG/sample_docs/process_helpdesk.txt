@@ -1,0 +1,169 @@
+================================================================
+AFRICAN EDUCATION AND INNOVATION GROUP (AEIG)
+PROCESS — HELPDESK AEIG
+GUIDE D'UTILISATION COMPLET
+================================================================
+
+QU'EST-CE QUE LE HELPDESK AEIG ?
+----------------------------------
+Le Helpdesk AEIG est la plateforme centrale de gestion des demandes internes du groupe. Il permet à chaque collaborateur de soumettre, suivre et résoudre toutes ses demandes administratives, RH, financières, IT et logistiques en un seul endroit.
+
+URL               : helpdesk.aeig.africa
+Accès             : Via votre email @aeig.africa (Google SSO)
+Disponibilité     : 24h/24, 7j/7 (traitement en heures ouvrées)
+
+RÈGLE FONDAMENTALE :
+Toute demande formelle DOIT passer par le Helpdesk.
+Les demandes par WhatsApp, SMS ou email direct ne seront pas traitées pour les sujets couverts par le Helpdesk.
+
+================================================================
+COMMENT SE CONNECTER ?
+================================================================
+1. Aller sur helpdesk.aeig.africa
+2. Cliquer sur "Se connecter avec Google"
+3. Utiliser votre adresse @aeig.africa
+4. Vous arrivez sur votre tableau de bord
+
+En cas de problème de connexion :
+→ Contacter support-it@aeig.africa ou M. Moussa Traoré sur Slack
+
+================================================================
+LES CATÉGORIES DE DEMANDES
+================================================================
+
+RESSOURCES HUMAINES (RH)
+  ○ Demande de congé
+  ○ Déclaration d'absence / maladie
+  ○ Demande d'avance sur salaire
+  ○ Demande de certificat de travail / attestation d'emploi
+  ○ Demande d'attestation de salaire
+  ○ Signalement d'un incident RH (confidentiel)
+  ○ Inscription à la mutuelle
+  ○ Demande de télétravail
+  ○ Programme Mentorat (inscription)
+  ○ Demande de formation
+  ○ Question RH générale
+  Responsable : Mme Aminata Sawadogo / M. Jean-Baptiste Koffi
+
+FINANCE & ADMINISTRATION
+  ○ Note de frais / Remboursement de dépenses
+  ○ Demande d'avance sur frais de mission
+  ○ Initiation d'une dépense
+  ○ Demande de bon de commande
+  ○ Demande de facture / reçu
+  ○ Demande d'accès aux rapports financiers
+  Responsable : M. Yves Gangbazo (Bénin) / Mme Mariam Ouédraogo (CI)
+
+SUPPORT INFORMATIQUE (IT)
+  ○ Panne ou dysfonctionnement matériel
+  ○ Demande de nouveau matériel
+  ○ Problème d'accès à un outil (Slack, Google, Notion, etc.)
+  ○ Demande de création d'un compte / accès
+  ○ Signalement d'un incident de sécurité
+  ○ Demande d'installation d'un logiciel
+  Responsable : M. Moussa Traoré (Moyens Généraux / IT)
+
+MOYENS GÉNÉRAUX & LOGISTIQUE
+  ○ Réservation de salle de réunion
+  ○ Booker PiXpress (véhicule de service)
+  ○ Demande de matériel de bureau
+  ○ Signalement d'un problème dans les locaux (eau, électricité, etc.)
+  ○ Demande de badge / remplacement de badge
+  ○ Demande de clé / accès physique
+  Responsable : M. Moussa Traoré
+
+COMMUNICATION & CONTENU
+  ○ Demande de visuel / affiche
+  ○ Demande de publication sur les réseaux sociaux
+  ○ Demande de rédaction (communiqué, article, etc.)
+  ○ Demande de modification du site web
+  Responsable : Mme Vanessa Kiki Sossou / M. Arnold Gnanhui
+
+ORGANISATION D'ÉVÉNEMENT
+  ○ Demande d'organisation d'un événement interne
+  ○ Demande d'organisation d'un événement externe
+  ○ Demande de réservation de salle externe
+  ○ Demande de traiteur / restauration pour un événement
+
+COURRIERS & DOCUMENTATION
+  ○ Demande de rédaction d'un courrier officiel
+  ○ Demande de signature de document
+  ○ Demande d'archivage de document
+  ○ Demande d'accès à un document RH
+
+================================================================
+COMMENT CRÉER UNE DEMANDE ?
+================================================================
+1. Se connecter sur helpdesk.aeig.africa
+2. Cliquer sur "Nouvelle demande" (bouton vert en haut à droite)
+3. Sélectionner la catégorie de la demande
+4. Remplir le formulaire (titre, description, pièces jointes si nécessaires)
+5. Cliquer sur "Soumettre"
+6. Un numéro de ticket vous est attribué automatiquement (ex: AEIG-2025-0342)
+7. Vous recevez un email de confirmation avec votre numéro de ticket
+
+================================================================
+SUIVI DE VOS DEMANDES
+================================================================
+Sur le tableau de bord du Helpdesk :
+  - "Mes demandes" : liste de toutes vos demandes et leur statut
+  - Statuts possibles :
+    → OUVERT         : demande reçue, en attente de traitement
+    → EN COURS       : demande prise en charge par le responsable
+    → EN ATTENTE     : en attente d'information complémentaire de votre part
+    → RÉSOLU         : demande traitée
+    → FERMÉ          : ticket archivé
+
+Vous pouvez ajouter des commentaires ou des pièces jointes à un ticket ouvert.
+Vous serez notifié(e) par email à chaque changement de statut.
+
+================================================================
+DÉLAIS DE TRAITEMENT PAR CATÉGORIE
+================================================================
+
+RH
+  Congés / Absences         : 48h ouvrables
+  Attestations / Certificats : 3 jours ouvrables
+  Avance sur salaire        : 48h ouvrables
+  Question RH générale      : 24h ouvrables
+
+Finance
+  Note de frais             : 5 jours ouvrables
+  Bon de commande           : 48h ouvrables
+  Facture / Reçu            : 3 jours ouvrables
+
+IT / Support
+  Urgence (PC ne démarre plus, accès bloqué) : 4h ouvrables
+  Standard                  : 48h ouvrables
+  Nouveau matériel          : 5 à 10 jours ouvrables
+
+Moyens Généraux
+  Réservation salle         : 24h ouvrables
+  Réservation PiXpress      : 24h ouvrables
+  Problème locaux urgent    : 4h ouvrables
+
+================================================================
+RÈGLES D'UTILISATION DU HELPDESK
+================================================================
+✓ Une demande = un ticket (ne pas regrouper plusieurs demandes)
+✓ Être précis dans la description pour accélérer le traitement
+✓ Joindre les pièces justificatives nécessaires dès la création du ticket
+✓ Ne pas créer un doublon : vérifier que la demande n'existe pas déjà
+✓ Relancer via le ticket (ajouter un commentaire) si pas de réponse sous le délai prévu
+✗ Ne pas appeler directement pour des demandes non urgentes couvertes par le Helpdesk
+✗ Ne pas utiliser WhatsApp pour les demandes formelles
+
+================================================================
+CONTACTS D'URGENCE (pour situations hors Helpdesk)
+================================================================
+Urgence IT critique         : M. Moussa Traoré — +229 01 97 02 00 02
+Urgence RH / Signalement    : Mme Aminata Sawadogo — +229 01 97 02 00 00
+Urgence Finance             : M. Yves Gangbazo — +229 01 97 03 00 00
+Urgence locaux / sécurité   : M. Moussa Traoré — +229 01 97 02 00 02
+Pompiers (Bénin)            : 117
+SAMU (Bénin)                : 118
+
+================================================================
+TUTORIEL VIDÉO
+Disponible sur : Google Drive AEIG > Tutoriels > "Helpdesk — Guide utilisateur"
+================================================================

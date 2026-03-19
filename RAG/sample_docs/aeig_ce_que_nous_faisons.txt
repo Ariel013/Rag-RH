@@ -1,0 +1,194 @@
+================================================================
+AFRICAN EDUCATION AND INNOVATION GROUP (AEIG)
+CE QUE NOUS FAISONS — PRÉSENTATION DES ENTITÉS
+================================================================
+
+================================================================
+LE GROUPE AEIG
+================================================================
+AEIG est un groupe éducatif et technologique panafricain qui forme, innove et connecte les talents numériques africains. Il opère au Bénin et en Côte d'Ivoire et regroupe 6 entités complémentaires couvrant l'ensemble du parcours éducatif et professionnel dans le numérique.
+
+Le groupe intervient sur 4 niveaux :
+  1. Formation supérieure (Bachelor & Master)
+  2. Formation professionnelle et continue
+  3. Innovation, incubation et entrepreneuriat
+  4. Diffusion de contenu et culture numérique
+
+================================================================
+EPITECH AFRIQUE
+================================================================
+Type              : École supérieure d'informatique et de cybersécurité
+Niveau            : Bac+3 (Bachelor) et Bac+5 (Master)
+Présence          : Cotonou (Bénin) + Abidjan (Côte d'Ivoire)
+
+MISSIONS :
+  - Former des ingénieurs et experts du numérique de haut niveau
+  - Proposer des programmes en informatique, cybersécurité, réseaux, intelligence artificielle, développement logiciel
+  - Délivrer des diplômes reconnus par les ministères de l'Enseignement Supérieur du Bénin et de la Côte d'Ivoire
+  - Favoriser la recherche appliquée et l'innovation académique
+
+PROGRAMMES PROPOSÉS :
+  Bachelor (Bac+3 — 3 ans) :
+    • Bachelor Informatique & Développement Logiciel
+    • Bachelor Cybersécurité & Systèmes d'Information
+    • Bachelor Réseaux & Télécommunications
+    • Bachelor Intelligence Artificielle & Data Science
+
+  Master (Bac+5 — 2 ans après le Bachelor) :
+    • Master Expert en Cybersécurité
+    • Master Ingénierie Logicielle
+    • Master Intelligence Artificielle Appliquée
+    • Master Management des Systèmes d'Information
+
+MÉTHODE PÉDAGOGIQUE :
+  - Learning by doing (80% pratique, 20% théorie)
+  - Projets en équipe sur des cas réels
+  - Intervenants professionnels du secteur
+  - Stages obligatoires en entreprise (3 mois Bachelor / 6 mois Master)
+  - Accès à des labs équipés (cybersécurité, IA, cloud)
+
+ÉQUIPE DIRECTION (Bénin) :
+  Dr. Prosper Dossou         — Directeur Académique
+  Ing. Rachid Olaosebikan   — Responsable Cybersécurité
+  Ing. Laure Gbaguidi        — Responsable Informatique & IA
+  Mme Marie-Claire Hounkpatin — Responsable Administrative
+
+ÉQUIPE DIRECTION (Côte d'Ivoire) :
+  Dr. Abdoulaye Coulibaly    — Directeur Académique CI
+  Ing. Brice Kouassi         — Responsable Pédagogique CI
+
+================================================================
+FUTURE STUDIO
+================================================================
+Type              : École de formation aux métiers du numérique créatif
+Niveau            : Formation professionnelle (6 à 18 mois) + Certifications
+Présence          : Cotonou (Bénin)
+
+MISSIONS :
+  - Former aux métiers créatifs et techniques du numérique
+  - Offrir des formations courtes et certifiantes accessibles aux jeunes
+  - Répondre aux besoins des entreprises en talents numériques créatifs
+
+PROGRAMMES PROPOSÉS :
+  • Design Graphique & Identité Visuelle (6 mois)
+  • Motion Design & Animation 2D/3D (8 mois)
+  • Montage Vidéo & Production Audiovisuelle (6 mois)
+  • Community Management & Marketing Digital (6 mois)
+  • Développement Web Front-End (8 mois)
+  • UX/UI Design (6 mois)
+
+ÉQUIPE DIRECTION :
+  Mme Régine Ahouandjinou   — Directrice Future Studio
+  M. Théodore Migan          — Responsable Design & Pédagogie
+
+================================================================
+DIGITAL VALLEY
+================================================================
+Type              : Hub d'innovation, d'incubation et d'accélération de startups
+Présence          : Cotonou (Bénin) — Espace de 500 m²
+
+MISSIONS :
+  - Accueillir, accompagner et accélérer les startups tech africaines
+  - Proposer des espaces de co-working et de prototypage
+  - Organiser des événements innovation (hackathons, pitch days, conférences)
+  - Connecter les entrepreneurs aux investisseurs et aux partenaires
+
+SERVICES PROPOSÉS :
+  • Programme d'incubation (4 mois) : accompagnement intensif pour startups en phase de lancement
+  • Programme d'accélération (3 mois) : pour startups ayant déjà une traction
+  • Espace de co-working (places disponibles à la journée, à la semaine ou au mois)
+  • Salle de formation et de conférence (50 places)
+  • Labs : Fab Lab, Lab IA, Lab Cybersécurité
+  • Accès à des mentors, investisseurs et réseaux de partenaires
+
+ÉVÉNEMENTS RÉCURRENTS :
+  • Demo Day (chaque trimestre) : présentation des startups incubées
+  • Hackathon AEIG (annuel, thème numérique)
+  • Tech Talk mensuel : conférence/débat sur un sujet tech
+
+ÉQUIPE DIRECTION :
+  M. Olivier Zinsou          — Directeur Digital Valley
+  Mme Nadège Kpossou         — Responsable Innovation & Programmes
+
+================================================================
+AFRIKEDUTECH
+================================================================
+Type              : Plateforme EdTech de formation en ligne
+Présence          : 100% en ligne (accessible depuis toute l'Afrique)
+URL               : www.afrikedutech.com
+
+MISSIONS :
+  - Démocratiser l'accès à la formation numérique de qualité en Afrique
+  - Proposer des cours en ligne (MOOC et SPOC) en français et en anglais
+  - Certifier les apprenants à l'issue des formations
+  - Développer des partenariats avec des entreprises pour des formations sur mesure
+
+OFFRES DISPONIBLES :
+  • Cours gratuits (sensibilisation numérique, bases de l'informatique)
+  • Cours certifiants payants :
+    - Développement Web (HTML, CSS, JS, Python, PHP)
+    - Cybersécurité pour débutants et intermédiaires
+    - Data Science & Machine Learning
+    - Bureautique avancée (Excel, Google Workspace)
+    - Digital Marketing
+    - Gestion de projet agile
+  • Formations B2B sur mesure (pour entreprises et institutions)
+  • Bootcamps intensifs en ligne (2-4 semaines)
+
+CHIFFRES CLÉS :
+  - +5 000 inscrits sur la plateforme
+  - 40+ cours disponibles
+  - 12 formateurs actifs
+  - Disponible 24h/24 depuis n'importe quel appareil
+
+ÉQUIPE DIRECTION :
+  Mme Salimata Koné          — Directrice AfrikEduTech
+  M. Ibrahim Diarra           — Responsable Contenu Pédagogique
+
+================================================================
+PIE — PÔLE INNOVATION ET ENTREPRENEURIAT
+================================================================
+Type              : Pôle dédié à l'entrepreneuriat et à l'innovation interne
+Présence          : Cotonou (Bénin) — rattaché au Digital Valley
+
+MISSIONS :
+  - Encourager l'esprit entrepreneurial au sein des apprenants et collaborateurs AEIG
+  - Accompagner les porteurs de projets innovants de l'idéation au lancement
+  - Organiser des programmes de sensibilisation à l'entrepreneuriat
+  - Gérer les appels à projets et concours d'innovation du groupe
+
+PROGRAMMES PROPOSÉS :
+  • "StartIdea" : Atelier d'idéation (1 journée, ouvert à tous)
+  • "LaunchPad" : Programme d'accompagnement pré-incubation (6 semaines)
+  • "AEIG Pitch Challenge" : Concours annuel de pitching pour les étudiants EPITECH
+  • Mentorat entrepreneurial (sessions individuelles sur demande)
+
+ÉQUIPE DIRECTION :
+  M. Yannick Agbodra         — Directeur PIE
+
+================================================================
+TAKABYTES
+================================================================
+Type              : Média tech communautaire
+Présence          : Online (Bénin, CI, Afrique)
+Formats           : Articles, vidéos, podcasts, newsletters, posts réseaux sociaux
+
+MISSIONS :
+  - Informer la communauté africaine des actus tech, startups et opportunités numériques
+  - Créer du contenu éducatif et inspirant autour du numérique en Afrique
+  - Valoriser les talents et innovateurs africains
+  - Servir de vitrine et d'ambassadeur pour la marque AEIG
+
+CONTENUS PRODUITS :
+  • Articles de blog (3/semaine minimum)
+  • Podcast "TakaBytes" (1 épisode/semaine, chaque mercredi)
+  • Vidéos YouTube (1/semaine)
+  • Newsletter hebdomadaire (chaque lundi matin)
+  • Posts quotidiens sur les réseaux sociaux (Instagram, TikTok, Facebook, LinkedIn)
+  • Interviews exclusives de personnalités tech africaines
+
+ÉQUIPE :
+  Mme Christelle Ade         — Community Manager & Responsable TakaBytes
+  M. Roméo Aziaba            — Responsable Contenu & Rédacteur en Chef
+
+================================================================
