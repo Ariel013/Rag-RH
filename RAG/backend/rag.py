@@ -20,7 +20,7 @@ from openai import AsyncOpenAI
 from .vector_store import VectorStore
 
 EMBED_MODEL         = "paraphrase-multilingual-MiniLM-L12-v2"
-RELEVANCE_THRESHOLD = 0.25
+RELEVANCE_THRESHOLD = 0.15
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
 OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "llama3.2")
@@ -58,7 +58,7 @@ class RAGPipeline:
 
     # ── Recherche ──────────────────────────────────────────────────────────
 
-    async def search(self, query: str, n_results: int = 5) -> list[dict]:
+    async def search(self, query: str, n_results: int = 8) -> list[dict]:
         embs    = await self.embed_texts([query])
         results = self.vector_store.search(embs[0], n_results)
         return [r for r in results if r["score"] >= RELEVANCE_THRESHOLD]
@@ -72,15 +72,15 @@ class RAGPipeline:
     ) -> AsyncGenerator[str, None]:
 
         # 1. Contexte documentaire
-        results = await self.search(question, n_results=5)
+        results = await self.search(question, n_results=8)
 
         if results:
             context = "\n\n---\n\n".join(
                 f"[{r['metadata'].get('title', 'Document')}]\n{r['content']}"
-                for r in results[:4]
+                for r in results[:6]
             )
             sources, seen = [], set()
-            for r in results[:3]:
+            for r in results[:5]:
                 t = r["metadata"].get("title", "Document")
                 if t not in seen:
                     seen.add(t)
@@ -93,23 +93,25 @@ class RAGPipeline:
             context = "Aucun document pertinent trouvé dans la base de connaissances."
 
         # 2. Prompt système
-        system = f"""Tu es un assistant RH virtuel professionnel et bienveillant. \
-Tu aides les employés à trouver des informations sur les politiques internes, \
-les avantages sociaux, les congés et les procédures administratives.
+        system = f"""Tu es l'assistant RH virtuel du groupe AEIG (African Education and Innovation Group). \
+Tu aides les collaborateurs du groupe à trouver des informations sur l'organisation, \
+les personnes, les procédures internes, les congés, la paie et la vie au sein du groupe.
 
 Règles :
 - Réponds TOUJOURS en français.
 - Sois BREF et PRÉCIS : donne l'essentiel en 2 à 4 phrases ou une courte liste à puces (•).
-- Après ta réponse, pose UNE seule question courte pour savoir si la personne souhaite plus de détails sur un point précis.
-- Si le contexte documentaire contient la réponse, base-toi dessus en priorité.
-- Si des informations ont été fournies par l'utilisateur dans la conversation, utilise-les.
-- Si tu ne trouves pas la réponse dans les documents ni dans la conversation : dis-le honnêtement \
-en une phrase, puis invite l'utilisateur à te donner plus de contexte ou de détails \
-(ex : "Pouvez-vous m'en dire plus ? Avec ces précisions, je pourrai mieux vous orienter."). \
-Ne renvoie vers rh@entreprise.com qu'en tout dernier recours.
+- Le contexte documentaire ci-dessous contient les informations officielles d'AEIG. \
+  Utilise-le en priorité absolue pour répondre. Si la réponse y est, donne-la directement \
+  sans dire "d'après le contexte" — réponds simplement comme si tu connaissais l'information.
+- Si le contexte contient une réponse partielle, donne ce que tu as trouvé.
+- Si des informations ont été fournies par l'utilisateur dans la conversation, utilise-les aussi.
+- Si tu ne trouves vraiment pas la réponse : dis-le honnêtement en une phrase, \
+  puis invite l'utilisateur à contacter la RH : jb.koffi@aeig.africa (Bénin) \
+  ou cynthia.toure@aeig.africa (CI).
 - N'invente jamais d'informations.
+- Après ta réponse, pose UNE seule question courte si c'est pertinent.
 
---- Contexte documentaire ---
+--- Contexte documentaire AEIG ---
 {context}
 ---"""
 

@@ -44,11 +44,13 @@ def extract_text(path: str) -> str:
 
 # ─── Chunker ────────────────────────────────────────────────────────────────
 
-def chunk_text(text: str, chunk_size: int = 600, overlap: int = 80) -> list[str]:
+def chunk_text(text: str, chunk_size: int = 1000, overlap: int = 150) -> list[str]:
     """
     Découpe le texte en chunks en respectant les frontières de paragraphes.
     Ajoute un overlap entre chunks consécutifs pour préserver le contexte.
     """
+    # Suppression des lignes de décoration (===, ---, *** seuls sur une ligne)
+    text = re.sub(r"^[ \t]*[=\-\*]{3,}[ \t]*$", "", text, flags=re.MULTILINE)
     # Normalisation
     text = re.sub(r"\n{3,}", "\n\n", text)
     text = re.sub(r"[ \t]{2,}", " ", text)
