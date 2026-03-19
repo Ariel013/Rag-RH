@@ -1,0 +1,25 @@
+body { font-family: 'Manrope', sans-serif; font-size: 14px; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.tab-content { display: none; }
+.tab-content.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+#messages-container { scrollbar-width: thin; scrollbar-color: #c1c9d2 transparent; }
+#messages-container::-webkit-scrollbar { width: 4px; }
+#messages-container::-webkit-scrollbar-thumb { background: #c1c9d2; border-radius: 4px; }
+#conversations-list { scrollbar-width: thin; scrollbar-color: #c1c9d2 transparent; }
+.typing-dot { animation: bounce 1.2s infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+.source-chip { transition: all .15s; }
+.source-chip:hover { transform: translateY(-1px); }
+.bot-message { animation: fadeInUp .25s ease; }
+@keyframes fadeInUp { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+.upload-zone.dragover { border-color: #1F485E; background: #e8f0f4; }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+pre { white-space: pre-wrap; word-break: break-word; }
+code { background: rgba(0,0,0,0.06); padding: 1px 4px; border-radius: 4px; font-size: 0.85em; }
+#sidebar { transition: opacity 0.18s, transform 0.18s; transform-origin: top left; }
+#sidebar.sidebar-closed { opacity: 0; transform: scale(0.93) translateY(-6px); pointer-events: none; }
+#login-modal { transition: opacity 0.18s; }
+#login-modal.hidden { opacity: 0; pointer-events: none; }
