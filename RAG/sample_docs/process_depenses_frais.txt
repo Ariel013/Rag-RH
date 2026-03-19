@@ -1,0 +1,151 @@
+================================================================
+AFRICAN EDUCATION AND INNOVATION GROUP (AEIG)
+PROCESS — INITIER DES DÉPENSES & REMBOURSEMENTS
+================================================================
+
+Ce document décrit le processus à suivre pour toute dépense professionnelle,
+note de frais ou remboursement chez AEIG.
+
+================================================================
+TYPES DE DÉPENSES
+================================================================
+
+TYPE 1 — DÉPENSE PRÉVISIBLE (Budget validé)
+  Ex : achat de matériel, logiciel, fournitures de bureau
+  Processus : Demande de bon de commande AVANT l'achat
+  Délai     : Validation sous 48h ouvrables
+
+TYPE 2 — DÉPENSE IMPRÉVUE / NOTE DE FRAIS
+  Ex : frais de transport professionnel, repas client, matériel urgent
+  Processus : Déclaration POST-dépense avec justificatifs
+  Délai     : Remboursement sous 5 jours ouvrables après validation
+
+TYPE 3 — AVANCE SUR FRAIS DE MISSION
+  Ex : déplacement prévu à l'avance (voyage, formation, conférence)
+  Processus : Demande d'avance AVANT le déplacement
+  Délai     : Versement sous 48h ouvrables après validation
+
+================================================================
+PROCESSUS — BON DE COMMANDE (ACHAT PRÉVU)
+================================================================
+
+ÉTAPE 1 : Soumettre la demande
+  → Aller sur helpdesk.aeig.africa
+  → Catégorie : "Finance & Administration" > "Demande de bon de commande"
+  → Remplir :
+    - Description précise de l'achat
+    - Quantité et prix unitaire
+    - Fournisseur identifié (avec devis si disponible)
+    - Justification de la nécessité
+    - Imputé sur quel budget/entité
+
+ÉTAPE 2 : Validation
+  - Le manager valide la demande (sous 24h)
+  - Le RAF valide (sous 24h)
+  - Si montant > 100 000 FCFA : validation supplémentaire du Directeur Financier
+  - Si montant > 500 000 FCFA : validation du CEO
+
+ÉTAPE 3 : Achat
+  - Une fois le bon de commande émis, procéder à l'achat
+  - Conserver TOUTES les factures originales
+
+ÉTAPE 4 : Clôture
+  - Transmettre les factures originales au RAF sous 5 jours
+
+================================================================
+PROCESSUS — NOTE DE FRAIS (DÉPENSE DÉJÀ EFFECTUÉE)
+================================================================
+
+ÉTAPE 1 : Rassembler les justificatifs
+  Justificatifs acceptés :
+  ✓ Facture originale avec mention du fournisseur, date, montant et TVA
+  ✓ Reçu de carte bancaire ou reçu de caisse
+  ✓ Photo claire du reçu si original perdu (dans la limite de 10 000 FCFA)
+  ✗ Reçus illisibles ou incomplets non acceptés
+
+ÉTAPE 2 : Soumettre la note de frais
+  → helpdesk.aeig.africa > "Finance" > "Note de frais / Remboursement"
+  → Remplir le formulaire :
+    - Date de la dépense
+    - Nature de la dépense (transport, repas, hébergement, etc.)
+    - Montant en FCFA
+    - Justification professionnelle
+    - Photo/scan des justificatifs joints
+
+ÉTAPE 3 : Validation
+  - Le manager valide (sous 48h)
+  - Le RAF valide et programme le remboursement (sous 3 jours)
+
+ÉTAPE 4 : Remboursement
+  Remboursement par virement bancaire sur le compte déclaré à la RH
+  Délai total : 5 jours ouvrables après validation complète
+
+================================================================
+PROCESSUS — AVANCE SUR FRAIS DE MISSION
+================================================================
+
+ÉTAPE 1 : Soumettre la demande d'avance
+  → helpdesk.aeig.africa > "Finance" > "Avance sur frais de mission"
+  → Inclure :
+    - Dates du déplacement
+    - Destination et objet de la mission
+    - Estimation détaillée des frais (transport, hébergement, repas, etc.)
+    - Programme ou convocation si disponible
+
+ÉTAPE 2 : Validation
+  - Manager → RAF → Directeur Financier (si >200 000 FCFA)
+
+ÉTAPE 3 : Versement
+  Virement bancaire ou remise d'espèces (selon montant et urgence)
+  Délai : 48h ouvrables après validation
+
+ÉTAPE 4 : Justification post-mission
+  OBLIGATOIRE dans les 5 jours ouvrables après le retour de mission :
+  - Transmettre tous les justificatifs originaux
+  - Si dépenses réelles < avance : rembourser le solde au RAF
+  - Si dépenses réelles > avance : soumettre une note de frais complémentaire
+
+================================================================
+PLAFONDS ET RÈGLES DE REMBOURSEMENT
+================================================================
+
+TRANSPORT
+  Taxi / VTC               : Remboursé sur justificatif, trajet professionnel uniquement
+  Transport en commun      : Remboursé sur déclaration (ticket si disponible)
+  Véhicule personnel       : 150 FCFA / km (sur justificatif kilométrique signé)
+  Billet avion / bus longue distance : Remboursé sur facture originale
+
+HÉBERGEMENT (mission hors-ville)
+  Bénin (hors Cotonou)     : Plafond 30 000 FCFA / nuit
+  Côte d'Ivoire             : Plafond 40 000 FCFA / nuit
+  International             : Plafond défini au cas par cas par la Direction
+
+REPAS
+  Repas client / partenaire : Remboursé sur facture, avec liste des convives
+  Repas de déplacement      : Plafond 5 000 FCFA / repas
+  Pas de remboursement pour les repas du quotidien (Cotonou ou Abidjan)
+
+COMMUNICATION
+  Frais téléphoniques pro  : Sur justificatif, dans la limite de 5 000 FCFA / mois
+  Internet nomade           : Sur justificatif, pour mission uniquement
+
+================================================================
+CE QUI N'EST PAS REMBOURSABLE
+================================================================
+✗ Dépenses personnelles (courses, loisirs, repas quotidiens hors mission)
+✗ Amendes de stationnement ou infractions routières
+✗ Consommation d'alcool (même lors d'un repas client)
+✗ Achats non préalablement autorisés dépassant 50 000 FCFA
+✗ Justificatifs illisibles ou sans mention du montant
+✗ Dépenses antérieures à plus de 30 jours sans accord préalable
+
+================================================================
+CONTACTS FINANCE
+================================================================
+RAF Bénin       : M. Yves Gangbazo — yves.gangbazo@aeig.africa — +229 01 97 03 00 00
+RAF CI          : Mme Mariam Ouédraogo — mariam.ouedraogo@aeig.africa
+Comptable       : M. Rodrigue Tokpon — rodrigue.tokpon@aeig.africa
+Helpdesk        : helpdesk.aeig.africa
+
+Toute question sur vos notes de frais → helpdesk.aeig.africa ou yves.gangbazo@aeig.africa
+================================================================
