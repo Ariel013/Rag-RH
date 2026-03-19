@@ -1,0 +1,225 @@
+================================================================
+AFRICAN EDUCATION AND INNOVATION GROUP (AEIG)
+FAQ RH — QUESTIONS FRÉQUENTES DES COLLABORATEURS
+================================================================
+Ce document répond aux questions les plus posées à la RH.
+Mis à jour par : Mme Aminata Sawadogo (DRH Groupe) — Mars 2025
+================================================================
+
+================================================================
+SECTION 1 — VIE QUOTIDIENNE & ORGANISATION
+================================================================
+
+Q : À quelle heure commencent et se terminent les journées de travail chez AEIG ?
+R : Les horaires standard sont 8h00 – 17h00, du lundi au vendredi, avec une pause déjeuner de 12h30 à 13h30.
+
+Q : Que faire si j'arrive en retard ?
+R : Prévenir son manager PAR MESSAGE avant l'heure de prise de poste. Trois retards non justifiés dans un même mois constituent un manquement disciplinaire.
+
+Q : Est-ce que le télétravail est possible chez AEIG ?
+R : Oui, pour les postes éligibles (hors enseignants, accueil, Moyens Généraux), dans la limite de 2 jours par semaine. Il faut une validation écrite du manager via le Helpdesk (helpdesk.aeig.africa > "Demande de télétravail").
+
+Q : Comment signaler mon absence le matin ?
+R : Trois actions simultanées obligatoires : (1) message sur Slack dans le canal du pôle, (2) appel ou SMS au manager, (3) email à la RH (jb.koffi@aeig.africa pour Bénin / cynthia.toure@aeig.africa pour CI).
+
+Q : Je suis malade, que dois-je faire ?
+R : Prévenir la RH et son manager dès le matin (voir ci-dessus). Si l'absence dure plus de 2 jours, un certificat médical est obligatoire. La demande d'absence maladie se fait ensuite via le Helpdesk > "Congés & Absences".
+
+Q : Comment savoir qui est mon manager direct ?
+R : Ton manager direct est indiqué dans ton contrat de travail. En cas de doute, contacter la RH : jb.koffi@aeig.africa.
+
+Q : Comment réserver une salle de réunion ?
+R : Via le Helpdesk : helpdesk.aeig.africa > "Moyens Généraux" > "Réservation de salle de réunion".
+
+Q : Comment réserver un véhicule de service (PiXpress) ?
+R : Via le Helpdesk : helpdesk.aeig.africa > "Moyens Généraux" > "Booker PiXpress". Délai minimum : 24h avant. Contacter M. Moussa Traoré pour les urgences.
+
+Q : Où se trouve le bureau de la RH ?
+R : Bénin (Cotonou) : Immeuble AEIG, Haie Vive — Bureau RH au 2ème étage. CI (Abidjan) : Immeuble Digital Hub, Cocody Riviera 3 — Bureau RH au 4ème étage.
+
+================================================================
+SECTION 2 — CONGÉS ET ABSENCES
+================================================================
+
+Q : Combien de jours de congés payés ai-je par an ?
+R : 25 jours ouvrables par an, soit 2,08 jours par mois travaillé.
+
+Q : Comment poser des congés ?
+R : Soumettre la demande via helpdesk.aeig.africa > "Congés & Absences" > "Demande de congé". Délai minimum : 2 semaines avant la date souhaitée. Le manager valide sous 48h, puis la RH valide sous 48h supplémentaires.
+
+Q : Combien de temps avant dois-je demander mes congés ?
+R : Au minimum 2 semaines avant la date de départ souhaitée. En cas d'urgence familiale, contacter directement la RH.
+
+Q : Combien de jours pour mon mariage ?
+R : 5 jours ouvrables pour le mariage du collaborateur lui-même.
+
+Q : Combien de jours pour la naissance de mon enfant ?
+R : 3 jours ouvrables pour le père. La mère bénéficie du congé maternité légal (14 semaines).
+
+Q : Combien de jours en cas de décès d'un proche ?
+R : Décès du conjoint ou d'un enfant : 5 jours. Décès d'un parent (père/mère) : 3 jours. Décès d'un frère ou d'une sœur : 2 jours.
+
+Q : Puis-je reporter mes congés non pris sur l'année suivante ?
+R : Non. Les congés non pris au 31 décembre ne sont pas reportés. Planifiez vos congés à l'avance et consultez votre solde régulièrement sur le Helpdesk.
+
+Q : Comment consulter mon solde de congés ?
+R : Sur le Helpdesk (helpdesk.aeig.africa) > tableau de bord > "Mon solde de congés". Visible à tout moment.
+
+Q : Qu'est-ce qui se passe si je pose des congés sans validation ?
+R : L'absence sera considérée comme injustifiée et entraînera une retenue sur salaire et un avertissement écrit.
+
+================================================================
+SECTION 3 — RÉMUNÉRATION ET PAIE
+================================================================
+
+Q : Quand est versé le salaire chez AEIG ?
+R : Le 25 de chaque mois. Si le 25 est un jour férié ou un weekend, le virement est effectué le dernier jour ouvrable avant le 25.
+
+Q : Comment recevoir mon bulletin de salaire ?
+R : Il est envoyé par email (à votre adresse @aeig.africa) par le RAF chaque mois, le jour du virement.
+
+Q : Est-ce qu'il y a un 13ème mois chez AEIG ?
+R : Oui. Le 13ème mois est versé en décembre, avec le salaire de décembre. Il est éligible à partir de 6 mois d'ancienneté (proratisé en dessous de 12 mois).
+
+Q : Puis-je demander une avance sur salaire ?
+R : Oui, une fois par trimestre, dans la limite de 50% du salaire mensuel net. Demande via helpdesk.aeig.africa > "Finance" > "Demande d'avance sur salaire". Traitement sous 48h.
+
+Q : Quand est-ce que mon salaire peut être révisé ?
+R : Une fois par an, lors des entretiens annuels d'évaluation (décembre-janvier). La révision est effective au 1er février de l'année suivante.
+
+Q : À qui s'adresser pour une erreur sur ma paie ?
+R : Contacter le RAF de votre site : M. Yves Gangbazo (Bénin) — yves.gangbazo@aeig.africa / Mme Mariam Ouédraogo (CI) — mariam.ouedraogo@aeig.africa.
+
+Q : Comment se faire rembourser des frais professionnels ?
+R : Via le Helpdesk > "Finance" > "Note de frais / Remboursement". Joindre les justificatifs. Remboursement sous 5 jours ouvrables après validation.
+
+================================================================
+SECTION 4 — MUTUELLE ET COUVERTURE SOCIALE
+================================================================
+
+Q : Est-ce que AEIG offre une mutuelle santé ?
+R : Oui. AEIG prend en charge 60% de la cotisation mensuelle. Le collaborateur paie 40%.
+
+Q : Que couvre la mutuelle AEIG ?
+R : Consultations (généraliste et spécialistes), hospitalisation (80%), médicaments sur ordonnance (60%), soins dentaires (plafond 50 000 FCFA/an), lunettes (plafond 30 000 FCFA/an).
+
+Q : Comment s'inscrire à la mutuelle ?
+R : Remplir le formulaire disponible sur le Helpdesk > "RH" > "Inscription à la mutuelle". Délai limite : dans les 30 jours suivant l'embauche.
+
+Q : Quel est le prestataire de la mutuelle ?
+R : SANLAM Bénin pour le site de Cotonou. CNPS CI pour le site d'Abidjan.
+
+Q : Est-ce que je suis affilié à la CNSS ?
+R : Oui, automatiquement dès le premier jour de votre contrat. La déclaration est faite par la RH. Toute question CNSS → jb.koffi@aeig.africa.
+
+================================================================
+SECTION 5 — RECRUTEMENT ET MOBILITÉ
+================================================================
+
+Q : Comment postuler à un poste interne chez AEIG ?
+R : Informer son manager en One-on-One, puis envoyer un email à aminata.sawadogo@aeig.africa avec son CV mis à jour et une lettre de motivation. Éligible après 12 mois en CDI.
+
+Q : Comment recommander quelqu'un pour un poste ouvert ?
+R : Envoyer le CV du candidat à career@aeig.africa avec l'objet "Cooptation — [Nom du poste]". Si le candidat est recruté et passe sa période d'essai, vous recevez une prime de cooptation de 50 000 FCFA.
+
+Q : Où sont publiées les offres d'emploi internes ?
+R : Sur Slack (canal #rh-infos), par email via le Flash RH mensuel, et sur le Helpdesk.
+
+Q : Quel est le processus de recrutement externe chez AEIG ?
+R : Présélection RH → Entretien RH (30 min) → Entretien technique/métier avec le manager → Entretien final DRH/Direction (selon le poste) → Proposition d'embauche. Délai moyen : 3 à 6 semaines.
+
+================================================================
+SECTION 6 — FORMATION ET DÉVELOPPEMENT
+================================================================
+
+Q : Est-ce que AEIG finance des formations ?
+R : Oui. Chaque collaborateur bénéficie d'au moins 1 formation externe par an, prise en charge à 100% par AEIG. La demande se fait via le Helpdesk > "RH" > "Demande de formation".
+
+Q : Comment accéder aux formations en ligne d'AfrikEduTech ?
+R : Aller sur www.afrikedutech.com, cliquer sur "Se connecter", puis utiliser son email @aeig.africa. L'accès est gratuit et illimité pour tous les collaborateurs.
+
+Q : Qu'est-ce que le PDI (Plan de Développement Individuel) ?
+R : C'est un document co-construit avec son manager lors de l'entretien annuel. Il liste les objectifs de l'année, les formations prévues et les projets de carrière. Il est revu trimestriellement.
+
+Q : Quand ont lieu les entretiens annuels ?
+R : En décembre-janvier. Les convocations sont envoyées par la RH début décembre. Les PDI doivent être finalisés et transmis à la RH avant fin janvier.
+
+Q : AEIG finance-t-il les certifications professionnelles (CISSP, PMP, AWS, etc.) ?
+R : Oui, sur demande validée par le manager et la RH. Demande via helpdesk.aeig.africa > "RH" > "Demande de formation". Préciser le nom de la certification et son coût.
+
+================================================================
+SECTION 7 — OUTILS ET ACCÈS INFORMATIQUES
+================================================================
+
+Q : Quels sont les outils officiels de communication interne chez AEIG ?
+R : Slack (aeig.slack.com) pour la messagerie quotidienne, Google Meet pour les visioconférences, et le Helpdesk (helpdesk.aeig.africa) pour toutes les demandes formelles. WhatsApp est un canal secondaire et informel.
+
+Q : Qu'est-ce que le Helpdesk AEIG ?
+R : C'est la plateforme centrale pour toutes les demandes formelles internes : congés, remboursements, matériel, réservations, support IT, etc. Accessible sur helpdesk.aeig.africa avec son email @aeig.africa.
+
+Q : J'ai un problème avec mon ordinateur, que faire ?
+R : Créer un ticket sur helpdesk.aeig.africa > "Support IT" > "Panne ou dysfonctionnement matériel". En cas d'urgence, contacter M. Moussa Traoré sur Slack (@moussa.traore) ou au +229 01 97 02 00 02.
+
+Q : J'ai perdu l'accès à mon email / mes outils, que faire ?
+R : Contacter immédiatement le support IT via le Helpdesk > "Support IT" > "Problème d'accès". En urgence : support-it@aeig.africa.
+
+Q : Comment obtenir l'accès à Canva Pro pour un visuel ?
+R : Contacter M. Arnold Gnanhui (Graphiste Groupe) : arnold.gnanhui@aeig.africa ou via Slack (@arnold.gnanhui). Ou créer un ticket Helpdesk > "Communication" > "Accès Canva".
+
+================================================================
+SECTION 8 — RITUELS ET VIE D'ÉQUIPE
+================================================================
+
+Q : Quels sont les rituels obligatoires chez AEIG ?
+R : Le Daily Stand-Up (chaque matin, 9h00, 15 min), le Weekly Meeting (chaque lundi, 9h-10h), le One-on-One avec son manager (créneau hebdomadaire fixe) et le TRIBE FRIDAY (chaque vendredi, 16h30-17h30). L'ALL-HANDS mensuel (1er jeudi du mois, 10h-12h) est également obligatoire.
+
+Q : Qu'est-ce que le TRIBE FRIDAY ?
+R : Un rituel hebdomadaire du vendredi (16h30-17h30) qui réunit TOUS les collaborateurs du groupe (Bénin + CI en visio). On y célèbre les victoires de la semaine, partage une "Pépite de la semaine" et renforce le lien entre équipes. Animé en rotation par les différents pôles selon un planning établi par la RH.
+
+Q : Qu'est-ce que l'ALL-HANDS ?
+R : La réunion générale mensuelle du groupe, le 1er jeudi de chaque mois (10h-12h). Le CEO ou la DGA prend la parole, chaque entité présente son bilan du mois, et un collaborateur est mis à l'honneur ("Star du Mois"). Obligatoire pour tous.
+
+Q : Qu'est-ce que "We Are Tribe" (WAT) ?
+R : C'est le nom donné à la communauté interne AEIG. "Tribe" représente l'esprit collectif et solidaire du groupe. Le cri de ralliement interne est "TRIBE ! WE ARE TRIBE !".
+
+Q : Qu'est-ce que la "Star du Mois" ?
+R : Un collaborateur est mis à l'honneur chaque mois lors de l'ALL-HANDS pour son travail exceptionnel. Les nominations sont proposées par les managers avant le 25 du mois (email à jb.koffi@aeig.africa). La décision finale est prise par la DRH et la Direction.
+
+Q : Qu'est-ce que le Team Building trimestriel ?
+R : Un événement organisé par la RH chaque trimestre pour renforcer la cohésion d'équipe. Format surprise (escape game, sortie, tournoi sportif, etc.). Participation obligatoire pour tous les collaborateurs sauf cas de force majeure.
+
+================================================================
+SECTION 9 — DÉPARTS ET FIN DE CONTRAT
+================================================================
+
+Q : Quel est le préavis si je démissionne ?
+R : 1 mois pour les employés non-cadres. 3 mois pour les cadres. La démission doit être notifiée par écrit (email à aminata.sawadogo@aeig.africa avec copie à jb.koffi@aeig.africa).
+
+Q : Que dois-je rendre avant de partir ?
+R : L'ordinateur portable, le badge d'accès, et tout document ou matériel appartenant à AEIG. La restitution est formalisée par un bon signé avec les Moyens Généraux et la RH.
+
+Q : Quand reçoit-on le solde de tout compte ?
+R : Dans les 15 jours suivant la fin du contrat. Il inclut les salaires dus, les congés non pris, le 13ème mois proratisé et les indemnités légales le cas échéant.
+
+================================================================
+SECTION 10 — SIGNALEMENT ET SITUATIONS DIFFICILES
+================================================================
+
+Q : Je vis une situation difficile au travail (conflit, harcèlement, mal-être). Qui contacter ?
+R : Contacter directement et en toute confidentialité la DRH, Mme Aminata Sawadogo : aminata.sawadogo@aeig.africa / +229 01 97 02 00 00. Un formulaire de signalement anonyme est aussi disponible sur le Helpdesk > "Signalement confidentiel".
+
+Q : Puis-je faire un signalement anonyme ?
+R : Oui. Le formulaire anonyme est disponible sur helpdesk.aeig.africa > "Signalement confidentiel". AEIG s'engage à traiter tout signalement avec sérieux et aucune représaille ne sera tolérée.
+
+Q : J'ai eu un accident au travail, que faire ?
+R : Prévenir immédiatement son manager et la RH. La RH se charge de la déclaration auprès de la CNSS dans les 24h. Ne pas attendre pour déclarer un accident.
+
+================================================================
+CONTACTS RAPIDES RH
+================================================================
+DRH Groupe      : Mme Aminata Sawadogo — aminata.sawadogo@aeig.africa — +229 01 97 02 00 00
+RH Bénin        : M. Jean-Baptiste Koffi — jb.koffi@aeig.africa — +229 01 97 02 00 01
+RH CI           : Mme Cynthia Touré — cynthia.toure@aeig.africa — +225 07 00 00 01 00
+Assistante RH   : Mme Esther Gbadamassi — esther.gbadamassi@aeig.africa
+Helpdesk        : helpdesk.aeig.africa
+================================================================

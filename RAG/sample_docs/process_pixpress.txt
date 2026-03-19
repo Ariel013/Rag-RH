@@ -1,0 +1,141 @@
+================================================================
+AFRICAN EDUCATION AND INNOVATION GROUP (AEIG)
+PROCESS — BOOKER PiXpress
+SERVICE DE VÉHICULE PARTAGÉ DU GROUPE
+================================================================
+
+QU'EST-CE QUE PiXpress ?
+--------------------------
+PiXpress est le service de véhicule de service interne du groupe AEIG.
+Il permet aux collaborateurs de réserver un véhicule avec chauffeur pour
+leurs déplacements professionnels au Bénin et en Côte d'Ivoire.
+
+L'objectif est de faciliter les déplacements liés aux activités du groupe
+(réunions externes, livraisons, visites partenaires, déplacements officiels)
+sans recourir à un taxi privé non planifié.
+
+================================================================
+FLOTTE PiXpress DISPONIBLE
+================================================================
+
+BÉNIN (Cotonou)
+  Véhicule 1  : Toyota Hilux Blanc — Immat. BR 1234 BJ
+                Capacité : 5 personnes + coffre
+  Véhicule 2  : Suzuki APV Blanche — Immat. BR 5678 BJ
+                Capacité : 8 personnes (minivan)
+  Véhicule 3  : Toyota Corolla Bleue — Immat. BR 9101 BJ
+                Capacité : 4 personnes (petits déplacements)
+
+CÔTE D'IVOIRE (Abidjan)
+  Véhicule 4  : Toyota Avensis Blanche — Immat. CI 2233 CI AB
+                Capacité : 5 personnes
+
+CHAUFFEURS ATTITRÉS
+  Bénin       : M. Gontran Ahoumenou — +229 97 00 00 55
+                M. Théophile Dossa   — +229 97 00 00 56
+  CI          : M. Kouadio Amani     — +225 07 00 00 77 77
+
+================================================================
+QUI PEUT UTILISER PiXpress ?
+================================================================
+  ✓ Tous les collaborateurs permanents du groupe pour des missions professionnelles
+  ✓ Les managers pour les déplacements de leurs équipes (avec accord RH)
+  ✓ Les visiteurs officiels / partenaires sur demande de la Direction
+
+  ✗ Utilisation personnelle strictement interdite
+  ✗ Les stagiaires ne peuvent utiliser PiXpress que si accompagnés d'un collaborateur permanent
+
+================================================================
+COMMENT RÉSERVER PiXpress ? (Côte d'Ivoire)
+================================================================
+
+RÉSERVATION STANDARD (délai minimum : 24h avant)
+
+ÉTAPE 1 : Créer une demande sur le Helpdesk
+  → helpdesk.aeig.africa > "Moyens Généraux" > "Booker PiXpress CI"
+  → Remplir le formulaire :
+    - Date et heure de départ souhaitées
+    - Lieu de départ et destination
+    - Nombre de passagers
+    - Objet du déplacement (réunion, livraison, etc.)
+    - Nom du demandeur et du pôle
+
+ÉTAPE 2 : Confirmation
+  M. Moussa Traoré (Resp. Moyens Généraux) traite la demande sous 4h ouvrables.
+  Une confirmation est envoyée par email avec le numéro de ticket et les détails.
+
+ÉTAPE 3 : Le jour du départ
+  Présenter votre numéro de ticket au chauffeur
+  Le chauffeur vous confirme les détails du trajet
+
+================================================================
+COMMENT RÉSERVER PiXpress ? (Bénin)
+================================================================
+
+RÉSERVATION STANDARD (délai minimum : 24h avant)
+
+ÉTAPE 1 : Soumettre via le Helpdesk
+  → helpdesk.aeig.africa > "Moyens Généraux" > "Booker PiXpress Bénin"
+  → Même informations requises que pour la CI
+
+ÉTAPE 2 : Confirmation
+  Confirmation envoyée sous 4h ouvrables
+
+RÉSERVATION URGENTE (moins de 24h)
+  Contacter directement :
+  → M. Moussa Traoré sur Slack (@moussa.traore) ou par téléphone : +229 01 97 02 00 02
+  → Justifier l'urgence — les réservations urgentes sont traitées selon disponibilité
+
+================================================================
+RÈGLES D'UTILISATION DU VÉHICULE
+================================================================
+
+AVANT LE DÉPART
+  ✓ Vérifier l'état du véhicule avec le chauffeur (carrosserie, intérieur)
+  ✓ Signaler immédiatement tout dommage constaté avant la prise en charge
+  ✓ Confirmer la destination et le trajet avec le chauffeur
+
+PENDANT LE TRAJET
+  ✓ Attacher sa ceinture de sécurité obligatoirement
+  ✓ Interdiction de fumer dans le véhicule
+  ✓ Traiter le chauffeur avec respect
+  ✓ Tout incident de route doit être immédiatement signalé à M. Moussa Traoré
+  ✗ Ne pas demander au chauffeur de faire des arrêts personnels non prévus
+  ✗ Ne pas consommer d'aliments avec risque de tacher l'habitacle sans l'accord du chauffeur
+
+APRÈS LE TRAJET
+  ✓ Laisser le véhicule dans un état propre
+  ✓ Signaler tout incident ou problème constaté via le Helpdesk
+
+================================================================
+ANNULATION DE RÉSERVATION
+================================================================
+  Annulation > 4h avant le départ : Annulation via le Helpdesk, ticket mis à "Annulé"
+  Annulation < 4h avant le départ : Contacter directement M. Moussa Traoré + annuler sur Helpdesk
+  3 annulations de dernière minute dans le mois : suspension temporaire d'accès à PiXpress
+
+================================================================
+CAS SPÉCIAUX
+================================================================
+
+DÉPLACEMENT HORS COTONOU / HORS ABIDJAN
+  Toute mission de plus de 50 km nécessite une validation de la DRH en plus du MG.
+  Frais de carburant additionnels pris en charge par AEIG (bon de carburant remis au chauffeur).
+
+DÉPLACEMENT LE WEEKEND OU HORS HORAIRES
+  Déplacements possibles le weekend sur validation expresse du CEO ou de la DGA.
+  Majoration de 25% des frais pour les déplacements après 20h ou avant 7h.
+
+================================================================
+CONTACTS PiXpress
+================================================================
+Responsable Moyens Généraux : M. Moussa Traoré
+                               moussa.traore@aeig.africa
+                               +229 01 97 02 00 02 (Bénin)
+
+Helpdesk                    : helpdesk.aeig.africa
+Chauffeurs Bénin            : M. Gontran Ahoumenou — +229 97 00 00 55
+                              M. Théophile Dossa   — +229 97 00 00 56
+Chauffeur CI                : M. Kouadio Amani     — +225 07 00 00 77 77
+
+================================================================

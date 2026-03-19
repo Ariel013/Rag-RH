@@ -1,0 +1,298 @@
+================================================================
+AFRICAN EDUCATION AND INNOVATION GROUP (AEIG)
+GLOSSAIRE — TERMES, ACRONYMES ET EXPRESSIONS INTERNES
+================================================================
+Ce glossaire aide les collaborateurs à comprendre le vocabulaire
+utilisé au quotidien chez AEIG.
+================================================================
+
+================================================================
+ACRONYMES DU GROUPE
+================================================================
+
+AEIG
+  African Education and Innovation Group.
+  Nom complet du groupe éducatif et technologique panafricain basé à Cotonou.
+
+WAT (We Are Tribe)
+  L'identité communautaire interne du groupe. "We Are Tribe" représente
+  l'esprit collectif et solidaire des collaborateurs AEIG. Le cri de
+  ralliement interne est : "TRIBE ! WE ARE TRIBE !".
+  Le label WAT désigne également la section RH/collaborateurs de l'intranet AEIG.
+
+DRH
+  Directrice/Directeur des Ressources Humaines.
+  Chez AEIG : Mme Aminata Sawadogo — aminata.sawadogo@aeig.africa
+
+DGA
+  Directrice/Directeur Général(e) Adjoint(e).
+  Chez AEIG : Mme Fatoumata Diallo — fatoumata.diallo@aeig.africa
+
+RAF
+  Responsable Administratif et Financier.
+  Gère la comptabilité, les dépenses et la paie d'un site.
+  RAF Bénin : M. Yves Gangbazo. RAF CI : Mme Mariam Ouédraogo.
+
+RH
+  Ressources Humaines. Le pôle RH chez AEIG gère l'ensemble des
+  collaborateurs de tous les sites et entités du groupe.
+
+MG
+  Moyens Généraux. Désigne le pôle chargé de la logistique, du matériel,
+  des locaux et des véhicules. Responsable : M. Moussa Traoré.
+
+PDI
+  Plan de Développement Individuel. Document co-construit chaque année
+  entre un collaborateur et son manager lors de l'entretien annuel.
+  Il liste les objectifs, formations et projets de carrière pour l'année.
+
+OKR
+  Objectives and Key Results. Méthode de gestion par objectifs utilisée
+  chez AEIG. Chaque pôle définit des objectifs ambitieux (Objectives) et
+  des indicateurs clés de résultat (Key Results) par trimestre.
+  Revus lors du Bilan OKR trimestriel.
+
+CDD
+  Contrat à Durée Déterminée. Contrat de travail à terme fixe.
+  Chez AEIG, durée standard : 6 mois, renouvelable 1 fois.
+
+CDI
+  Contrat à Durée Indéterminée. Contrat permanent. Standard pour les
+  postes fixes chez AEIG. Période d'essai : 3 mois.
+
+CNSS
+  Caisse Nationale de Sécurité Sociale (Bénin).
+  Organisme de protection sociale auquel tous les collaborateurs
+  béninois sont affiliés dès le 1er jour du contrat.
+
+CNPS
+  Caisse Nationale de Prévoyance Sociale (Côte d'Ivoire).
+  Équivalent ivoirien de la CNSS.
+
+PIE
+  Pôle Innovation et Entrepreneuriat. Entité du groupe AEIG dédiée
+  à l'accompagnement des porteurs de projets entrepreneuriaux.
+  Directeur : M. Yannick Agbodra.
+
+GWS (Google Workspace)
+  Suite d'outils professionnels Google utilisés chez AEIG : Gmail,
+  Google Drive, Google Docs, Sheets, Slides, Meet, Agenda.
+  Tous les collaborateurs ont un compte @aeig.africa.
+
+SSO
+  Single Sign-On. Authentification unique utilisée pour accéder
+  à plusieurs outils avec un seul identifiant Google @aeig.africa.
+  Ex : le Helpdesk, AfrikEduTech, Notion s'ouvrent avec le SSO Google.
+
+2FA / MFA
+  Authentification à deux facteurs / Authentification multi-facteurs.
+  Obligatoire chez AEIG pour Gmail, Slack, Helpdesk et AfrikEduTech.
+
+IT
+  Information Technology. Désigne le support informatique et les
+  systèmes d'information. Les problèmes IT se déclarent via le Helpdesk.
+
+RSSI
+  Responsable de la Sécurité des Systèmes d'Information.
+  Expert en cybersécurité chargé de la protection du SI d'une organisation.
+
+CI
+  Abréviation utilisée en interne pour "Côte d'Ivoire" ou le site d'Abidjan.
+  Ex : "RH CI" = Responsable RH Côte d'Ivoire.
+
+================================================================
+TERMES RH COURANTS
+================================================================
+
+Buddy (Parrain/Marraine)
+  Collaborateur expérimenté désigné par la RH pour accompagner un
+  nouvel arrivant pendant ses 30 premiers jours d'intégration.
+  Le Buddy n'est pas le manager. Il joue un rôle de guide et de soutien.
+
+Onboarding
+  Processus d'intégration d'un nouveau collaborateur. Chez AEIG,
+  il dure 30 jours et comprend : accueil, remise du matériel, formation
+  aux outils, rencontres avec les équipes, suivi RH.
+
+Offboarding
+  Processus de départ d'un collaborateur (démission, fin de CDD, etc.).
+  Comprend : restitution du matériel, solde de tout compte, clôture des
+  accès numériques.
+
+One-on-One (1:1)
+  Réunion individuelle hebdomadaire entre un collaborateur et son manager.
+  Durée : 30 minutes. Format : bien-être, avancement des objectifs, feedbacks.
+
+Daily Stand-Up
+  Réunion quotidienne d'équipe de 15 minutes maximum.
+  Format : Qu'est-ce que j'ai fait hier ? Que fais-je aujourd'hui ? Ai-je des blocages ?
+  Se tient chaque matin à 9h00 dans chaque pôle.
+
+Weekly Meeting
+  Réunion hebdomadaire de pôle, chaque lundi de 9h00 à 10h00.
+  Animée par le manager. Revue des objectifs, priorités de la semaine,
+  points bloquants, annonces.
+
+TRIBE FRIDAY
+  Rituel hebdomadaire du vendredi (16h30-17h30) qui réunit tous les
+  collaborateurs du groupe (Bénin + CI en visio). Célébration des victoires,
+  partage d'une "Pépite de la semaine", sondage humeur.
+
+ALL-HANDS
+  Réunion générale mensuelle de tout le groupe. 1er jeudi de chaque mois,
+  10h00 à 12h00. Animée par le CEO ou la DGA. Bilan du mois, annonces,
+  remise de la "Star du Mois".
+
+Star du Mois
+  Reconnaissance mensuelle attribuée à un collaborateur qui s'est
+  particulièrement illustré dans son travail. Annoncée lors de l'ALL-HANDS.
+  Les nominations se font avant le 25 du mois auprès de la RH.
+
+Bilan OKR / OKR Review
+  Réunion trimestrielle de la Direction et des managers pour évaluer
+  l'atteinte des objectifs (OKRs) du trimestre écoulé et définir les
+  objectifs du trimestre suivant.
+
+Entretien annuel
+  Évaluation individuelle annuelle conduite par le manager en
+  décembre-janvier. Dure environ 2 heures. Couvre : bilan de l'année,
+  compétences, PDI, discussion carrière.
+
+Période d'essai
+  Phase initiale d'un contrat pendant laquelle chacune des parties peut
+  rompre le contrat sans formalités particulières.
+  Chez AEIG : 3 mois pour les CDI (renouvelable 1 fois pour les cadres).
+
+Préavis
+  Délai à respecter avant de quitter son poste après une démission.
+  Chez AEIG : 1 mois (non-cadres) ou 3 mois (cadres).
+
+Solde de tout compte
+  Document récapitulatif remis au collaborateur à son départ, listant
+  tous les éléments financiers dus (salaires, congés, primes, indemnités).
+  Délai : 15 jours après la fin du contrat.
+
+Cooptation
+  Recommandation d'un candidat pour un poste ouvert par un collaborateur
+  en poste. Si le candidat est recruté et passe sa période d'essai,
+  le collaborateur reçoit 50 000 FCFA de prime.
+
+Per diem
+  Indemnité journalière versée lors d'une mission à l'extérieur pour
+  couvrir les repas et dépenses quotidiennes.
+  Chez AEIG : 15 000 FCFA/jour (Afrique de l'Ouest).
+
+Flash RH
+  Newsletter mensuelle interne rédigée par la RH, diffusée à tous les
+  collaborateurs. Contient : actualités RH, nouveaux arrivants, Stars du
+  Mois, rappels, agenda RH, chiffres RH, formation du mois.
+
+================================================================
+TERMES LIÉS AUX OUTILS
+================================================================
+
+Helpdesk
+  Plateforme en ligne pour toutes les demandes formelles internes :
+  congés, remboursements, matériel, réservations, IT, etc.
+  URL : helpdesk.aeig.africa — Accès via Google SSO @aeig.africa.
+
+Ticket (ou Ticket Helpdesk)
+  Demande créée sur le Helpdesk. Chaque ticket reçoit un numéro unique
+  (ex : AEIG-2025-0342) et un statut : Ouvert → En cours → Résolu → Fermé.
+
+Slack
+  Outil de messagerie interne instantanée utilisé au quotidien par
+  toutes les équipes AEIG. Workspace : aeig.slack.com.
+
+Notion
+  Outil de documentation et de gestion de projets. Utilisé pour les
+  wikis internes, comptes-rendus de réunions, suivi des OKRs, base de
+  connaissances. Accessible avec le compte Google @aeig.africa.
+
+Google Drive
+  Espace de stockage en ligne partagé du groupe. Organisation par dossiers :
+  COM & MARKETING, ADMIN & RH, FINANCE, ACADEMIC, PROJETS, TUTORIELS.
+
+AfrikEduTech
+  Plateforme e-learning du groupe AEIG (www.afrikedutech.com).
+  Accès gratuit et illimité pour tous les collaborateurs avec leur email @aeig.africa.
+  Propose 40+ cours en informatique, cybersécurité, marketing, bureautique.
+
+Canva Pro
+  Outil de création visuelle en ligne. Version Pro gérée par M. Arnold Gnanhui.
+  Les templates de la charte graphique AEIG sont disponibles dedans.
+
+================================================================
+TERMES LIÉS AUX ENTITÉS DU GROUPE
+================================================================
+
+EPITECH Afrique
+  École supérieure d'informatique et de cybersécurité du groupe AEIG.
+  Propose des Bachelors (Bac+3) et des Masters (Bac+5).
+  Présente à Cotonou (Bénin) et Abidjan (Côte d'Ivoire).
+
+Future Studio
+  École de formation aux métiers du numérique créatif (design, vidéo,
+  community management, UX/UI) rattachée au groupe AEIG.
+  Basée à Cotonou.
+
+Digital Valley
+  Hub d'innovation, d'incubation et d'accélération de startups tech africaines.
+  Propose des espaces de co-working, des programmes d'incubation/accélération
+  et organise des événements innovation (hackathons, Demo Days).
+
+AfrikEduTech
+  Entité EdTech du groupe proposant une plateforme de formation en ligne.
+  Accessible depuis toute l'Afrique. Directrice : Mme Salimata Koné.
+
+PIE
+  Pôle Innovation et Entrepreneuriat. Accompagne les porteurs de projets
+  de l'idéation au lancement. Directeur : M. Yannick Agbodra.
+
+TakaBytes
+  Média tech communautaire du groupe AEIG (articles, podcast, vidéos, newsletter).
+  Responsable : Mme Christelle Ade. Resp. Contenu : M. Roméo Aziaba.
+
+PiXpress
+  Service de véhicule partagé interne du groupe AEIG.
+  Réservation via le Helpdesk. Géré par M. Moussa Traoré.
+
+Career Center
+  Pôle dédié à l'employabilité des apprenants et diplômés AEIG.
+  Gère les stages, l'emploi, le coaching carrière et les relations entreprises.
+  Responsable : M. Armel Dossou-Yovo.
+
+================================================================
+EXPRESSIONS CULTURELLES AEIG
+================================================================
+
+"We Are Tribe" / "TRIBE !"
+  Cri de ralliement interne. Exprime l'appartenance et la solidarité
+  au sein de la communauté AEIG. Utilisé lors des rituels, événements,
+  et moments de cohésion.
+
+"La Pépite de la semaine"
+  Information utile, ressource ou bonne pratique partagée lors du
+  TRIBE FRIDAY. Peut être une astuce tech, une info RH, un article, etc.
+
+Ubuntu
+  Philosophie africaine signifiant "Je suis parce que nous sommes".
+  L'une des 7 valeurs fondamentales d'AEIG. Représente l'esprit collectif
+  et la solidarité qui doivent animer toutes les interactions au sein du groupe.
+
+"Educating Africa, One Byte at a Time"
+  Devise officielle du groupe AEIG.
+
+"We Build Digital Africa"
+  Slogan interne du groupe, exprimant la mission collective des collaborateurs.
+
+Météo de l'équipe
+  Expression utilisée en Weekly Meeting pour désigner le tour de table
+  où chaque collaborateur exprime comment il se sent en une image météo
+  (ensoleillé, nuageux, orageux...). Permet de prendre le pouls de l'équipe.
+
+================================================================
+Document maintenu par : Pôle RH & Moyens Généraux AEIG
+Contact               : esther.gbadamassi@aeig.africa
+Dernière mise à jour  : Mars 2025
+================================================================

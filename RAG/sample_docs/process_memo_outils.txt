@@ -1,0 +1,157 @@
+================================================================
+AFRICAN EDUCATION AND INNOVATION GROUP (AEIG)
+PROCESS — MÉMO OUTILS NUMÉRIQUES DU GROUPE
+================================================================
+
+Ce document liste tous les outils digitaux utilisés chez AEIG,
+leur usage, leur accès et les contacts en cas de problème.
+
+================================================================
+VUE D'ENSEMBLE DES OUTILS
+================================================================
+
+CATÉGORIE         | OUTIL              | USAGE PRINCIPAL
+------------------+--------------------+----------------------------------------
+Communication     | Slack              | Messagerie interne quotidienne
+Communication     | Google Meet        | Visioconférences et réunions distantes
+Communication     | WhatsApp           | Communication informelle / proximité
+Email             | Gmail (GWS)        | Emails professionnels
+Documentation     | Notion             | Wikis, compte-rendus, OKRs, projets
+Fichiers          | Google Drive       | Stockage et partage de fichiers
+Bureautique       | Google Docs/Sheets | Documents et tableurs collaboratifs
+Présentation      | Google Slides/Canva| Présentations et visuels
+Demandes internes | Helpdesk AEIG      | Toutes les demandes formelles
+Formation         | AfrikEduTech       | Formation en ligne (e-learning)
+Design            | Canva Pro          | Créations visuelles
+Design avancé     | Figma              | Design UI/UX (pôle Com & Dev)
+Design avancé     | Adobe Suite        | Graphisme pro (pôle Com)
+Gestion projets   | Trello             | Tableaux Kanban (certains pôles)
+Veille            | Google Alerts      | Veille thématique
+
+================================================================
+DÉTAIL PAR OUTIL
+================================================================
+
+1. SLACK — aeig.slack.com
+   Usage            : Communication interne quotidienne
+   Accès            : Invitation envoyée par la RH à l'arrivée
+   App mobile       : Oui (iOS et Android)
+   Notif. hors bur. : Désactiver entre 21h et 7h (paramètres > Notifications)
+   Problème d'accès : support-it@aeig.africa ou Helpdesk > IT
+
+   Règles d'usage :
+   - Répondre dans les fils (Thread) pour ne pas noyer les canaux
+   - Signaler vos absences dans #rh-infos
+   - Mentionner @here uniquement pour les annonces importantes d'un canal
+   - Mentionner @channel uniquement pour les urgences absolues
+
+2. GOOGLE WORKSPACE (Gmail + Agenda + Drive + Meet + Docs)
+   Usage            : Emails, calendriers, stockage, visio, documents
+   Accès            : Compte créé par l'IT à l'arrivée (format : prenom.nom@aeig.africa)
+   Formation        : Module disponible sur AfrikEduTech
+   Problème d'accès : Helpdesk > IT > "Problème d'accès Google"
+
+   Organisation Google Drive :
+   📁 AEIG GROUPE
+      📁 COM & MARKETING (visuels, logos, chartes)
+      📁 ADMIN & RH (contrats, modèles, Flash RH)
+      📁 FINANCE (rapports, budgets)
+      📁 ACADEMIC (programmes, ressources pédagogiques)
+      📁 PROJETS (par projet actif)
+      📁 TUTORIELS (guides d'utilisation des outils)
+
+   Règle : Ne jamais partager un document Google Drive en "Accès public sur internet".
+   Toujours choisir "AEIG uniquement" ou partage nominatif.
+
+3. NOTION — workspace.notion.so/aeig
+   Usage            : Documentation, base de connaissances, compte-rendus, OKRs
+   Accès            : Invitation envoyée par le manager ou la RH
+   Organisation :
+     - Home AEIG (page d'accueil groupe)
+     - Par pôle (chaque pôle a son espace)
+     - People Book (annuaire)
+     - OKRs (par trimestre)
+     - Rituels (compte-rendus des meetings)
+   Tutoriel         : Google Drive > "Tutoriels" > "Notion — Guide débutant"
+   Problème d'accès : Helpdesk > IT
+
+4. HELPDESK AEIG — helpdesk.aeig.africa
+   Usage            : TOUTES les demandes formelles internes
+   Accès            : Google SSO avec votre email @aeig.africa
+   Mobile           : Site responsive, accessible depuis un smartphone
+   Guide complet    : Voir document "Process — Helpdesk AEIG"
+
+5. AFRIKEDUTECH — www.afrikedutech.com
+   Usage            : Formation continue en ligne pour tous les collaborateurs
+   Accès            : Gratuit avec votre email @aeig.africa
+   Connexion        : "Se connecter" > Google > sélectionner votre compte @aeig.africa
+   Catalogue        : 40+ cours disponibles en informatique, cybersécurité, marketing, gestion
+   Certificats      : Téléchargeables et partageables sur LinkedIn après completion
+
+6. CANVA PRO — canva.com
+   Usage            : Création de visuels, présentations, affiches
+   Accès            : Compte Pro partagé géré par M. Arnold Gnanhui (Graphiste)
+   Pour accès       : arnold.gnanhui@aeig.africa ou Helpdesk > "Accès Canva"
+   Templates AEIG   : Disponibles dans le compte Canva Pro sous "Modèles AEIG"
+   Règle            : Utiliser uniquement les templates respectant la charte graphique AEIG
+
+7. GOOGLE MEET
+   Usage            : Réunions et visioconférences internes et externes
+   Accès            : Via Google Agenda ou meet.google.com
+   Créer un lien    : Dans Google Agenda, créer un événement > ajouter Google Meet
+   Qualité vidéo    : Recommandé : 10 Mbps minimum pour une bonne expérience
+
+8. TRELLO (certains pôles)
+   Usage            : Tableaux Kanban pour la gestion de tâches visuelles
+   Accès            : Demander l'invitation à votre manager
+   Pôles utilisant Trello : Communication & Marketing, Career Center
+
+================================================================
+RÈGLES DE SÉCURITÉ INFORMATIQUE
+================================================================
+Ces règles sont obligatoires pour tous les collaborateurs AEIG.
+
+MOTS DE PASSE
+  ✓ Longueur minimale : 12 caractères
+  ✓ Combinaison : majuscules + minuscules + chiffres + caractères spéciaux
+  ✓ Mot de passe unique par service (ne jamais réutiliser)
+  ✓ Changer son mot de passe Google Workspace tous les 6 mois
+  ✓ Utiliser un gestionnaire de mots de passe (Bitwarden recommandé)
+  ✗ Ne jamais partager son mot de passe, même avec l'IT
+
+AUTHENTIFICATION DOUBLE FACTEUR (2FA)
+  Obligatoire pour : Gmail, Slack, Helpdesk, AfrikEduTech
+  Comment activer : Paramètres du compte > Sécurité > Vérification en 2 étapes
+
+DONNÉES SENSIBLES
+  ✓ Ne jamais envoyer des données personnelles par email non chiffré
+  ✓ Ne jamais stocker de données sensibles sur un disque personnel
+  ✓ Signaler immédiatement tout incident de sécurité au Helpdesk
+
+PHISHING ET ARNAQUE
+  ✓ Ne jamais cliquer sur un lien suspect reçu par email
+  ✓ Vérifier l'expéditeur avant d'ouvrir une pièce jointe
+  ✓ En cas de doute, transférer l'email à support-it@aeig.africa
+
+TÉLÉTRAVAIL
+  ✓ Utiliser uniquement le VPN AEIG pour accéder aux ressources internes sensibles
+  ✓ Se connecter uniquement depuis un réseau sécurisé (pas de WiFi public non sécurisé)
+
+================================================================
+COMMENT OBTENIR DE L'AIDE AVEC LES OUTILS ?
+================================================================
+Support IT              : helpdesk.aeig.africa > "Support IT"
+Support urgent          : Slack #helpdesk-it ou M. Moussa Traoré
+Tutoriels               : Google Drive AEIG > "Tutoriels"
+Formation outils        : AfrikEduTech > Catalogue > "Outils numériques"
+
+================================================================
+CONTACTS OUTILS
+================================================================
+Responsable IT & MG     : M. Moussa Traoré — moussa.traore@aeig.africa — +229 01 97 02 00 02
+Support IT              : support-it@aeig.africa
+Canva / Graphisme       : M. Arnold Gnanhui — arnold.gnanhui@aeig.africa
+Notion / Documentation  : Mme Esther Gbadamassi — esther.gbadamassi@aeig.africa
+AfrikEduTech            : M. Ibrahim Diarra — ibrahim.diarra@afrikedutech.com
+Helpdesk                : helpdesk.aeig.africa
+================================================================

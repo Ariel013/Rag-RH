@@ -1,226 +1,181 @@
-Mémo sur les rituels d'entreprise AEIG
+================================================================
+AFRICAN EDUCATION AND INNOVATION GROUP (AEIG)
+RITUELS D'ENTREPRISE — MÉMO GÉNÉRAL
+================================================================
 
-Ce mémo a pour but de présenter ce qu'est un rituel d'entreprise, son utilité, mais aussi les rituels au sein de AEIG.
+QU'EST-CE QU'UN RITUEL D'ENTREPRISE ?
+---------------------------------------
+Un rituel d'entreprise est une pratique régulière, collective et intentionnelle qui renforce la cohésion d'équipe, aligne les collaborateurs sur les objectifs du groupe et entretient la culture d'entreprise AEIG.
 
-Qu'est-ce qu'un rituel d'entreprise ?
+Chez AEIG, les rituels ne sont pas optionnels. Ils sont le ciment de notre vie collective et le garant de notre performance organisationnelle.
 
-Un rituel d'entreprise, c'est toute pratique collective répétée dans le temps, porteuse de sens, qui façonne les comportements, renforce la cohésion, la culture d'entreprise et soutient la dynamique humaine.
+POURQUOI LES RITUELS SONT-ILS IMPORTANTS ?
+--------------------------------------------
+✔ Ils créent du lien entre les équipes de différents pôles
+✔ Ils permettent un alignement régulier sur la stratégie du groupe
+✔ Ils favorisent la circulation de l'information en temps réel
+✔ Ils renforcent le sentiment d'appartenance à la TRIBE AEIG
+✔ Ils permettent d'identifier rapidement les blocages et de les résoudre
+✔ Ils cultivent une culture de la transparence et de la responsabilité
 
-Au-delà du geste en lui-même, le rituel crée un cadre partagé, installe des repères et donne du sens aux moments vécus ensemble. Il ne se limite pas aux moments de Team Building : il peut être un geste symbolique, une pratique organisationnelle ou un temps fort.
+LES CATÉGORIES DE RITUELS AEIG
+--------------------------------
 
-Objectifs des rituels d'entreprise
+A. RITUELS QUOTIDIENS
+---------------------
+1. DAILY STAND-UP (par pôle)
+   Fréquence : Chaque matin, du lundi au vendredi
+   Durée     : 15 minutes maximum (time-boxé)
+   Format    : Chaque membre répond à 3 questions :
+               - Qu'est-ce que j'ai fait hier ?
+               - Qu'est-ce que je fais aujourd'hui ?
+               - Ai-je des blocages ?
+   Canal     : Présentiel ou Google Meet selon le pôle
+   Animateur : Le manager ou le team lead du pôle
+   Note      : Pas de téléphone, pas de débat — réponses brèves et précises.
 
-- Renforcer la cohésion : créer un sentiment d'appartenance et rapprocher les collaborateurs.
-- Valoriser les collaborateurs : reconnaître publiquement leurs efforts, leurs succès ou leur ancienneté.
-- Ancrer les valeurs de l'entreprise : incarner concrètement la culture et les principes de l'organisation.
-- Structurer la vie collective : donner un rythme, des repères et des moments attendus dans l'année.
-- Favoriser la communication : fluidifier les échanges, partager les informations et donner de la visibilité aux projets.
-- Stimuler l'engagement : renforcer la motivation et l'investissement des collaborateurs dans les objectifs communs.
-- Accompagner les transitions : marquer les étapes importantes (arrivées, départs, promotions, succès projets).
-- Créer des moments de respiration : offrir des temps collectifs qui sortent du quotidien et réduisent le stress.
-- Renforcer la reconnaissance : instaurer une culture de feedback positif et de gratitude régulière.
-- Fidéliser les talents : donner envie de rester en créant une expérience employé riche en symboles et en émotions.
+2. MESSAGE DE DÉBUT DE JOURNÉE
+   Fréquence : Chaque matin (9h00)
+   Canal     : WhatsApp / Slack du pôle
+   Contenu   : "Bonjour à tous ! Belle journée productive 🚀" ou équivalent
+   Objectif  : Créer une connexion matinale positive
 
-Les différents types de rituels
+B. RITUELS HEBDOMADAIRES
+------------------------
+3. WEEKLY MEETING (Réunion hebdomadaire de pôle)
+   Fréquence : Chaque lundi, 9h00 – 10h00
+   Durée     : 60 minutes
+   Format    :
+     - Tour de table : météo de l'équipe (comment se sent-on ?)
+     - Revue des objectifs de la semaine précédente
+     - Définition des priorités de la semaine
+     - Points bloquants et solutions
+     - Annonces importantes
+   Animateur : Manager du pôle
+   Support   : Tableau de bord partagé (Google Sheets / Notion)
 
-Les rituels sont catégorisés en fonction du statut de chaque personne au sein de l'entreprise.
+4. ONE-ON-ONE (Manager – Collaborateur)
+   Fréquence : 1 fois par semaine (créneau fixe au choix)
+   Durée     : 30 minutes
+   Format    :
+     - Comment vas-tu (perso + pro) ?
+     - Avancée sur les objectifs
+     - Feedbacks croisés (manager → collaborateur et inversement)
+     - Plan pour la semaine suivante
+   Animateur : Le manager (écoute active, non directif)
 
----
+5. TRIBE FRIDAY (Vendredi de la Tribu)
+   Fréquence : Chaque vendredi, 16h30 – 17h30
+   Participants : Tous les collaborateurs du groupe (Bénin + CI en visio)
+   Format    :
+     - Victoires de la semaine (célébration collective)
+     - "La Pépite de la semaine" (une info tech ou une bonne pratique à partager)
+     - Sondage humeur de l'équipe
+     - Annonces diverses
+   Animateur : Rotation entre les pôles (planning établi par la RH)
 
-RITUELS NEWCOMERS
-Ces rituels sont destinés à tous les nouveaux collaborateurs au sein de AEIG.
+C. RITUELS MENSUELS
+--------------------
+6. AEIG ALL-HANDS (Réunion générale mensuelle)
+   Fréquence : 1er jeudi de chaque mois, 10h00 – 12h00
+   Participants : Tous les collaborateurs du groupe
+   Format    :
+     - Mot du CEO ou de la DGA
+     - Bilan du mois écoulé (par entité)
+     - Chiffres clés du groupe
+     - Projets à venir / annonces stratégiques
+     - Questions / Réponses ouvertes
+     - Reconnaissance : "La Star du Mois" (collaborateur du mois)
+   Support   : Présentation Canva / Google Slides partagée
+   Canal     : Salle principale Cotonou + Google Meet pour CI
 
-Rituel : Journée Newcomers (Strat 2030 ; Connais-tu AEIG ; Déjeuner d'onboarding)
-- Lead : Emmanuel
-- Lieu : Bâtiment Pi
-- Fréquence : 5 fois par an
-- Utilité : Favoriser l'intégration des nouveaux collaborateurs
-- Impact : Intégration fluide des nouveaux collaborateurs
-- Format : Présentation ; Déjeuner hors du bâtiment
-- Durée : Une journée
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
+7. RÉUNION RH MENSUELLE
+   Fréquence : 2ème mercredi de chaque mois, 14h00 – 15h30
+   Participants : DRH + RH Bénin + RH CI
+   Format    :
+     - Suivi des recrutements en cours
+     - Gestion des absences et congés
+     - Retours des one-on-one (signaux faibles)
+     - Points disciplinaires si nécessaire
+     - Projets RH du mois (formations, team buildings, etc.)
 
-Rituel : Connais-tu EPITECH ?
-- Lead : Emmanuel
-- Lieu : Bâtiment Pi
-- Fréquence : 5 fois par an
-- Utilité : Permettre aux nouveaux collaborateurs de connaître la marque EPITECH
-- Impact : Faire de chaque nouveau collaborateur un ambassadeur de la marque EPITECH
-- Format : Piscine ; KAHOOT
-- Durée : Une journée
-- Livrables : Résultat de la piscine
-- Type d'invitation : Invitation Outlook
+8. RAF MENSUEL (Réunion Finances)
+   Fréquence : Dernier vendredi du mois, 14h00 – 15h00
+   Participants : RAF + Directeur Financier + Directeurs d'entités
+   Format    :
+     - Revue des dépenses du mois
+     - Suivi du budget par entité
+     - Validation des notes de frais en suspens
+     - Projection du mois suivant
 
----
+D. RITUELS TRIMESTRIELS
+------------------------
+9. BILAN TRIMESTRIEL (OKR Review)
+   Fréquence : 1 fois par trimestre (fin mars, fin juin, fin septembre, fin décembre)
+   Participants : Direction + Managers
+   Durée     : Demi-journée (9h00 – 13h00)
+   Format    :
+     - Revue des OKRs (Objectives & Key Results) de chaque pôle
+     - Ce qui a marché / ce qui n'a pas marché
+     - Ajustements stratégiques
+     - Définition des OKRs du trimestre suivant
 
-RITUELS ALL STAFF
-Il s'agit des rituels concernant tout le staff, qu'il s'agisse de membres permanents ou temporaires (stagiaires, alternants master). Sont toutefois exclus de cette catégorie, sauf cas particuliers, les membres de projets temporaires et les consultants externes.
+10. TEAM BUILDING TRIMESTRIEL
+    Fréquence : 1 fois par trimestre
+    Participants : Tous les collaborateurs
+    Format    : Activité surprise organisée par la RH et la Communication
+    Objectif  : Renforcement de la cohésion d'équipe hors du cadre de travail
+    Exemples d'activités : escape game, sortie plage, tournoi sportif, soirée jeux, challenge culinaire
 
-Rituel : Fridays (Happy Friday / Mini Super Friday / Super Friday)
-- Lead : Carmen
-- Lieu : Bâtiment Pi / Hors du bâtiment
-- Fréquence : Happy Friday : Mensuelle | Mini Super Friday : Semestrielle | Super Friday : Annuelle
-- Utilité : Créer un sentiment d'appartenance au groupe AEIG
-- Impact : Renforce la culture d'entreprise et la solidarité inter-équipes
-- Format : Atelier collaboratif
-- Durée : Happy Friday : 2h | Mini Super Friday : Une journée | Super Friday : Deux jours
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook + Email
+E. RITUELS ANNUELS
+-------------------
+11. BILAN ANNUEL & FEUILLE DE ROUTE
+    Fréquence : Décembre de chaque année
+    Participants : Direction + Managers + représentants de chaque pôle
+    Format    :
+      - Bilan de l'année écoulée (résultats vs objectifs)
+      - Leçons apprises
+      - Présentation de la stratégie N+1
+      - OKRs annuels
 
-Rituel : CLAP AND CAP (Enfants du personnel)
-- Lead : Carmen
-- Lieu : Hors du bâtiment
-- Fréquence : Annuelle
-- Utilité : Favoriser l'équilibre vie professionnelle et personnelle
-- Impact : Renforce l'engagement et le bien-être au travail
-- Format : Moment convivial
-- Durée : 4h
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook + Email + Whatsapp
+12. ENTRETIENS ANNUELS D'ÉVALUATION
+    Fréquence : Chaque année en décembre-janvier
+    Participants : Tous les collaborateurs (avec leur manager)
+    Format    :
+      - Évaluation des performances sur l'année
+      - Évaluation des compétences
+      - Plan de développement individuel (PDI)
+      - Discussion sur l'évolution de carrière
+    Support   : Formulaire d'évaluation RH (disponible sur le Helpdesk RH)
 
-Rituel : Enquête d'engagement
-- Lead : Carmen
-- Lieu : Bâtiment Pi
-- Fréquence : Annuelle
-- Utilité : Évaluer la satisfaction et l'engagement des collaborateurs
-- Impact : Permet de mettre en place des actions ciblées pour améliorer l'expérience collaborateur
-- Format : Formulaire anonyme
-- Durée : 2 semaines
-- Livrables : Résultat de l'enquête
-- Type d'invitation : Email
+13. CÉRÉMONIE AEIG AWARDS
+    Fréquence : 1 fois par an (mois de janvier pour l'année précédente)
+    Participants : Tous les collaborateurs + invités
+    Format    : Soirée de gala avec remise de prix
+    Récompenses :
+      - Collaborateur de l'Année
+      - Innovation de l'Année
+      - Équipe de l'Année
+      - Impact Social de l'Année
+      - Prix Spécial Coup de Cœur de la Direction
 
----
+RÈGLES D'OR DES RITUELS AEIG
+------------------------------
+1. La ponctualité est une marque de respect — commencer et finir à l'heure.
+2. La préparation est obligatoire — venir avec ses informations prêtes.
+3. L'écoute active prime sur la prise de parole.
+4. Les décisions prises lors des réunions doivent être actionnées rapidement.
+5. Tout rituel est documenté (compte-rendu dans Notion ou Google Drive).
+6. Les absences doivent être signalées à l'avance au manager concerné.
 
-RITUELS STAFF PERMANENT
-Ces rituels ne concernent que le personnel permanent, c'est-à-dire le personnel ayant un CDD, un CDI ou un contrat de prestation.
+RESPONSABLE DES RITUELS
+------------------------
+La gestion du calendrier et du suivi des rituels est assurée par :
+Mme Aminata Sawadogo — DRH Groupe
+aminata.sawadogo@aeig.africa
 
-Rituel : Séminaire de Direction
-- Lead : Stéphanie
-- Lieu : Bâtiment Pi
-- Fréquence : Biannuelle
-- Utilité : Lancer l'année avec énergie, partage et vision commune
-- Impact : Crée une dynamique collective, favorise l'alignement
-- Format : Session interactive
-- Durée : Une journée
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
+En support :
+M. Jean-Baptiste Koffi — Responsable RH Bénin
+Mme Cynthia Touré — Responsable RH CI
 
-Rituel : Talk de direction et RH + Célébration Réussites Internes + Remerciements publics
-- Lead : Stéphanie
-- Lieu : Bâtiment Pi
-- Fréquence : Bimestrielle
-- Utilité : Partager la vision, les priorités et échanger en direct avec la direction, mettre en lumière les succès collectifs, souligner une action, une attitude ou une contribution notable
-- Impact : Renforce la transparence, la motivation et l'engagement, valorise les efforts, et favorise une Culture du feedback positif et de la reconnaissance quotidienne
-- Format : Session interactive
-- Durée : 2h
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
-
----
-
-RITUELS MANAGERS
-Les rituels managers concernent uniquement les managers et impliquent parfois la direction.
-
-Rituel : Strat annuelle + Organigramme + Budget + Matrice des risques
-- Lead : Stéphanie
-- Lieu : Bâtiment Pi
-- Fréquence : Annuelle
-- Utilité : Construire la vision et les chantiers majeurs de l'année suivante, et la planifier sur les plans organisationnels et financiers
-- Impact : Implication des leaders, vision commune, vision financière et organisationnelle claires
-- Format : Réunion Direction + Managers
-- Durée : 1 à 2 jours
-- Livrables : Document Strat + Organigramme + Budget + Matrice des risques
-- Type d'invitation : Invitation Outlook
-
-Rituel : COMEX
-- Lead : Stéphanie
-- Lieu : Bâtiment Pi
-- Fréquence : Trimestrielle
-- Utilité : Piloter les indicateurs clés et permettre aux managers d'avoir une vision 360
-- Impact : Réactivité, pilotage macro, responsabilisation
-- Format : Réunion Direction + Managers
-- Durée : 2h
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
-
-Rituel : Déjeuner et dîner Direction/Manager
-- Lead : Stéphanie
-- Lieu : Déjeuner : Bâtiment Pi | Dîner : Hors du bâtiment
-- Fréquence : Tri-annuelle
-- Utilité : Créer un espace informel de dialogue stratégique entre la direction et les managers
-- Impact : Aligne les visions, développe la confiance et la transversalité
-- Format : Repas et échange
-- Durée : 3h
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
-
-Rituel : CODEV
-- Lead : Carmen
-- Lieu : Bâtiment Pi
-- Fréquence : Mensuelle
-- Utilité : Résoudre collectivement des problématiques professionnelles
-- Impact : Encourage l'entraide et renforce les soft skills
-- Format : Atelier structuré entre managers
-- Durée : 2h
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
-
----
-
-RITUELS LEADS ET EXPERTS JUNIORS
-Participent à ces rituels, les leads et les Experts Juniors.
-
-Rituel : Talk des Leads et experts juniors
-- Lead : Mireille
-- Lieu : Bâtiment Pi
-- Fréquence : Mensuelle
-- Utilité : Partager les priorités, les challenges et les avancées entre pairs
-- Impact : Renforce la coordination et la transversalité entre services
-- Format : Réunion
-- Durée : 2h
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
-
----
-
-RITUELS MANAGERS ET EXPERTS SÉNIORS
-Ces rituels ne concernent pas que les managers mais aussi les Experts Séniors.
-
-Rituel : Forum des Managers et experts séniors
-- Lead : Mireille
-- Lieu : Hors du bâtiment
-- Fréquence : Tri-Annuelle
-- Utilité : Renforcer le leadership collectif, aligner les pratiques de management
-- Impact : Développement managérial, alignement stratégique et opérationnel
-- Format : Forum / Séminaire
-- Durée : Une journée
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
-
----
-
-RITUELS DIRECTION
-Il s'agit des rituels dont le lead revient aux membres de la direction qui sont également participants au rituel.
-
-Rituel : CODIR
-- Lead : Stéphanie
-- Lieu : Bâtiment Pi
-- Fréquence : Bimestriel
-- Utilité : Prendre des décisions à haut niveau, faire valider des livrables à fort enjeux
-- Impact : Coordination, résolution rapide des blocages
-- Format : Réunion managers stratégiques + Direction
-- Durée : 2h
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
-
-Rituel : AG (Assemblée Générale)
-- Lead : Jaurès
-- Lieu : Bâtiment Pi
-- Fréquence : Annuel
-- Utilité : Bilan financier, CR activités + Chantiers pour année suivante + Décisions à faire voter
-- Impact : Transparence, gouvernance renforcée
-- Format : Assemblée Direction + RAF + Actionnaires
-- Durée : 4h
-- Livrables : N/A
-- Type d'invitation : Invitation Outlook
+================================================================
