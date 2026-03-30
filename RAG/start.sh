@@ -10,7 +10,10 @@ if [ ! -f .env ]; then
 fi
 
 # Charger les variables
-export $(grep -v '^#' .env | grep -v '^$' | xargs 2>/dev/null || true)
+set -a
+# shellcheck source=.env
+source .env 2>/dev/null || true
+set +a
 
 OLLAMA_MODEL="${OLLAMA_MODEL:-llama3.2}"
 OLLAMA_URL="${OLLAMA_BASE_URL:-http://localhost:11434/v1}"

@@ -1,9 +1,10 @@
 // ─── Tab switching ────────────────────────────────────────────────────────
 function switchTab(tab) {
   state.currentTab = tab;
-  ['chat','base','profil'].forEach(t => {
+  ['chat','base','profil','analytics'].forEach(t => {
     const content = document.getElementById('tab-' + t);
     const nav     = document.getElementById('nav-' + t);
+    if (!content || !nav) return;
     if (t === tab) {
       content.classList.add('active');
       nav.classList.remove('text-slate-400', 'dark:text-slate-500');
@@ -14,7 +15,8 @@ function switchTab(tab) {
       nav.classList.add('text-slate-400', 'dark:text-slate-500');
     }
   });
-  if (tab === 'base') loadDocuments();
+  if (tab === 'base')      loadDocuments();
+  if (tab === 'analytics') loadAnalytics();
 }
 
 // ─── Dark mode ────────────────────────────────────────────────────────────

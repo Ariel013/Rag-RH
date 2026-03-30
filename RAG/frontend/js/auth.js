@@ -6,15 +6,27 @@ function checkAdminSession() {
 }
 
 function updateLockIcon() {
-  const lock = document.getElementById('base-lock');
-  if (lock) lock.style.display = state.isAdmin ? 'none' : '';
+  const lock  = document.getElementById('base-lock');
+  const alock = document.getElementById('analytics-lock');
+  if (lock)  lock.style.display  = state.isAdmin ? 'none' : '';
+  if (alock) alock.style.display = state.isAdmin ? 'none' : '';
 }
 
 function openBaseTab() {
   if (state.isAdmin) { switchTab('base'); return; }
+  _pendingAdminTab = 'base';
   document.getElementById('login-modal').classList.remove('hidden');
   setTimeout(() => document.getElementById('login-email').focus(), 50);
 }
+
+function openAnalyticsTab() {
+  if (state.isAdmin) { switchTab('analytics'); return; }
+  _pendingAdminTab = 'analytics';
+  document.getElementById('login-modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('login-email').focus(), 50);
+}
+
+let _pendingAdminTab = 'base';
 
 function closeLoginModal() {
   document.getElementById('login-modal').classList.add('hidden');
@@ -32,7 +44,7 @@ function submitLogin() {
     sessionStorage.setItem(ADMIN_SK, '1');
     updateLockIcon();
     closeLoginModal();
-    switchTab('base');
+    switchTab(_pendingAdminTab || 'base');
   } else {
     err.classList.remove('hidden');
     document.getElementById('login-password').value = '';

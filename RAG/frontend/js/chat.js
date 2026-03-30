@@ -47,7 +47,7 @@ async function sendMessage(question) {
     const resp = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question, history }),
+      body: JSON.stringify({ question, history, conversation_id: state.currentId || '' }),
     });
 
     if (!resp.ok) throw new Error(`Erreur serveur (${resp.status})`);

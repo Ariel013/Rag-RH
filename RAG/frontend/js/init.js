@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
   pollStatus();
   setInterval(pollStatus, 5000);
 
+  // Badge "questions sans réponse" — rafraîchi toutes les 30s
+  refreshUnansweredBadge();
+  setInterval(refreshUnansweredBadge, 30000);
+
   if (localStorage.getItem('dark') === '1') {
     document.documentElement.classList.add('dark');
     document.getElementById('dark-icon').textContent = 'light_mode';

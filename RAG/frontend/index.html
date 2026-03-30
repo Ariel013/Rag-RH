@@ -323,6 +323,58 @@
     </div>
   </div><!-- /tab-profil -->
 
+  <!-- ── ANALYTICS TAB (Admin) ── -->
+  <div id="tab-analytics" class="tab-content overflow-y-auto p-4 gap-4">
+
+    <!-- Admin bar -->
+    <div class="flex items-center justify-between px-1 mb-1">
+      <p class="text-xs font-semibold text-primary flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[14px]">bar_chart</span>
+        Tableau de bord
+      </p>
+      <button onclick="logoutAdmin()"
+        class="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition-colors font-medium">
+        <span class="material-symbols-outlined text-[14px]">logout</span>
+        Déconnexion
+      </button>
+    </div>
+
+    <!-- Sub-tabs -->
+    <div class="flex gap-1 mb-4 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+      <button id="atab-overview" onclick="switchAnalyticsView('overview')"
+        class="flex-1 text-xs font-semibold py-1.5 px-1 rounded-lg transition-colors
+               bg-white dark:bg-slate-700 text-primary shadow-sm">
+        Vue d'ensemble
+      </button>
+      <button id="atab-conversations" onclick="switchAnalyticsView('conversations')"
+        class="flex-1 text-xs font-semibold py-1.5 px-1 rounded-lg transition-colors text-slate-500">
+        Conversations
+      </button>
+      <button id="atab-unanswered" onclick="switchAnalyticsView('unanswered')"
+        class="flex-1 text-xs font-semibold py-1.5 px-1 rounded-lg transition-colors text-slate-500">
+        Sans réponse
+      </button>
+    </div>
+
+    <!-- Overview -->
+    <div id="av-overview">
+      <div id="analytics-overview-content">
+        <div class="text-center py-8 text-slate-400 text-sm">Chargement…</div>
+      </div>
+    </div>
+
+    <!-- Conversations -->
+    <div id="av-conversations" class="hidden">
+      <div id="analytics-conversations-content"></div>
+    </div>
+
+    <!-- Unanswered -->
+    <div id="av-unanswered" class="hidden">
+      <div id="analytics-unanswered-content"></div>
+    </div>
+
+  </div><!-- /tab-analytics -->
+
 </main>
 
 <!-- ═══ BOTTOM NAV ═══ -->
@@ -342,6 +394,18 @@
     class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors">
     <span class="material-symbols-outlined text-[24px]">account_circle</span>
     <span class="text-[10px] font-bold">Profil</span>
+  </button>
+  <button id="nav-analytics" onclick="openAnalyticsTab()"
+    class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors relative">
+    <span class="material-symbols-outlined text-[24px]">bar_chart</span>
+    <span class="text-[10px] font-bold">Stats</span>
+    <span id="analytics-badge"
+      class="hidden absolute -top-0.5 right-0.5 min-w-[16px] h-4 bg-red-500 text-white text-[9px]
+             font-bold rounded-full flex items-center justify-center px-1 leading-none">
+      0
+    </span>
+    <span id="analytics-lock"
+      class="absolute -top-0.5 right-1 material-symbols-outlined text-[12px] text-slate-400">lock</span>
   </button>
 </nav>
 
@@ -405,6 +469,7 @@
 <script src="js/conversations.js"></script>
 <script src="js/chat.js"></script>
 <script src="js/documents.js"></script>
+<script src="js/analytics.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/init.js"></script>
 </body>
