@@ -12,17 +12,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY RAG/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Pré-télécharger le modèle d'embedding pour l'inclure dans l'image
-# (évite un long chargement au 1er démarrage)
-RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')"
-
 # Copier le code applicatif
 COPY RAG/backend/ ./backend/
 COPY RAG/frontend/ ./frontend/
 COPY RAG/sample_docs/ ./sample_docs/
 
-# Créer les répertoires de données (éphémères sur HF Spaces)
-RUN mkdir -p data/chroma_db uploads
+# Créer le répertoire d'uploads (éphémère sur HF Spaces)
+RUN mkdir -p uploads
 
 # HF Spaces impose le port 7860
 EXPOSE 7860
