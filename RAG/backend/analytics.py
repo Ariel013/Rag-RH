@@ -15,6 +15,12 @@ _NO_ANSWER = [
     "je n'ai pas d'information",
     "je ne trouve pas cette information",
     "je ne connais pas cette information",
+    "cette information n'est pas disponible",
+    "je ne peux pas répondre",
+    "je n'ai pas accès à cette information",
+    "pas dans mes données",
+    "n'est pas dans ma base",
+    "je ne suis pas en mesure de répondre",
 ]
 
 

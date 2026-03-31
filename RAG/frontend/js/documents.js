@@ -50,7 +50,12 @@ async function submitUpload() {
     fd.append('title',    title);
     fd.append('category', category);
 
-    const resp = await fetch('/api/documents/upload', { method:'POST', body: fd });
+    const token = getAdminToken();
+    const resp = await fetch('/api/documents/upload', {
+      method:  'POST',
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+      body:    fd,
+    });
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.detail || 'Erreur upload');
 
@@ -125,7 +130,11 @@ async function loadDocuments() {
 async function deleteDocument(docId, btnEl) {
   if (!confirm('Supprimer ce document de la base de connaissances ?')) return;
   try {
-    const resp = await fetch(`/api/documents/${docId}`, { method: 'DELETE' });
+    const token = getAdminToken();
+    const resp = await fetch(`/api/documents/${docId}`, {
+      method:  'DELETE',
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+    });
     if (!resp.ok) throw new Error('Erreur suppression');
     btnEl.closest('.flex.items-center').remove();
     showToast('Document supprimé', 'success');

@@ -1,9 +1,8 @@
 // ─── Constants ────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'rh_conversations';
-const EXPIRY_MS   = 24 * 60 * 60 * 1000; // 24h
-const ADMIN_EMAIL = 'admin@rag.com';
-const ADMIN_PWD   = '12345678';
-const ADMIN_SK    = 'aeig_admin_session';
+const STORAGE_KEY    = 'rh_conversations';
+const EXPIRY_MS      = 24 * 60 * 60 * 1000; // 24h — cache UI local
+const ADMIN_SK       = 'aeig_admin_session';
+const ADMIN_TOKEN_SK = 'aeig_admin_token';
 
 // ─── State ────────────────────────────────────────────────────────────────
 const state = {

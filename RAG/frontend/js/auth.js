@@ -1,7 +1,13 @@
 // ─── Auth ─────────────────────────────────────────────────────────────────
 
+function getAdminToken() {
+  return sessionStorage.getItem(ADMIN_TOKEN_SK) || '';
+}
+
 function checkAdminSession() {
-  state.isAdmin = sessionStorage.getItem(ADMIN_SK) === '1';
+  const hasSession = sessionStorage.getItem(ADMIN_SK) === '1';
+  const hasToken   = !!sessionStorage.getItem(ADMIN_TOKEN_SK);
+  state.isAdmin = hasSession && hasToken;
   updateLockIcon();
 }
 
@@ -35,17 +41,28 @@ function closeLoginModal() {
   document.getElementById('login-password').value = '';
 }
 
-function submitLogin() {
+async function submitLogin() {
   const email = document.getElementById('login-email').value.trim().toLowerCase();
   const pwd   = document.getElementById('login-password').value;
   const err   = document.getElementById('login-error');
-  if (email === ADMIN_EMAIL && pwd === ADMIN_PWD) {
+  err.classList.add('hidden');
+
+  try {
+    const resp = await fetch('/api/admin/login', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ email, password: pwd }),
+    });
+    if (!resp.ok) throw new Error('unauthorized');
+    const data = await resp.json();
+
     state.isAdmin = true;
     sessionStorage.setItem(ADMIN_SK, '1');
+    sessionStorage.setItem(ADMIN_TOKEN_SK, data.token);
     updateLockIcon();
     closeLoginModal();
     switchTab(_pendingAdminTab || 'base');
-  } else {
+  } catch {
     err.classList.remove('hidden');
     document.getElementById('login-password').value = '';
     document.getElementById('login-password').focus();
@@ -55,6 +72,7 @@ function submitLogin() {
 function logoutAdmin() {
   state.isAdmin = false;
   sessionStorage.removeItem(ADMIN_SK);
+  sessionStorage.removeItem(ADMIN_TOKEN_SK);
   updateLockIcon();
   switchTab('chat');
   showToast('Déconnecté', 'info');

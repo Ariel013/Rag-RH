@@ -307,6 +307,7 @@ async function submitResolve(unansweredId) {
 // ─── Badge notification ───────────────────────────────────────────────────
 
 async function refreshUnansweredBadge() {
+  if (!state.isAdmin) return; // pas de token, inutile d'appeler
   try {
     const data  = await _apiFetch('/api/admin/stats');
     const badge = document.getElementById('analytics-badge');
@@ -323,7 +324,15 @@ async function refreshUnansweredBadge() {
 // ─── Utilitaires internes ─────────────────────────────────────────────────
 
 async function _apiFetch(url, options = {}) {
+  const token = getAdminToken();
+  if (token) {
+    options.headers = { ...options.headers, 'Authorization': `Bearer ${token}` };
+  }
   const r = await fetch(url, options);
+  if (r.status === 401) {
+    logoutAdmin();
+    throw new Error('Session expirée, veuillez vous reconnecter.');
+  }
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
   return r.json();
 }

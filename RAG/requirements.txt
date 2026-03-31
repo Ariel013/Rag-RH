@@ -20,6 +20,9 @@ pgvector>=0.3.0
 # HTTP client async (Supabase Storage)
 httpx>=0.27.0
 
+# Rate limiting
+slowapi>=0.1.9
+
 # Document parsers
 pypdf>=3.0.0
 python-docx>=0.8.11

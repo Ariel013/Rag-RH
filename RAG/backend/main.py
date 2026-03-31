@@ -12,11 +12,14 @@ from typing import AsyncGenerator
 import aiofiles
 import httpx
 from dotenv import load_dotenv
-from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile
+from fastapi import FastAPI, File, Form, Header, HTTPException, Query, Request, UploadFile, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 load_dotenv()
 
@@ -35,11 +38,20 @@ from .vector_store import init_vector_db
 
 # ─── App ───────────────────────────────────────────────────────────────────
 
-app = FastAPI(title="Assistant RH RAG API", version="2.0.0")
+limiter = Limiter(key_func=get_remote_address)
 
+app = FastAPI(title="Assistant RH RAG API", version="2.0.0")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+_cors_env = os.getenv("ALLOWED_ORIGINS", "*")
+_allowed_origins = (
+    ["*"] if _cors_env == "*"
+    else [o.strip() for o in _cors_env.split(",") if o.strip()]
+)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_allowed_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -52,6 +64,21 @@ SUPPORTED_EXTENSIONS = {".pdf", ".docx", ".doc", ".txt", ".md"}
 SUPABASE_URL = os.getenv("SUPABASE_URL", "").rstrip("/")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
 STORAGE_BUCKET = "uploads"
+
+# ─── Admin Auth ────────────────────────────────────────────────────────────
+
+ADMIN_EMAIL    = os.getenv("ADMIN_EMAIL", "").strip().lower()
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "").strip()
+ADMIN_TOKEN    = os.getenv("ADMIN_TOKEN", "").strip()
+
+
+def verify_admin(authorization: str | None = Header(default=None)) -> None:
+    """Dépendance FastAPI — vérifie le token Bearer sur les routes admin."""
+    if not ADMIN_TOKEN:
+        raise HTTPException(status_code=500, detail="ADMIN_TOKEN non configuré côté serveur.")
+    token = (authorization or "").removeprefix("Bearer ").strip()
+    if token != ADMIN_TOKEN:
+        raise HTTPException(status_code=401, detail="Non autorisé.")
 
 # ─── Supabase Storage ─────────────────────────────────────────────────────
 
@@ -140,11 +167,7 @@ def _auto_ingest_samples(rag: RAGPipeline) -> None:
             failed.append(doc_path)
 
     if failed:
-        print(f"  ⚠ {len(failed)} document(s) non ingéré(s) — nouvelle tentative dans 30s…")
-        import time
-        time.sleep(30)
-        for doc_path in failed:
-            _ingest_one(rag, doc_path)
+        print(f"  ⚠ {len(failed)} document(s) non ingéré(s) définitivement : {[p.name for p in failed]}")
 
 
 def get_rag() -> RAGPipeline:
@@ -159,10 +182,15 @@ async def startup_event() -> None:
     await asyncio.to_thread(init_db)
     await asyncio.to_thread(init_vector_db)
     print("→ Initialisation du pipeline RAG…")
-    asyncio.get_event_loop().run_in_executor(None, _init_rag)
+    asyncio.create_task(asyncio.to_thread(_init_rag))
 
 
 # ─── Modèles Pydantic ─────────────────────────────────────────────────────
+
+class AdminLoginRequest(BaseModel):
+    email: str
+    password: str
+
 
 class ChatMessage(BaseModel):
     role: str
@@ -207,6 +235,15 @@ async def _stream_with_logging(
 
 # ─── Routes API ───────────────────────────────────────────────────────────
 
+@app.post("/api/admin/login")
+async def admin_login(body: AdminLoginRequest):
+    if not ADMIN_EMAIL or not ADMIN_PASSWORD or not ADMIN_TOKEN:
+        raise HTTPException(status_code=500, detail="Identifiants admin non configurés sur le serveur.")
+    if body.email.strip().lower() == ADMIN_EMAIL and body.password == ADMIN_PASSWORD:
+        return {"token": ADMIN_TOKEN}
+    raise HTTPException(status_code=401, detail="Email ou mot de passe incorrect.")
+
+
 @app.get("/api/health")
 async def health():
     ready = _rag_ready.is_set()
@@ -218,13 +255,14 @@ async def health():
 
 
 @app.post("/api/chat")
-async def chat(request: ChatRequest):
+@limiter.limit("10/minute")
+async def chat(request: Request, body: ChatRequest):
     rag     = await asyncio.to_thread(get_rag)
-    history = [{"role": m.role, "content": m.content} for m in request.history]
+    history = [{"role": m.role, "content": m.content} for m in body.history]
     stream  = _stream_with_logging(
-        rag.generate_stream(request.question, history),
-        request.conversation_id,
-        request.question,
+        rag.generate_stream(body.question, history),
+        body.conversation_id,
+        body.question,
     )
     return StreamingResponse(
         stream,
@@ -245,6 +283,7 @@ async def upload_document(
     file: UploadFile = File(...),
     category: str = Form(default="Général"),
     title: str = Form(default=""),
+    _: None = Depends(verify_admin),
 ):
     ext = Path(file.filename or "file.txt").suffix.lower()
     if ext not in SUPPORTED_EXTENSIONS:
@@ -300,7 +339,7 @@ async def upload_document(
 
 
 @app.delete("/api/documents/{doc_id}")
-async def delete_document(doc_id: str):
+async def delete_document(doc_id: str, _: None = Depends(verify_admin)):
     rag = await asyncio.to_thread(get_rag)
     deleted, storage_path = rag.vector_store.delete_document(doc_id)
     if deleted == 0:
@@ -313,7 +352,7 @@ async def delete_document(doc_id: str):
 # ─── Routes Admin Analytics ───────────────────────────────────────────────
 
 @app.get("/api/admin/stats")
-async def admin_stats():
+async def admin_stats(_: None = Depends(verify_admin)):
     return await asyncio.to_thread(get_stats)
 
 
@@ -321,12 +360,13 @@ async def admin_stats():
 async def admin_conversations(
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=20, ge=1, le=100),
+    _: None = Depends(verify_admin),
 ):
     return await asyncio.to_thread(get_conversations, page, page_size)
 
 
 @app.get("/api/admin/conversations/{conversation_id}/messages")
-async def admin_conversation_messages(conversation_id: str):
+async def admin_conversation_messages(conversation_id: str, _: None = Depends(verify_admin)):
     return await asyncio.to_thread(get_conversation_messages, conversation_id)
 
 
@@ -335,6 +375,7 @@ async def admin_unanswered(
     status: str = Query(default="pending"),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=20, ge=1, le=100),
+    _: None = Depends(verify_admin),
 ):
     if status not in ("pending", "resolved"):
         raise HTTPException(status_code=400, detail="status doit être 'pending' ou 'resolved'")
@@ -342,7 +383,7 @@ async def admin_unanswered(
 
 
 @app.post("/api/admin/unanswered/{unanswered_id}/resolve")
-async def admin_resolve(unanswered_id: str, body: ResolveRequest):
+async def admin_resolve(unanswered_id: str, body: ResolveRequest, _: None = Depends(verify_admin)):
     if not body.admin_response.strip():
         raise HTTPException(status_code=400, detail="La réponse ne peut pas être vide.")
 

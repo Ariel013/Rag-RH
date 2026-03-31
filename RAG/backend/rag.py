@@ -17,7 +17,7 @@ from openai import AsyncOpenAI
 from .vector_store import VectorStore
 
 EMBED_MODEL         = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-RELEVANCE_THRESHOLD = 0.15
+RELEVANCE_THRESHOLD = 0.4
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
 OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "llama3.2")
