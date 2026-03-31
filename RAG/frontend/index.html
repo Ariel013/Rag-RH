@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Assistant RH</title>
+<title>Assistant RH — AEIG</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -13,15 +13,15 @@
     theme: {
       extend: {
         colors: {
-          "primary": "#1F485E",
-          "highlight": "#1F485E",
-          "background-light": "#f5f7f8",
-          "background-dark": "#0f1d23",
+          "primary":          "#1F485E",
+          "highlight":        "#1F485E",
+          "background-light": "#f0f4f7",
+          "background-dark":  "#0f1d23",
         },
         fontFamily: { "display": ["Manrope", "sans-serif"] },
         borderRadius: {
           "DEFAULT": "0.5rem", "lg": "1rem",
-          "xl": "1.5rem", "full": "9999px"
+          "xl": "1.5rem",      "full": "9999px"
         },
       },
     },
@@ -30,380 +30,426 @@
 <link href="css/styles.css" rel="stylesheet"/>
 </head>
 
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex flex-col h-screen max-w-md mx-auto shadow-2xl relative overflow-hidden">
-
-<!-- ═══ CLICK-OUTSIDE OVERLAY (transparent) ═══ -->
-<div id="sidebar-overlay" onclick="closeSidebar()" class="absolute inset-0 z-20 hidden"></div>
-
-<!-- ═══ SIDEBAR DROPDOWN ═══ -->
-<div id="sidebar" class="sidebar-closed absolute left-3 top-[60px] w-64 bg-white dark:bg-slate-900 z-30 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col overflow-hidden">
-  <!-- Nouvelle conversation -->
-  <div class="px-3 pt-3 pb-2 shrink-0">
-    <button onclick="newConversation()"
-      class="w-full flex items-center gap-2 px-3 py-2.5 bg-primary hover:bg-primary/90 rounded-xl text-white font-semibold text-sm transition-colors">
-      <span class="material-symbols-outlined text-[18px]">edit_square</span>
-      Nouvelle conversation
-    </button>
-  </div>
-  <!-- Liste -->
-  <div id="conversations-list" class="overflow-y-auto max-h-72 p-2 space-y-0.5">
-    <p class="text-xs text-slate-400 text-center py-4">Aucune conversation</p>
-  </div>
-  <!-- Footer -->
-  <div class="px-4 py-2 border-t border-slate-100 dark:border-slate-800 shrink-0">
-    <p class="text-[10px] text-slate-400 text-center">Conservées 24h</p>
-  </div>
-</div>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex flex-col h-screen overflow-hidden font-display">
 
 <!-- ═══ HEADER ═══ -->
-<header class="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-900 border-b border-primary/10 sticky top-0 z-10">
-  <div class="flex items-center gap-2">
-    <button onclick="toggleSidebar()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Conversations">
-      <span class="material-symbols-outlined text-highlight dark:text-slate-100 text-[22px]">edit_square</span>
+<header class="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-900 border-b border-primary/10 shrink-0 z-20">
+  <div class="flex items-center gap-3">
+    <!-- Hamburger — mobile only -->
+    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+      <span class="material-symbols-outlined text-highlight dark:text-slate-100 text-[22px]">menu</span>
     </button>
-    <div class="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-primary text-white">
+    <!-- Logo -->
+    <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-primary text-white shrink-0">
       <span class="material-symbols-outlined text-[20px]">smart_toy</span>
     </div>
     <div>
-      <h1 class="font-bold text-base leading-tight text-highlight">Assistant RH</h1>
+      <h1 class="font-bold text-base leading-tight text-highlight dark:text-slate-100">Assistant RH</h1>
       <div class="flex items-center gap-1.5">
         <span id="status-dot" class="w-2 h-2 rounded-full bg-amber-400 transition-colors"></span>
         <span id="status-text" class="text-xs font-medium text-slate-500 dark:text-slate-400">Initialisation…</span>
       </div>
     </div>
   </div>
-  <button onclick="toggleDark()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Mode sombre">
-    <span class="material-symbols-outlined text-highlight dark:text-slate-100 text-[22px]" id="dark-icon">dark_mode</span>
-  </button>
+  <div class="flex items-center gap-2">
+    <!-- New conversation — desktop only, in header -->
+    <button onclick="newConversation()" class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-primary border border-primary/30 rounded-xl hover:bg-primary/5 transition-colors">
+      <span class="material-symbols-outlined text-[16px]">edit_square</span>
+      Nouvelle conversation
+    </button>
+    <button onclick="toggleDark()" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Mode sombre">
+      <span class="material-symbols-outlined text-highlight dark:text-slate-100 text-[22px]" id="dark-icon">dark_mode</span>
+    </button>
+  </div>
 </header>
 
-<!-- ═══ MAIN CONTENT ═══ -->
-<main class="flex-1 overflow-hidden flex flex-col min-h-0">
+<!-- ═══ BODY LAYOUT ═══ -->
+<div class="flex flex-1 overflow-hidden">
 
-  <!-- ── CHAT TAB ── -->
-  <div id="tab-chat" class="tab-content active">
+  <!-- ── SIDEBAR OVERLAY (mobile) ── -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"
+    class="sidebar-overlay hidden lg:hidden fixed inset-0 bg-black/40 z-30 backdrop-blur-sm"></div>
 
-    <!-- Messages container -->
-    <div id="messages-container" class="flex-1 overflow-y-auto p-4 space-y-4">
-
-      <!-- Date divider -->
-      <div class="flex justify-center">
-        <span id="today-label" class="text-xs font-semibold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full uppercase tracking-wider"></span>
-      </div>
-
-      <!-- Welcome bot message -->
-      <div class="flex items-start gap-3">
-        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0">
-          <span class="material-symbols-outlined text-white text-sm">smart_toy</span>
-        </div>
-        <div class="flex flex-col gap-1 max-w-[85%]">
-          <div class="bg-primary text-white p-4 rounded-xl rounded-tl-none text-[15px] leading-relaxed">
-            Bonjour ! Je suis votre assistant RH. Comment puis-je vous aider aujourd'hui ?
-          </div>
-          <span class="text-[10px] text-slate-400 ml-1">Assistant • <span class="msg-time"></span></span>
-        </div>
-      </div>
-
-      <!-- Quick actions -->
-      <div id="quick-actions" class="grid grid-cols-2 gap-2">
-        <button onclick="sendQuickAction('Quelles sont les politiques de congés de l\'entreprise ?')"
-          class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
-          <span class="material-symbols-outlined text-primary text-[20px]">policy</span>
-          <span>Politiques</span>
-        </button>
-        <button onclick="sendQuickAction('Quels sont mes avantages sociaux et ma mutuelle ?')"
-          class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
-          <span class="material-symbols-outlined text-primary text-[20px]">featured_seasonal_and_gifts</span>
-          <span>Avantages</span>
-        </button>
-        <button onclick="sendQuickAction('Comment poser des congés et combien de jours ai-je ?')"
-          class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
-          <span class="material-symbols-outlined text-primary text-[20px]">event_busy</span>
-          <span>Congés</span>
-        </button>
-        <button onclick="sendQuickAction('Quelle est la procédure de remboursement des frais professionnels ?')"
-          class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
-          <span class="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
-          <span>Frais</span>
-        </button>
-      </div>
-
-      <!-- Suggestion chips -->
-      <div id="quick-chips" class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-        <button onclick="sendQuickAction('Quel est mon solde de congés payés ?')"
-          class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
-          Solde de congés ?
-        </button>
-        <button onclick="sendQuickAction('Comment fonctionne ma mutuelle santé ?')"
-          class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
-          Mutuelle santé
-        </button>
-        <button onclick="sendQuickAction('Comment obtenir ma fiche de paie ?')"
-          class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
-          Fiche de paie
-        </button>
-        <button onclick="sendQuickAction('Comment fonctionne le télétravail ?')"
-          class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
-          Télétravail
-        </button>
-      </div>
-
-    </div><!-- /messages-container -->
-
-    <!-- Input area -->
-    <div class="px-4 pt-3 pb-3 bg-white dark:bg-slate-900 border-t border-primary/10">
-      <div class="flex items-center gap-2">
-        <div class="flex-1 flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-4 py-2.5 border border-transparent focus-within:border-primary/50 focus-within:bg-white dark:focus-within:bg-slate-800 transition-all">
-          <input id="chat-input"
-            class="bg-transparent border-none focus:ring-0 text-slate-900 dark:text-slate-100 w-full placeholder:text-slate-400 text-[15px] outline-none"
-            placeholder="Tapez votre message…"
-            type="text"
-            autocomplete="off"/>
-          <button onclick="triggerFileUpload()" class="text-slate-400 hover:text-primary transition-colors ml-2" title="Ajouter un document">
-            <span class="material-symbols-outlined text-[20px]">attach_file</span>
-          </button>
-        </div>
-        <button id="send-btn" onclick="handleSend()"
-          class="bg-primary hover:bg-primary/90 text-white w-11 h-11 flex items-center justify-center rounded-xl shadow-lg transition-all active:scale-95">
-          <span class="material-symbols-outlined">send</span>
-        </button>
-      </div>
-      <!-- Hidden file input -->
-      <input id="file-input" type="file" accept=".pdf,.docx,.doc,.txt,.md" class="hidden" onchange="handleFileSelected(event)"/>
-    </div>
-
-  </div><!-- /tab-chat -->
-
-  <!-- ── BASE TAB (Documents) ── -->
-  <div id="tab-base" class="tab-content overflow-y-auto p-4 gap-4">
-
-    <!-- Admin bar -->
-    <div class="flex items-center justify-between px-1 mb-1">
-      <p class="text-xs font-semibold text-primary flex items-center gap-1.5">
-        <span class="material-symbols-outlined text-[14px]">admin_panel_settings</span>
-        Mode administrateur
-      </p>
-      <button onclick="logoutAdmin()"
-        class="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition-colors font-medium">
-        <span class="material-symbols-outlined text-[14px]">logout</span>
-        Déconnexion
-      </button>
-    </div>
-
-    <!-- Upload zone -->
-    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10">
-      <h2 class="font-bold text-base text-highlight mb-3 flex items-center gap-2">
-        <span class="material-symbols-outlined text-[20px]">upload_file</span>
-        Ajouter un document
-      </h2>
-      <div id="upload-zone"
-        class="upload-zone border-2 border-dashed border-primary/30 rounded-xl p-6 text-center cursor-pointer hover:border-primary/60 hover:bg-primary/5 transition-all mb-3"
-        onclick="triggerFileUpload()"
-        ondragover="event.preventDefault(); this.classList.add('dragover')"
-        ondragleave="this.classList.remove('dragover')"
-        ondrop="handleDrop(event)">
-        <span class="material-symbols-outlined text-primary/50 text-[40px] mb-2">cloud_upload</span>
-        <p class="text-sm font-semibold text-slate-600 dark:text-slate-300">Glissez un fichier ici</p>
-        <p class="text-xs text-slate-400 mt-1">ou cliquez pour sélectionner</p>
-        <p class="text-xs text-slate-400 mt-1">PDF, DOCX, TXT, MD</p>
-      </div>
-      <div id="upload-form" class="hidden space-y-3">
-        <div class="flex items-center gap-2 p-2 bg-primary/5 rounded-lg">
-          <span class="material-symbols-outlined text-primary text-[18px]">description</span>
-          <span id="selected-filename" class="text-sm font-medium text-slate-700 dark:text-slate-200 truncate flex-1"></span>
-          <button onclick="cancelUpload()" class="text-slate-400 hover:text-red-500">
-            <span class="material-symbols-outlined text-[18px]">close</span>
-          </button>
-        </div>
-        <input id="upload-title" type="text" placeholder="Titre du document (optionnel)"
-          class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 focus:outline-none focus:border-primary/50"/>
-        <select id="upload-category"
-          class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 focus:outline-none focus:border-primary/50">
-          <option value="Général">Général</option>
-          <option value="Congés">Congés</option>
-          <option value="Avantages sociaux">Avantages sociaux</option>
-          <option value="Procédures">Procédures</option>
-          <option value="Règlement intérieur">Règlement intérieur</option>
-          <option value="Formation">Formation</option>
-          <option value="Paie">Paie</option>
-          <option value="Télétravail">Télétravail</option>
-        </select>
-        <button onclick="submitUpload()"
-          class="w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined text-[18px]">upload</span>
-          Indexer le document
-        </button>
-      </div>
-      <div id="upload-progress" class="hidden mt-2">
-        <div class="flex items-center gap-2 text-sm text-primary">
-          <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <span id="upload-status">Analyse en cours…</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Documents list -->
-    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="font-bold text-base text-highlight flex items-center gap-2">
-          <span class="material-symbols-outlined text-[20px]">menu_book</span>
-          Base de connaissances
-        </h2>
-        <button onclick="loadDocuments()" class="text-slate-400 hover:text-primary transition-colors" title="Actualiser">
-          <span class="material-symbols-outlined text-[18px]">refresh</span>
-        </button>
-      </div>
-      <div id="docs-list" class="space-y-2">
-        <div class="text-center py-4 text-slate-400 text-sm">Chargement…</div>
-      </div>
-    </div>
-
-  </div><!-- /tab-base -->
-
-  <!-- ── PROFIL TAB ── -->
-  <div id="tab-profil" class="tab-content overflow-y-auto p-4 gap-4">
-    <div class="bg-white dark:bg-slate-800 rounded-xl p-5 shadow-sm border border-primary/10 flex flex-col items-center gap-3">
-      <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-        <span class="material-symbols-outlined text-primary text-[32px]">account_circle</span>
-      </div>
-      <div class="text-center">
-        <p class="font-bold text-base">Employé</p>
-        <p class="text-xs text-slate-500">Utilisateur de l'Assistant RH</p>
-      </div>
-    </div>
-
-    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10 space-y-3">
-      <h3 class="font-bold text-sm text-highlight">À propos de cet assistant</h3>
-      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-        Cet assistant utilise la technologie RAG (Retrieval-Augmented Generation) pour
-        répondre à vos questions en s'appuyant sur les documents RH officiels de l'entreprise.
-      </p>
-      <div class="grid grid-cols-2 gap-2 pt-1">
-        <div class="bg-primary/5 rounded-lg p-3 text-center">
-          <p class="text-xs text-slate-500">Modèle IA</p>
-          <p id="model-name" class="text-sm font-bold text-primary mt-0.5">Ollama</p>
-        </div>
-        <div class="bg-primary/5 rounded-lg p-3 text-center">
-          <p class="text-xs text-slate-500">Documents</p>
-          <p id="doc-count-profil" class="text-sm font-bold text-primary mt-0.5">—</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10 space-y-2">
-      <h3 class="font-bold text-sm text-highlight">Contacts RH</h3>
-      <a href="mailto:rh@entreprise.com" class="flex items-center gap-3 p-2.5 rounded-lg hover:bg-primary/5 transition-colors">
-        <span class="material-symbols-outlined text-primary text-[20px]">mail</span>
-        <div>
-          <p class="text-sm font-semibold">rh@entreprise.com</p>
-          <p class="text-xs text-slate-400">Service Ressources Humaines</p>
-        </div>
-      </a>
-      <div class="flex items-center gap-3 p-2.5 rounded-lg">
-        <span class="material-symbols-outlined text-primary text-[20px]">call</span>
-        <div>
-          <p class="text-sm font-semibold">Poste interne : 0042</p>
-          <p class="text-xs text-slate-400">Lun–Ven, 9h–17h</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10">
-      <h3 class="font-bold text-sm text-highlight mb-3">Préférences</h3>
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm font-medium">Mode sombre</p>
-          <p class="text-xs text-slate-400">Thème de l'interface</p>
-        </div>
-        <button onclick="toggleDark()" id="dark-toggle"
-          class="w-11 h-6 rounded-full transition-colors relative bg-slate-200 dark:bg-primary">
-          <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform dark:translate-x-5"></span>
-        </button>
-      </div>
-    </div>
-  </div><!-- /tab-profil -->
-
-  <!-- ── ANALYTICS TAB (Admin) ── -->
-  <div id="tab-analytics" class="tab-content overflow-y-auto p-4 gap-4">
-
-    <!-- Admin bar -->
-    <div class="flex items-center justify-between px-1 mb-1">
-      <p class="text-xs font-semibold text-primary flex items-center gap-1.5">
-        <span class="material-symbols-outlined text-[14px]">bar_chart</span>
-        Tableau de bord
-      </p>
-      <button onclick="logoutAdmin()"
-        class="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition-colors font-medium">
-        <span class="material-symbols-outlined text-[14px]">logout</span>
-        Déconnexion
-      </button>
-    </div>
-
-    <!-- Sub-tabs -->
-    <div class="flex gap-1 mb-4 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
-      <button id="atab-overview" onclick="switchAnalyticsView('overview')"
-        class="flex-1 text-xs font-semibold py-1.5 px-1 rounded-lg transition-colors
-               bg-white dark:bg-slate-700 text-primary shadow-sm">
-        Vue d'ensemble
-      </button>
-      <button id="atab-conversations" onclick="switchAnalyticsView('conversations')"
-        class="flex-1 text-xs font-semibold py-1.5 px-1 rounded-lg transition-colors text-slate-500">
-        Conversations
-      </button>
-      <button id="atab-unanswered" onclick="switchAnalyticsView('unanswered')"
-        class="flex-1 text-xs font-semibold py-1.5 px-1 rounded-lg transition-colors text-slate-500">
-        Sans réponse
-      </button>
-    </div>
-
-    <!-- Overview -->
-    <div id="av-overview">
-      <div id="analytics-overview-content">
-        <div class="text-center py-8 text-slate-400 text-sm">Chargement…</div>
-      </div>
-    </div>
+  <!-- ── SIDEBAR ── -->
+  <aside id="sidebar"
+    class="sidebar-mobile lg:sidebar-desktop flex flex-col bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 z-40 w-72 shrink-0">
 
     <!-- Conversations -->
-    <div id="av-conversations" class="hidden">
-      <div id="analytics-conversations-content"></div>
+    <div class="px-3 pt-3 pb-2 shrink-0 lg:hidden">
+      <button onclick="newConversation()"
+        class="w-full flex items-center gap-2 px-3 py-2.5 bg-primary hover:bg-primary/90 rounded-xl text-white font-semibold text-sm transition-colors">
+        <span class="material-symbols-outlined text-[18px]">edit_square</span>
+        Nouvelle conversation
+      </button>
     </div>
 
-    <!-- Unanswered -->
-    <div id="av-unanswered" class="hidden">
-      <div id="analytics-unanswered-content"></div>
+    <div class="px-3 pt-3 pb-1 shrink-0">
+      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">Conversations</p>
+    </div>
+    <div id="conversations-list" class="flex-1 overflow-y-auto p-2 space-y-0.5 min-h-0">
+      <p class="text-xs text-slate-400 text-center py-6">Aucune conversation</p>
     </div>
 
-  </div><!-- /tab-analytics -->
+    <div class="px-3 py-2 border-t border-slate-100 dark:border-slate-800 shrink-0">
+      <p class="text-[10px] text-slate-400 text-center">Conversations conservées 24h</p>
+    </div>
 
-</main>
+    <!-- Navigation (desktop only) -->
+    <nav class="hidden lg:flex flex-col gap-0.5 p-3 border-t border-slate-100 dark:border-slate-800 shrink-0">
+      <button id="nav-chat" onclick="switchTab('chat')"
+        class="sidebar-nav-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+        <span class="material-symbols-outlined text-[20px]">chat_bubble</span>
+        <span>Chat</span>
+      </button>
+      <button id="nav-base" onclick="openBaseTab()"
+        class="sidebar-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors relative">
+        <span class="material-symbols-outlined text-[20px]">menu_book</span>
+        <span>Base de connaissances</span>
+        <span id="base-lock" class="ml-auto material-symbols-outlined text-[14px] text-slate-400">lock</span>
+      </button>
+      <button id="nav-profil" onclick="switchTab('profil')"
+        class="sidebar-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+        <span class="material-symbols-outlined text-[20px]">account_circle</span>
+        <span>Profil</span>
+      </button>
+      <button id="nav-analytics" onclick="openAnalyticsTab()"
+        class="sidebar-nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors relative">
+        <span class="material-symbols-outlined text-[20px]">bar_chart</span>
+        <span>Statistiques</span>
+        <span id="analytics-badge"
+          class="hidden ml-auto min-w-[18px] h-[18px] bg-red-500 text-white text-[10px]
+                 font-bold rounded-full flex items-center justify-center px-1">0</span>
+        <span id="analytics-lock" class="ml-auto material-symbols-outlined text-[14px] text-slate-400">lock</span>
+      </button>
+    </nav>
+  </aside>
 
-<!-- ═══ BOTTOM NAV ═══ -->
-<nav class="flex border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pb-2 pt-1 justify-around shrink-0">
-  <button id="nav-chat" onclick="switchTab('chat')"
+  <!-- ── MAIN CONTENT ── -->
+  <main class="flex-1 overflow-hidden flex flex-col min-h-0">
+
+    <!-- ── CHAT TAB ── -->
+    <div id="tab-chat" class="tab-content active">
+      <div id="messages-container" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
+        <div class="max-w-3xl mx-auto space-y-4">
+
+          <!-- Date divider -->
+          <div class="flex justify-center">
+            <span id="today-label" class="text-xs font-semibold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full uppercase tracking-wider"></span>
+          </div>
+
+          <!-- Welcome -->
+          <div class="flex items-start gap-3">
+            <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-white text-[18px]">smart_toy</span>
+            </div>
+            <div class="flex flex-col gap-1 max-w-[85%]">
+              <div class="bg-primary text-white p-4 rounded-2xl rounded-tl-none text-[15px] leading-relaxed shadow-sm">
+                Bonjour ! Je suis votre assistant RH. Comment puis-je vous aider aujourd'hui ?
+              </div>
+              <span class="text-[10px] text-slate-400 ml-1">Assistant • <span class="msg-time"></span></span>
+            </div>
+          </div>
+
+          <!-- Quick actions -->
+          <div id="quick-actions" class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <button onclick="sendQuickAction('Quelles sont les politiques de congés de l\'entreprise ?')"
+              class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+              <span class="material-symbols-outlined text-primary text-[20px]">policy</span>
+              <span>Politiques</span>
+            </button>
+            <button onclick="sendQuickAction('Quels sont mes avantages sociaux et ma mutuelle ?')"
+              class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+              <span class="material-symbols-outlined text-primary text-[20px]">featured_seasonal_and_gifts</span>
+              <span>Avantages</span>
+            </button>
+            <button onclick="sendQuickAction('Comment poser des congés et combien de jours ai-je ?')"
+              class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+              <span class="material-symbols-outlined text-primary text-[20px]">event_busy</span>
+              <span>Congés</span>
+            </button>
+            <button onclick="sendQuickAction('Quelle est la procédure de remboursement des frais professionnels ?')"
+              class="flex items-center gap-2 px-3 py-3 bg-white dark:bg-slate-800 border border-primary/20 rounded-xl text-highlight dark:text-slate-100 hover:bg-primary/5 transition-colors text-sm font-semibold shadow-sm">
+              <span class="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
+              <span>Frais</span>
+            </button>
+          </div>
+
+          <!-- Chips -->
+          <div id="quick-chips" class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            <button onclick="sendQuickAction('Quel est mon solde de congés payés ?')"
+              class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
+              Solde de congés ?
+            </button>
+            <button onclick="sendQuickAction('Comment fonctionne ma mutuelle santé ?')"
+              class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
+              Mutuelle santé
+            </button>
+            <button onclick="sendQuickAction('Comment obtenir ma fiche de paie ?')"
+              class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
+              Fiche de paie
+            </button>
+            <button onclick="sendQuickAction('Comment fonctionne le télétravail ?')"
+              class="whitespace-nowrap px-3 py-1.5 bg-highlight/10 text-highlight dark:bg-highlight/20 rounded-full text-xs font-bold border border-highlight/20 hover:bg-highlight/20 transition-colors">
+              Télétravail
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="px-4 md:px-6 pt-3 pb-4 bg-white dark:bg-slate-900 border-t border-primary/10 shrink-0">
+        <div class="max-w-3xl mx-auto flex items-center gap-2">
+          <div class="flex-1 flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl px-4 py-2.5 border border-transparent focus-within:border-primary/50 focus-within:bg-white dark:focus-within:bg-slate-800 transition-all">
+            <input id="chat-input"
+              class="bg-transparent border-none focus:ring-0 text-slate-900 dark:text-slate-100 w-full placeholder:text-slate-400 text-[15px] outline-none"
+              placeholder="Tapez votre message…" type="text" autocomplete="off"/>
+            <button onclick="triggerFileUpload()" class="text-slate-400 hover:text-primary transition-colors ml-2" title="Ajouter un document">
+              <span class="material-symbols-outlined text-[20px]">attach_file</span>
+            </button>
+          </div>
+          <button id="send-btn" onclick="handleSend()"
+            class="bg-primary hover:bg-primary/90 text-white w-11 h-11 flex items-center justify-center rounded-xl shadow-lg transition-all active:scale-95 shrink-0">
+            <span class="material-symbols-outlined">send</span>
+          </button>
+        </div>
+        <input id="file-input" type="file" accept=".pdf,.docx,.doc,.txt,.md" class="hidden" onchange="handleFileSelected(event)"/>
+      </div>
+    </div><!-- /tab-chat -->
+
+    <!-- ── BASE TAB ── -->
+    <div id="tab-base" class="tab-content overflow-y-auto">
+      <div class="max-w-4xl mx-auto p-4 md:p-6 space-y-4">
+
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-bold text-highlight flex items-center gap-2">
+            <span class="material-symbols-outlined text-[22px]">admin_panel_settings</span>
+            Administration — Base de connaissances
+          </h2>
+          <button onclick="logoutAdmin()"
+            class="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition-colors font-medium">
+            <span class="material-symbols-outlined text-[14px]">logout</span>
+            Déconnexion
+          </button>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+
+          <!-- Upload zone -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-primary/10">
+            <h3 class="font-bold text-base text-highlight mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px]">upload_file</span>
+              Ajouter un document
+            </h3>
+            <div id="upload-zone"
+              class="upload-zone border-2 border-dashed border-primary/30 rounded-xl p-8 text-center cursor-pointer hover:border-primary/60 hover:bg-primary/5 transition-all mb-3"
+              onclick="triggerFileUpload()"
+              ondragover="event.preventDefault(); this.classList.add('dragover')"
+              ondragleave="this.classList.remove('dragover')"
+              ondrop="handleDrop(event)">
+              <span class="material-symbols-outlined text-primary/40 text-[48px] mb-3 block">cloud_upload</span>
+              <p class="text-sm font-semibold text-slate-600 dark:text-slate-300">Glissez un fichier ici</p>
+              <p class="text-xs text-slate-400 mt-1">ou cliquez pour sélectionner</p>
+              <p class="text-xs text-slate-400 mt-1">PDF, DOCX, TXT, MD</p>
+            </div>
+            <div id="upload-form" class="hidden space-y-3">
+              <div class="flex items-center gap-2 p-2 bg-primary/5 rounded-lg">
+                <span class="material-symbols-outlined text-primary text-[18px]">description</span>
+                <span id="selected-filename" class="text-sm font-medium text-slate-700 dark:text-slate-200 truncate flex-1"></span>
+                <button onclick="cancelUpload()" class="text-slate-400 hover:text-red-500">
+                  <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+              </div>
+              <input id="upload-title" type="text" placeholder="Titre du document (optionnel)"
+                class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 focus:outline-none focus:border-primary/50"/>
+              <select id="upload-category"
+                class="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-700 focus:outline-none focus:border-primary/50">
+                <option value="Général">Général</option>
+                <option value="Congés">Congés</option>
+                <option value="Avantages sociaux">Avantages sociaux</option>
+                <option value="Procédures">Procédures</option>
+                <option value="Règlement intérieur">Règlement intérieur</option>
+                <option value="Formation">Formation</option>
+                <option value="Paie">Paie</option>
+                <option value="Télétravail">Télétravail</option>
+              </select>
+              <button onclick="submitUpload()"
+                class="w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">upload</span>
+                Indexer le document
+              </button>
+            </div>
+            <div id="upload-progress" class="hidden mt-2">
+              <div class="flex items-center gap-2 text-sm text-primary">
+                <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <span id="upload-status">Analyse en cours…</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Documents list -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-primary/10">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-base text-highlight flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px]">menu_book</span>
+                Base de connaissances
+              </h3>
+              <button onclick="loadDocuments()" class="text-slate-400 hover:text-primary transition-colors" title="Actualiser">
+                <span class="material-symbols-outlined text-[18px]">refresh</span>
+              </button>
+            </div>
+            <div id="docs-list" class="space-y-2 overflow-y-auto max-h-96">
+              <div class="text-center py-4 text-slate-400 text-sm">Chargement…</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /tab-base -->
+
+    <!-- ── PROFIL TAB ── -->
+    <div id="tab-profil" class="tab-content overflow-y-auto">
+      <div class="max-w-2xl mx-auto p-4 md:p-6 space-y-4">
+        <h2 class="text-lg font-bold text-highlight">Profil</h2>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-primary/10 flex items-center gap-5">
+          <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-primary text-[32px]">account_circle</span>
+          </div>
+          <div>
+            <p class="font-bold text-lg">Employé</p>
+            <p class="text-sm text-slate-500">Utilisateur de l'Assistant RH</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-primary/10 space-y-4">
+          <h3 class="font-bold text-sm text-highlight">À propos de cet assistant</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Cet assistant utilise la technologie RAG (Retrieval-Augmented Generation) pour
+            répondre à vos questions en s'appuyant sur les documents RH officiels de l'entreprise.
+          </p>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-primary/5 rounded-xl p-4 text-center">
+              <p class="text-xs text-slate-500 mb-1">Modèle IA</p>
+              <p id="model-name" class="text-sm font-bold text-primary">—</p>
+            </div>
+            <div class="bg-primary/5 rounded-xl p-4 text-center">
+              <p class="text-xs text-slate-500 mb-1">Documents indexés</p>
+              <p id="doc-count-profil" class="text-sm font-bold text-primary">—</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-primary/10 space-y-2">
+          <h3 class="font-bold text-sm text-highlight mb-2">Contacts RH</h3>
+          <a href="mailto:jb.koffi@aeig.africa" class="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-colors">
+            <span class="material-symbols-outlined text-primary text-[20px]">mail</span>
+            <div>
+              <p class="text-sm font-semibold">jb.koffi@aeig.africa</p>
+              <p class="text-xs text-slate-400">RH Bénin</p>
+            </div>
+          </a>
+          <a href="mailto:cynthia.toure@aeig.africa" class="flex items-center gap-3 p-3 rounded-xl hover:bg-primary/5 transition-colors">
+            <span class="material-symbols-outlined text-primary text-[20px]">mail</span>
+            <div>
+              <p class="text-sm font-semibold">cynthia.toure@aeig.africa</p>
+              <p class="text-xs text-slate-400">RH Côte d'Ivoire</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-primary/10">
+          <h3 class="font-bold text-sm text-highlight mb-4">Préférences</h3>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium">Mode sombre</p>
+              <p class="text-xs text-slate-400">Thème de l'interface</p>
+            </div>
+            <button onclick="toggleDark()" id="dark-toggle"
+              class="w-12 h-6 rounded-full transition-colors relative bg-slate-200 dark:bg-primary shrink-0">
+              <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform dark:translate-x-6"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /tab-profil -->
+
+    <!-- ── ANALYTICS TAB ── -->
+    <div id="tab-analytics" class="tab-content overflow-y-auto">
+      <div class="max-w-5xl mx-auto p-4 md:p-6 space-y-4">
+
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-bold text-highlight flex items-center gap-2">
+            <span class="material-symbols-outlined text-[22px]">bar_chart</span>
+            Tableau de bord analytique
+          </h2>
+          <button onclick="logoutAdmin()"
+            class="flex items-center gap-1 text-xs text-slate-400 hover:text-red-500 transition-colors font-medium">
+            <span class="material-symbols-outlined text-[14px]">logout</span>
+            Déconnexion
+          </button>
+        </div>
+
+        <!-- Sub-tabs -->
+        <div class="flex gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl w-fit">
+          <button id="atab-overview" onclick="switchAnalyticsView('overview')"
+            class="text-xs font-semibold py-2 px-4 rounded-lg transition-colors bg-white dark:bg-slate-700 text-primary shadow-sm">
+            Vue d'ensemble
+          </button>
+          <button id="atab-conversations" onclick="switchAnalyticsView('conversations')"
+            class="text-xs font-semibold py-2 px-4 rounded-lg transition-colors text-slate-500">
+            Conversations
+          </button>
+          <button id="atab-unanswered" onclick="switchAnalyticsView('unanswered')"
+            class="text-xs font-semibold py-2 px-4 rounded-lg transition-colors text-slate-500">
+            Sans réponse
+          </button>
+        </div>
+
+        <div id="av-overview">
+          <div id="analytics-overview-content">
+            <div class="text-center py-8 text-slate-400 text-sm">Chargement…</div>
+          </div>
+        </div>
+        <div id="av-conversations" class="hidden">
+          <div id="analytics-conversations-content"></div>
+        </div>
+        <div id="av-unanswered" class="hidden">
+          <div id="analytics-unanswered-content"></div>
+        </div>
+
+      </div>
+    </div><!-- /tab-analytics -->
+
+  </main>
+
+</div><!-- /body layout -->
+
+<!-- ═══ BOTTOM NAV (mobile only) ═══ -->
+<nav class="lg:hidden flex border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-2 pb-2 pt-1 justify-around shrink-0">
+  <button id="mob-nav-chat" onclick="switchTab('chat')"
     class="flex flex-col items-center gap-0.5 p-2 text-primary transition-colors">
     <span class="material-symbols-outlined text-[24px]">chat_bubble</span>
     <span class="text-[10px] font-bold">Chat</span>
   </button>
-  <button id="nav-base" onclick="openBaseTab()"
+  <button id="mob-nav-base" onclick="openBaseTab()"
     class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors relative">
     <span class="material-symbols-outlined text-[24px]">menu_book</span>
     <span class="text-[10px] font-bold">Base</span>
     <span id="base-lock" class="absolute -top-0.5 right-1 material-symbols-outlined text-[12px] text-slate-400">lock</span>
   </button>
-  <button id="nav-profil" onclick="switchTab('profil')"
+  <button id="mob-nav-profil" onclick="switchTab('profil')"
     class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors">
     <span class="material-symbols-outlined text-[24px]">account_circle</span>
     <span class="text-[10px] font-bold">Profil</span>
   </button>
-  <button id="nav-analytics" onclick="openAnalyticsTab()"
+  <button id="mob-nav-analytics" onclick="openAnalyticsTab()"
     class="flex flex-col items-center gap-0.5 p-2 text-slate-400 dark:text-slate-500 transition-colors relative">
     <span class="material-symbols-outlined text-[24px]">bar_chart</span>
     <span class="text-[10px] font-bold">Stats</span>
     <span id="analytics-badge"
       class="hidden absolute -top-0.5 right-0.5 min-w-[16px] h-4 bg-red-500 text-white text-[9px]
-             font-bold rounded-full flex items-center justify-center px-1 leading-none">
-      0
-    </span>
+             font-bold rounded-full flex items-center justify-center px-1 leading-none">0</span>
     <span id="analytics-lock"
       class="absolute -top-0.5 right-1 material-symbols-outlined text-[12px] text-slate-400">lock</span>
   </button>
@@ -411,20 +457,18 @@
 
 <!-- ═══ LOGIN MODAL ═══ -->
 <div id="login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-  <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-xs p-6 flex flex-col gap-5">
-    <!-- Header -->
+  <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-sm p-6 flex flex-col gap-5">
     <div class="flex flex-col items-center gap-2">
       <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
         <span class="material-symbols-outlined text-white text-[22px]">admin_panel_settings</span>
       </div>
       <h2 class="font-bold text-base text-highlight dark:text-white">Accès Administrateur</h2>
-      <p class="text-xs text-slate-400 text-center">Connectez-vous pour accéder à la base de connaissances</p>
+      <p class="text-xs text-slate-400 text-center">Connectez-vous pour accéder à la section admin</p>
     </div>
-    <!-- Form -->
     <div class="flex flex-col gap-3">
       <div class="flex flex-col gap-1">
         <label class="text-xs font-semibold text-slate-500 dark:text-slate-400">Email</label>
-        <input id="login-email" type="email" placeholder="Email Here" autocomplete="email"
+        <input id="login-email" type="email" placeholder="admin@rag.com" autocomplete="email"
           class="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-primary/60 transition-colors"/>
       </div>
       <div class="flex flex-col gap-1">
@@ -441,7 +485,6 @@
       </div>
       <p id="login-error" class="hidden text-xs text-red-500 font-medium text-center">Email ou mot de passe incorrect.</p>
     </div>
-    <!-- Actions -->
     <div class="flex flex-col gap-2">
       <button onclick="submitLogin()"
         class="w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
@@ -461,7 +504,7 @@
   <div id="toast-inner" class="px-4 py-2 rounded-full text-sm font-semibold shadow-lg text-white bg-slate-700 whitespace-nowrap"></div>
 </div>
 
-<!-- ═══ SCRIPTS (ordre de dépendances) ═══ -->
+<!-- ═══ SCRIPTS ═══ -->
 <script src="js/config.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/auth.js"></script>

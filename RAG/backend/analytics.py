@@ -2,13 +2,11 @@
 Analytiques — enregistrement des échanges dans PostgreSQL (Supabase)
 """
 import json
-import os
 import uuid
-from contextlib import contextmanager
 
-import psycopg2
 import psycopg2.extras
-from psycopg2.pool import ThreadedConnectionPool
+
+from .db import get_conn
 
 # Phrases qui signalent l'absence de réponse
 _NO_ANSWER = [
@@ -19,36 +17,9 @@ _NO_ANSWER = [
     "je ne connais pas cette information",
 ]
 
-_pool: ThreadedConnectionPool | None = None
-
-
-def _get_pool() -> ThreadedConnectionPool:
-    global _pool
-    if _pool is None:
-        url = os.getenv("DATABASE_URL")
-        if not url:
-            raise RuntimeError("Variable d'environnement DATABASE_URL manquante.")
-        _pool = ThreadedConnectionPool(1, 10, url)
-    return _pool
-
-
-@contextmanager
-def _conn():
-    """Context manager : emprunte une connexion du pool, commit ou rollback."""
-    pool = _get_pool()
-    conn = pool.getconn()
-    try:
-        yield conn
-        conn.commit()
-    except Exception:
-        conn.rollback()
-        raise
-    finally:
-        pool.putconn(conn)
-
 
 def init_db() -> None:
-    with _conn() as conn:
+    with get_conn() as conn:
         with conn.cursor() as cur:
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS conversations (
@@ -102,7 +73,7 @@ def log_message(
 ) -> str:
     msg_id  = str(uuid.uuid4())
     had_ans = 0 if _is_unanswered(answer) else 1
-    with _conn() as conn:
+    with get_conn() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 "INSERT INTO conversations (id) VALUES (%s) ON CONFLICT DO NOTHING",
@@ -127,26 +98,22 @@ def log_message(
 
 
 def get_stats() -> dict:
-    with _conn() as conn:
+    with get_conn() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute("SELECT COUNT(*) AS c FROM messages")
             total = cur.fetchone()["c"]
-
             cur.execute("SELECT COUNT(*) AS c FROM unanswered WHERE status = 'pending'")
             pending = cur.fetchone()["c"]
-
             cur.execute("SELECT COUNT(*) AS c FROM conversations")
             convs = cur.fetchone()["c"]
-
             cur.execute("""
-                SELECT question, COUNT(*) AS cnt
+                SELECT MIN(question) AS question, COUNT(*) AS cnt
                 FROM messages
                 GROUP BY LOWER(TRIM(question))
                 ORDER BY cnt DESC
                 LIMIT 10
             """)
             top_q = cur.fetchall()
-
     return {
         "total_questions":     total,
         "unanswered_pending":  pending,
@@ -159,11 +126,10 @@ def get_stats() -> dict:
 
 def get_conversations(page: int = 1, page_size: int = 20) -> dict:
     offset = (page - 1) * page_size
-    with _conn() as conn:
+    with get_conn() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute("SELECT COUNT(*) AS c FROM conversations")
             total = cur.fetchone()["c"]
-
             cur.execute("""
                 SELECT
                     c.id,
@@ -178,49 +144,40 @@ def get_conversations(page: int = 1, page_size: int = 20) -> dict:
                 LIMIT %s OFFSET %s
             """, (page_size, offset))
             rows = cur.fetchall()
-
-    return {
-        "total":     total,
-        "page":      page,
-        "page_size": page_size,
-        "items":     [dict(r) for r in rows],
-    }
+    items = []
+    for r in rows:
+        d = dict(r)
+        if d.get("started_at"): d["started_at"] = d["started_at"].isoformat()
+        items.append(d)
+    return {"total": total, "page": page, "page_size": page_size, "items": items}
 
 
 def get_conversation_messages(conversation_id: str) -> list:
-    with _conn() as conn:
+    with get_conn() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute("""
                 SELECT id, question, answer, sources, had_answer, asked_at
-                FROM messages
-                WHERE conversation_id = %s
-                ORDER BY asked_at
+                FROM messages WHERE conversation_id = %s ORDER BY asked_at
             """, (conversation_id,))
             rows = cur.fetchall()
-
     result = []
     for r in rows:
         d = dict(r)
-        try:
-            d["sources"] = json.loads(d["sources"] or "[]")
-        except Exception:
-            d["sources"] = []
-        # Sérialiser la date pour JSON
-        if d.get("asked_at"):
-            d["asked_at"] = d["asked_at"].isoformat()
+        try:    d["sources"] = json.loads(d["sources"] or "[]")
+        except: d["sources"] = []
+        if d.get("asked_at"): d["asked_at"] = d["asked_at"].isoformat()
         result.append(d)
     return result
 
 
 def get_unanswered(status: str = "pending", page: int = 1, page_size: int = 20) -> dict:
     offset = (page - 1) * page_size
-    with _conn() as conn:
+    with get_conn() as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute(
                 "SELECT COUNT(*) AS c FROM unanswered WHERE status = %s", (status,)
             )
             total = cur.fetchone()["c"]
-
             cur.execute("""
                 SELECT u.id, u.question, u.status, u.admin_response, u.resolved_at,
                        m.asked_at, m.conversation_id
@@ -231,20 +188,18 @@ def get_unanswered(status: str = "pending", page: int = 1, page_size: int = 20) 
                 LIMIT %s OFFSET %s
             """, (status, page_size, offset))
             rows = cur.fetchall()
-
     items = []
     for r in rows:
         d = dict(r)
         if d.get("asked_at"):    d["asked_at"]    = d["asked_at"].isoformat()
         if d.get("resolved_at"): d["resolved_at"] = d["resolved_at"].isoformat()
         items.append(d)
-
     return {"total": total, "items": items}
 
 
 def resolve_unanswered(unanswered_id: str, admin_response: str) -> str | None:
     """Marque comme résolu et retourne la question (pour l'ajouter au RAG)."""
-    with _conn() as conn:
+    with get_conn() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 "SELECT question FROM unanswered WHERE id = %s", (unanswered_id,)

@@ -1,16 +1,5 @@
 """
 API FastAPI — Assistant RH RAG
-Endpoints:
-  POST /api/chat                          → SSE streaming (question → réponse)
-  GET  /api/documents                     → liste des documents indexés
-  POST /api/documents/upload              → ingestion d'un nouveau document
-  DELETE /api/documents/{id}              → suppression d'un document
-  GET  /api/health                        → statut de l'API
-  GET  /api/admin/stats                   → statistiques (admin)
-  GET  /api/admin/conversations           → conversations paginées (admin)
-  GET  /api/admin/conversations/{id}/messages → détail conversation (admin)
-  GET  /api/admin/unanswered              → questions sans réponse (admin)
-  POST /api/admin/unanswered/{id}/resolve → résoudre + ajouter au RAG (admin)
 """
 import asyncio
 import json
@@ -21,6 +10,7 @@ from pathlib import Path
 from typing import AsyncGenerator
 
 import aiofiles
+import httpx
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -41,10 +31,11 @@ from .analytics import (
 )
 from .document_processor import process_document
 from .rag import RAGPipeline
+from .vector_store import init_vector_db
 
 # ─── App ───────────────────────────────────────────────────────────────────
 
-app = FastAPI(title="Assistant RH RAG API", version="1.0.0")
+app = FastAPI(title="Assistant RH RAG API", version="2.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -58,10 +49,45 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 SUPPORTED_EXTENSIONS = {".pdf", ".docx", ".doc", ".txt", ".md"}
 
+SUPABASE_URL = os.getenv("SUPABASE_URL", "").rstrip("/")
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
+STORAGE_BUCKET = "uploads"
+
+# ─── Supabase Storage ─────────────────────────────────────────────────────
+
+async def _storage_upload(path: str, data: bytes) -> bool:
+    """Upload vers Supabase Storage. Retourne True si réussi."""
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        return False
+    url = f"{SUPABASE_URL}/storage/v1/object/{STORAGE_BUCKET}/{path}"
+    async with httpx.AsyncClient() as client:
+        r = await client.post(
+            url, content=data,
+            headers={
+                "Authorization": f"Bearer {SUPABASE_KEY}",
+                "Content-Type": "application/octet-stream",
+            },
+            timeout=30,
+        )
+        return r.is_success
+
+
+async def _storage_delete(path: str) -> None:
+    """Supprime un fichier de Supabase Storage."""
+    if not SUPABASE_URL or not SUPABASE_KEY or not path:
+        return
+    url = f"{SUPABASE_URL}/storage/v1/object/{STORAGE_BUCKET}/{path}"
+    async with httpx.AsyncClient() as client:
+        await client.delete(
+            url,
+            headers={"Authorization": f"Bearer {SUPABASE_KEY}"},
+            timeout=10,
+        )
+
 # ─── Singleton RAG ────────────────────────────────────────────────────────
 
 _rag: RAGPipeline | None = None
-_rag_lock = threading.Lock()
+_rag_lock  = threading.Lock()
 _rag_ready = threading.Event()
 
 
@@ -75,23 +101,50 @@ def _init_rag() -> None:
     _rag_ready.set()
 
 
+def _ingest_one(rag: RAGPipeline, doc_path: Path, retries: int = 3) -> bool:
+    """Ingère un fichier avec retry. Retourne True si succès."""
+    import time
+    for attempt in range(1, retries + 1):
+        try:
+            chunks, metadatas, doc_id = process_document(str(doc_path))
+            if not chunks:
+                return False
+            embeddings = rag.embed_texts_sync(chunks)
+            rag.vector_store.add_documents(chunks, embeddings, metadatas, doc_id)
+            print(f"  ✓ Ingéré : {doc_path.name} ({len(chunks)} chunks)")
+            return True
+        except Exception as exc:
+            if attempt < retries:
+                print(f"  ⚠ Erreur {doc_path.name} (tentative {attempt}/{retries}): {exc} — retry dans 3s…")
+                time.sleep(3)
+            else:
+                print(f"  ✗ Échec définitif {doc_path.name}: {exc}")
+    return False
+
+
 def _auto_ingest_samples(rag: RAGPipeline) -> None:
-    if rag.vector_store.count() > 0:
-        return
     sample_dir = Path("sample_docs")
     if not sample_dir.exists():
         return
+
+    # Récupère les titres déjà indexés pour ne pas réingérer ce qui existe
+    existing = {doc["source"] for doc in rag.vector_store.list_documents()}
+
+    failed = []
     for doc_path in sorted(sample_dir.iterdir()):
-        if doc_path.suffix.lower() in SUPPORTED_EXTENSIONS:
-            try:
-                chunks, metadatas, doc_id = process_document(str(doc_path))
-                if not chunks:
-                    continue
-                embeddings = rag.embed_texts_sync(chunks)
-                rag.vector_store.add_documents(chunks, embeddings, metadatas, doc_id)
-                print(f"  ✓ Ingéré : {doc_path.name} ({len(chunks)} chunks)")
-            except Exception as exc:
-                print(f"  ✗ Erreur ingestion {doc_path.name}: {exc}")
+        if doc_path.suffix.lower() not in SUPPORTED_EXTENSIONS:
+            continue
+        if doc_path.name in existing:
+            continue
+        if not _ingest_one(rag, doc_path):
+            failed.append(doc_path)
+
+    if failed:
+        print(f"  ⚠ {len(failed)} document(s) non ingéré(s) — nouvelle tentative dans 30s…")
+        import time
+        time.sleep(30)
+        for doc_path in failed:
+            _ingest_one(rag, doc_path)
 
 
 def get_rag() -> RAGPipeline:
@@ -102,8 +155,10 @@ def get_rag() -> RAGPipeline:
 
 @app.on_event("startup")
 async def startup_event() -> None:
-    init_db()
-    print("→ Chargement du modèle d'embedding (peut prendre 1-2 min au 1er démarrage)…")
+    # Initialise les tables PostgreSQL
+    await asyncio.to_thread(init_db)
+    await asyncio.to_thread(init_vector_db)
+    print("→ Initialisation du pipeline RAG…")
     asyncio.get_event_loop().run_in_executor(None, _init_rag)
 
 
@@ -124,14 +179,11 @@ class ResolveRequest(BaseModel):
     admin_response: str
 
 
-# ─── Helpers ──────────────────────────────────────────────────────────────
+# ─── Logging du stream ────────────────────────────────────────────────────
 
 async def _stream_with_logging(
-    gen: AsyncGenerator,
-    conversation_id: str,
-    question: str,
+    gen: AsyncGenerator, conversation_id: str, question: str
 ) -> AsyncGenerator:
-    """Passe le stream en transparence et logue l'échange à la fin."""
     full_text: list[str] = []
     sources: list = []
     async for chunk in gen:
@@ -146,10 +198,7 @@ async def _stream_with_logging(
                 elif t == "done" and conversation_id:
                     await asyncio.to_thread(
                         log_message,
-                        conversation_id,
-                        question,
-                        "".join(full_text),
-                        sources,
+                        conversation_id, question, "".join(full_text), sources,
                     )
             except Exception:
                 pass
@@ -162,32 +211,31 @@ async def _stream_with_logging(
 async def health():
     ready = _rag_ready.is_set()
     return {
-        "status": "ready" if ready else "initializing",
-        "model": f"ollama/{os.getenv('OLLAMA_MODEL', 'llama3.2')}",
+        "status":    "ready" if ready else "initializing",
+        "model":     f"ollama/{os.getenv('OLLAMA_MODEL', 'llama3.2')}",
         "documents": get_rag().vector_store.count() if ready else 0,
     }
 
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
-    rag = await asyncio.to_thread(get_rag)
+    rag     = await asyncio.to_thread(get_rag)
     history = [{"role": m.role, "content": m.content} for m in request.history]
-    raw_stream = rag.generate_stream(request.question, history)
-    stream = _stream_with_logging(raw_stream, request.conversation_id, request.question)
+    stream  = _stream_with_logging(
+        rag.generate_stream(request.question, history),
+        request.conversation_id,
+        request.question,
+    )
     return StreamingResponse(
         stream,
         media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "X-Accel-Buffering": "no",
-            "Connection": "keep-alive",
-        },
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
 
 @app.get("/api/documents")
 async def list_documents():
-    rag = await asyncio.to_thread(get_rag)
+    rag  = await asyncio.to_thread(get_rag)
     docs = rag.vector_store.list_documents()
     return {"documents": docs, "total": len(docs)}
 
@@ -205,11 +253,12 @@ async def upload_document(
             detail=f"Format non supporté : {ext}. Formats acceptés : PDF, DOCX, TXT, MD.",
         )
 
-    file_id = str(uuid.uuid4())
+    file_id   = str(uuid.uuid4())
     file_path = UPLOAD_DIR / f"{file_id}{ext}"
+    content   = await file.read()
 
+    # Sauvegarde temporaire pour traitement
     async with aiofiles.open(file_path, "wb") as f:
-        content = await file.read()
         await f.write(content)
 
     try:
@@ -220,29 +269,44 @@ async def upload_document(
             file_path.unlink(missing_ok=True)
             raise HTTPException(status_code=422, detail="Document vide ou illisible.")
 
-        rag = await asyncio.to_thread(get_rag)
+        rag        = await asyncio.to_thread(get_rag)
         embeddings = await rag.embed_texts(chunks)
-        rag.vector_store.add_documents(chunks, embeddings, metadatas, doc_id)
+
+        # Upload vers Supabase Storage
+        storage_path = f"{file_id}{ext}"
+        stored = await _storage_upload(storage_path, content)
+        if not stored:
+            storage_path = None  # pas de storage configuré, on continue quand même
+
+        rag.vector_store.add_documents(
+            chunks, embeddings, metadatas, doc_id,
+            storage_path=storage_path,
+        )
 
         return {
-            "status": "success",
-            "doc_id": doc_id,
-            "title": metadatas[0]["title"],
-            "chunks": len(chunks),
+            "status":   "success",
+            "doc_id":   doc_id,
+            "title":    metadatas[0]["title"],
+            "chunks":   len(chunks),
+            "stored":   stored,
         }
     except HTTPException:
         raise
     except Exception as exc:
-        file_path.unlink(missing_ok=True)
         raise HTTPException(status_code=500, detail=str(exc))
+    finally:
+        # Supprime le fichier temporaire local (il est dans Supabase Storage)
+        file_path.unlink(missing_ok=True)
 
 
 @app.delete("/api/documents/{doc_id}")
 async def delete_document(doc_id: str):
     rag = await asyncio.to_thread(get_rag)
-    deleted = rag.vector_store.delete_document(doc_id)
+    deleted, storage_path = rag.vector_store.delete_document(doc_id)
     if deleted == 0:
         raise HTTPException(status_code=404, detail="Document introuvable.")
+    if storage_path:
+        await _storage_delete(storage_path)
     return {"status": "deleted", "doc_id": doc_id, "chunks_removed": deleted}
 
 
@@ -288,8 +352,8 @@ async def admin_resolve(unanswered_id: str, body: ResolveRequest):
     if question is None:
         raise HTTPException(status_code=404, detail="Question introuvable.")
 
-    # Ajouter le Q&A à la base RAG pour les prochaines recherches
-    rag = await asyncio.to_thread(get_rag)
+    # Ajoute le Q&A à la base vectorielle
+    rag     = await asyncio.to_thread(get_rag)
     qa_text = f"Question : {question}\n\nRéponse : {body.admin_response}"
     doc_id  = str(uuid.uuid4())
     meta    = {
@@ -305,6 +369,6 @@ async def admin_resolve(unanswered_id: str, body: ResolveRequest):
     return {"status": "resolved", "added_to_rag": True}
 
 
-# ─── Frontend statique (doit être APRÈS toutes les routes /api) ───────────
+# ─── Frontend statique ────────────────────────────────────────────────────
 
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")

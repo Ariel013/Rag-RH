@@ -1,22 +1,59 @@
 // ─── Tab switching ────────────────────────────────────────────────────────
 function switchTab(tab) {
   state.currentTab = tab;
-  ['chat','base','profil','analytics'].forEach(t => {
+  closeSidebar();
+
+  const tabs = ['chat', 'base', 'profil', 'analytics'];
+  tabs.forEach(t => {
     const content = document.getElementById('tab-' + t);
-    const nav     = document.getElementById('nav-' + t);
-    if (!content || !nav) return;
+    if (content) content.classList.toggle('active', t === tab);
+  });
+
+  // Desktop sidebar nav
+  document.querySelectorAll('.sidebar-nav-item').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  const desktopNav = document.getElementById('nav-' + tab);
+  if (desktopNav) desktopNav.classList.add('active');
+
+  // Mobile bottom nav
+  ['chat', 'base', 'profil', 'analytics'].forEach(t => {
+    const mob = document.getElementById('mob-nav-' + t);
+    if (!mob) return;
     if (t === tab) {
-      content.classList.add('active');
-      nav.classList.remove('text-slate-400', 'dark:text-slate-500');
-      nav.classList.add('text-primary');
+      mob.classList.add('text-primary');
+      mob.classList.remove('text-slate-400', 'dark:text-slate-500');
     } else {
-      content.classList.remove('active');
-      nav.classList.remove('text-primary');
-      nav.classList.add('text-slate-400', 'dark:text-slate-500');
+      mob.classList.remove('text-primary');
+      mob.classList.add('text-slate-400', 'dark:text-slate-500');
     }
   });
+
   if (tab === 'base')      loadDocuments();
   if (tab === 'analytics') loadAnalytics();
+}
+
+// ─── Sidebar (mobile drawer) ───────────────────────────────────────────────
+function toggleSidebar() {
+  const sidebar  = document.getElementById('sidebar');
+  const overlay  = document.getElementById('sidebar-overlay');
+  const isOpen   = sidebar.classList.contains('open');
+  if (isOpen) {
+    closeSidebar();
+  } else {
+    sidebar.classList.add('open');
+    overlay.classList.add('visible');
+    overlay.classList.remove('hidden');
+  }
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.remove('open');
+  overlay.classList.remove('visible');
+  // Délai pour laisser l'animation se terminer
+  setTimeout(() => overlay.classList.add('hidden'), 220);
 }
 
 // ─── Dark mode ────────────────────────────────────────────────────────────

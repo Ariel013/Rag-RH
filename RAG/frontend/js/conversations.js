@@ -111,22 +111,7 @@ function loadConversationIntoDOM(conv) {
   scrollToBottom();
 }
 
-// ─── Sidebar ──────────────────────────────────────────────────────────────
-function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  if (sidebar.classList.contains('sidebar-closed')) {
-    renderConversationList();
-    sidebar.classList.remove('sidebar-closed');
-    document.getElementById('sidebar-overlay').classList.remove('hidden');
-  } else {
-    closeSidebar();
-  }
-}
-
-function closeSidebar() {
-  document.getElementById('sidebar').classList.add('sidebar-closed');
-  document.getElementById('sidebar-overlay').classList.add('hidden');
-}
+// ─── Sidebar — défini dans ui.js, renderConversationList appelé à l'init ──
 
 function renderConversationList() {
   const list  = document.getElementById('conversations-list');

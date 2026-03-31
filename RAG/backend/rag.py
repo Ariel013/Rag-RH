@@ -1,54 +1,49 @@
 """
-Pipeline RAG — 100% gratuit avec Ollama (local).
+Pipeline RAG — embeddings via HF Inference API, LLM via API OpenAI-compatible.
 
-Embeddings  : sentence-transformers (local, gratuit)
-Vector DB   : ChromaDB (local, gratuit)
-LLM         : Ollama via API OpenAI-compatible (local, gratuit)
-
-Modèles Ollama recommandés pour le français :
-  - llama3.2      (~2 GB)  : rapide, bon pour les Q&A simples
-  - mistral       (~4 GB)  : meilleure qualité en français
-  - llama3.1:8b   (~5 GB)  : excellent équilibre qualité/vitesse
+Embeddings  : HuggingFace Inference API (gratuit, sans PyTorch local)
+Vector DB   : PostgreSQL + pgvector (Supabase)
+LLM         : Groq / Ollama via API OpenAI-compatible
 """
+import asyncio
 import json
 import os
-import asyncio
 from typing import AsyncGenerator
 
+import numpy as np
+from huggingface_hub import InferenceClient
 from openai import AsyncOpenAI
 
 from .vector_store import VectorStore
 
-EMBED_MODEL         = "paraphrase-multilingual-MiniLM-L12-v2"
+EMBED_MODEL         = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 RELEVANCE_THRESHOLD = 0.15
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
 OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "llama3.2")
+HF_TOKEN        = os.getenv("HF_TOKEN")
 
 
 class RAGPipeline:
     def __init__(self):
         self.vector_store = VectorStore()
-        self._embed_model = None
-        # Ollama expose une API OpenAI-compatible → pas de clé API requise
+        self._hf = InferenceClient(token=HF_TOKEN)
         self._llm = AsyncOpenAI(
             base_url=OLLAMA_BASE_URL,
             api_key=os.getenv("GROQ_API_KEY", "ollama"),
-
-            #api_key="ollama",          # valeur requise par le client, ignorée par Ollama
         )
-        print(f"  LLM : Ollama ({OLLAMA_MODEL}) — {OLLAMA_BASE_URL}")
+        print(f"  Embeddings : HF Inference API ({EMBED_MODEL})")
+        print(f"  LLM        : {OLLAMA_MODEL} — {OLLAMA_BASE_URL}")
 
-    # ── Embedding (local, gratuit) ─────────────────────────────────────────
-
-    def _load_embed_model(self):
-        if self._embed_model is None:
-            from sentence_transformers import SentenceTransformer
-            self._embed_model = SentenceTransformer(EMBED_MODEL)
-        return self._embed_model
+    # ── Embeddings (HF Inference API) ─────────────────────────────────────
 
     def _encode_sync(self, texts: list[str]) -> list[list[float]]:
-        return self._load_embed_model().encode(texts, convert_to_numpy=True).tolist()
+        result = self._hf.feature_extraction(texts, model=EMBED_MODEL)
+        arr = np.array(result)
+        # shape (n, 384) pour liste, (384,) pour texte unique
+        if arr.ndim == 1:
+            return [arr.tolist()]
+        return arr.tolist()
 
     async def embed_texts(self, texts: list[str]) -> list[list[float]]:
         return await asyncio.to_thread(self._encode_sync, texts)
@@ -124,7 +119,7 @@ RÈGLES ABSOLUES — respecte-les sans exception :
         messages += list((history or []))[-6:]
         messages.append({"role": "user", "content": question})
 
-        # 4. Streaming via Ollama
+        # 4. Streaming LLM
         try:
             stream = await self._llm.chat.completions.create(
                 model=OLLAMA_MODEL,
@@ -143,8 +138,7 @@ RÈGLES ABSOLUES — respecte-les sans exception :
             msg = str(e)
             if "connection" in msg.lower() or "refused" in msg.lower():
                 msg = (
-                    "Impossible de joindre Ollama. "
-                    "Vérifiez qu'il est démarré avec `ollama serve` "
-                    f"et que le modèle '{OLLAMA_MODEL}' est installé (`ollama pull {OLLAMA_MODEL}`)."
+                    "Impossible de joindre le LLM. "
+                    "Vérifiez la variable OLLAMA_BASE_URL et que le service est démarré."
                 )
             yield f"data: {json.dumps({'type': 'error', 'message': msg})}\n\n"
