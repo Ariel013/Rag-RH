@@ -4,17 +4,20 @@ let _analyticsView = 'overview';
 let _convPage      = 1;
 let _unansPage     = 1;
 let _unansStatus   = 'pending';
+let _allTopics     = [];  // cache pour les dropdowns de reassign
 
 function loadAnalytics() {
+  _allTopics = [];
   switchAnalyticsView('overview');
   refreshUnansweredBadge();
 }
 
 function switchAnalyticsView(view) {
   _analyticsView = view;
-  ['overview', 'conversations', 'unanswered'].forEach(v => {
+  ['overview', 'conversations', 'unanswered', 'topics'].forEach(v => {
     document.getElementById('av-' + v).classList.toggle('hidden', v !== view);
     const btn = document.getElementById('atab-' + v);
+    if (!btn) return;
     if (v === view) {
       btn.classList.add('bg-white', 'dark:bg-slate-700', 'text-primary', 'shadow-sm');
       btn.classList.remove('text-slate-500');
@@ -23,9 +26,10 @@ function switchAnalyticsView(view) {
       btn.classList.add('text-slate-500');
     }
   });
-  if (view === 'overview')       renderOverview();
+  if (view === 'overview')           renderOverview();
   else if (view === 'conversations') renderConversations(1);
   else if (view === 'unanswered')    renderUnanswered('pending', 1);
+  else if (view === 'topics')        renderTopics();
 }
 
 // ─── Vue d'ensemble ───────────────────────────────────────────────────────
@@ -35,26 +39,50 @@ async function renderOverview() {
   el.innerHTML = _loadingHtml();
   try {
     const data = await _apiFetch('/api/admin/stats');
+    const total = data.total_questions || 0;
     el.innerHTML = `
       <div class="grid grid-cols-3 gap-2 mb-4">
-        ${_statCard(data.total_questions, 'Questions', 'forum')}
+        ${_statCard(total, 'Questions', 'forum')}
         ${_statCard(data.unanswered_pending, 'Sans réponse', 'help', data.unanswered_pending > 0 ? 'amber' : 'primary')}
         ${_statCard(data.total_conversations, 'Conversations', 'chat_bubble')}
       </div>
       ${data.unanswered_pending > 0 ? _alertBanner(data.unanswered_pending) : ''}
       <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10">
-        <h3 class="font-bold text-sm text-highlight mb-3 flex items-center gap-2">
-          <span class="material-symbols-outlined text-[18px]">trending_up</span>
-          Questions les plus posées
-        </h3>
-        ${data.top_questions.length === 0
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-bold text-sm text-highlight flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">folder_special</span>
+            Distribution par topic
+          </h3>
+          <button onclick="switchAnalyticsView('topics')"
+            class="text-xs text-primary hover:underline font-semibold">
+            Gérer les topics →
+          </button>
+        </div>
+        ${(!data.top_topics || data.top_topics.length === 0)
           ? '<p class="text-xs text-slate-400 text-center py-4">Aucune donnée pour le moment</p>'
-          : `<div class="space-y-1.5">${data.top_questions.map((q, i) => _topQuestionRow(q, i)).join('')}</div>`
+          : `<div class="space-y-2">${data.top_topics.map(t => _topicBarRow(t, total)).join('')}</div>
+             ${data.unclassified > 0
+               ? `<p class="text-[10px] text-slate-400 mt-2 text-right">${data.unclassified} question(s) non classées</p>`
+               : ''}`
         }
       </div>`;
   } catch {
     el.innerHTML = _errorHtml();
   }
+}
+
+function _topicBarRow(topic, total) {
+  const pct = total > 0 ? Math.round((topic.count / total) * 100) : 0;
+  return `
+    <div class="space-y-1">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-slate-700 dark:text-slate-300 font-medium truncate">${escapeHtml(topic.name)}</span>
+        <span class="shrink-0 text-primary font-bold ml-2">${topic.count}</span>
+      </div>
+      <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+        <div class="bg-primary h-1.5 rounded-full transition-all" style="width:${pct}%"></div>
+      </div>
+    </div>`;
 }
 
 function _statCard(value, label, icon, color = 'primary') {
@@ -85,17 +113,166 @@ function _alertBanner(count) {
     </div>`;
 }
 
-function _topQuestionRow(q, i) {
-  const isFirst = i === 0;
+// ─── Topics ───────────────────────────────────────────────────────────────
+
+async function renderTopics() {
+  const el = document.getElementById('analytics-topics-content');
+  el.innerHTML = _loadingHtml();
+  _allTopics = [];
+  try {
+    const topics = await _apiFetch('/api/admin/topics');
+    _allTopics = topics;
+    el.innerHTML = `
+      <div class="mb-4 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border border-primary/10">
+        <h3 class="font-bold text-sm text-highlight mb-3 flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">add_circle</span>
+          Créer un topic personnalisé
+        </h3>
+        <div class="flex gap-2">
+          <input id="new-topic-name" type="text" placeholder="Nom du topic…"
+            class="flex-1 px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700
+                   bg-slate-50 dark:bg-slate-700 focus:outline-none focus:border-primary/50"
+            onkeydown="if(event.key==='Enter') submitCreateTopic()"/>
+          <button onclick="submitCreateTopic()"
+            class="px-4 py-2 bg-primary hover:bg-primary/90 text-white text-xs font-semibold
+                   rounded-lg transition-colors flex items-center gap-1.5 shrink-0">
+            <span class="material-symbols-outlined text-[14px]">add</span>
+            Créer
+          </button>
+        </div>
+      </div>
+      <div class="space-y-2" id="topics-list">
+        ${topics.length === 0
+          ? '<p class="text-center text-slate-400 text-sm py-6">Aucun topic disponible</p>'
+          : topics.map(t => _topicCard(t)).join('')}
+      </div>`;
+  } catch {
+    el.innerHTML = _errorHtml();
+  }
+}
+
+function _topicCard(t) {
+  const badge = t.is_custom
+    ? '<span class="text-[9px] bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 px-1.5 py-0.5 rounded-full font-bold ml-1.5">Perso</span>'
+    : '';
   return `
-    <div class="flex items-center gap-3 py-1.5 border-b border-slate-50 dark:border-slate-700 last:border-0">
-      <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0
-        ${isFirst ? 'bg-primary text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500'}">
-        ${i + 1}
-      </span>
-      <span class="flex-1 text-xs text-slate-700 dark:text-slate-300 line-clamp-2">${escapeHtml(q.question)}</span>
-      <span class="shrink-0 text-xs font-bold text-primary">${q.count}×</span>
+    <div class="topic-card bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-primary/10" data-topic-id="${t.id}">
+      <button onclick="toggleTopicDetail('${t.id}', this)"
+        class="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-primary/5 rounded-xl transition-colors">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="material-symbols-outlined text-primary text-[18px] shrink-0">folder</span>
+          <span class="font-semibold text-sm truncate">${escapeHtml(t.name)}</span>
+          ${badge}
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <span class="text-xs font-bold text-primary">${t.count} question${t.count > 1 ? 's' : ''}</span>
+          <span class="material-symbols-outlined text-slate-300 text-[18px] topic-arrow">expand_more</span>
+        </div>
+      </button>
+      <div class="topic-detail hidden px-4 pb-3">
+        <div class="topic-detail-body text-xs text-slate-400 text-center py-2">Chargement…</div>
+      </div>
     </div>`;
+}
+
+async function toggleTopicDetail(topicId, btnEl) {
+  const card   = btnEl.closest('.topic-card');
+  const detail = card.querySelector('.topic-detail');
+  const arrow  = card.querySelector('.topic-arrow');
+
+  if (!detail.classList.contains('hidden')) {
+    detail.classList.add('hidden');
+    if (arrow) arrow.textContent = 'expand_more';
+    return;
+  }
+
+  detail.classList.remove('hidden');
+  if (arrow) arrow.textContent = 'expand_less';
+
+  const body = detail.querySelector('.topic-detail-body');
+  try {
+    const data = await _apiFetch(`/api/admin/topics/${topicId}/messages`);
+    if (_allTopics.length === 0) {
+      _allTopics = await _apiFetch('/api/admin/topics');
+    }
+
+    if (data.items.length === 0) {
+      body.innerHTML = '<p class="text-center py-3 text-slate-400">Aucune question dans ce topic</p>';
+      return;
+    }
+
+    const more = data.total > data.items.length
+      ? `<p class="text-[10px] text-slate-400 text-center mt-2">${data.total - data.items.length} question(s) supplémentaire(s) non affichées</p>`
+      : '';
+
+    body.innerHTML = `
+      <div class="space-y-1 max-h-72 overflow-y-auto pr-1">
+        ${data.items.map(m => _topicMessageRow(m, topicId)).join('')}
+      </div>
+      ${more}`;
+  } catch {
+    body.innerHTML = '<p class="text-center text-red-400 py-2">Erreur de chargement</p>';
+  }
+}
+
+function _topicMessageRow(m, currentTopicId) {
+  const otherTopics = _allTopics.filter(t => t.id !== currentTopicId);
+  const options = otherTopics.map(t =>
+    `<option value="${escapeHtml(t.id)}">${escapeHtml(t.name)}</option>`
+  ).join('');
+
+  return `
+    <div class="flex items-center gap-2 py-2 border-b border-slate-50 dark:border-slate-700 last:border-0" id="tmsg-${m.id}">
+      <span class="flex-1 text-xs text-slate-700 dark:text-slate-300 leading-tight">${escapeHtml(m.question)}</span>
+      <select onchange="reassignMessageTopic('${m.id}', this.value, this)"
+        class="shrink-0 text-[10px] py-1 px-1.5 rounded border border-slate-200 dark:border-slate-700
+               bg-white dark:bg-slate-700 text-slate-500 focus:outline-none focus:border-primary/50 cursor-pointer">
+        <option value="">Déplacer →</option>
+        ${options}
+      </select>
+    </div>`;
+}
+
+async function reassignMessageTopic(messageId, newTopicId, selectEl) {
+  if (!newTopicId) return;
+  selectEl.disabled = true;
+  try {
+    await _apiFetch(`/api/admin/messages/${messageId}/topic`, {
+      method:  'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ topic_id: newTopicId }),
+    });
+    const row = document.getElementById('tmsg-' + messageId);
+    if (row) row.remove();
+    showToast('Question déplacée ✓', 'success');
+    // Rafraîchir les compteurs
+    _allTopics = [];
+    renderTopics();
+  } catch {
+    selectEl.disabled = false;
+    selectEl.value = '';
+    showToast('Erreur lors du déplacement', 'error');
+  }
+}
+
+async function submitCreateTopic() {
+  const input = document.getElementById('new-topic-name');
+  const name  = input.value.trim();
+  if (!name) { showToast('Entrez un nom de topic', 'error'); return; }
+
+  try {
+    await _apiFetch('/api/admin/topics', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ name }),
+    });
+    input.value = '';
+    _allTopics  = [];
+    showToast(`Topic "${name}" créé ✓`, 'success');
+    renderTopics();
+  } catch (err) {
+    showToast(`Erreur : ${err.message}`, 'error');
+  }
 }
 
 // ─── Conversations ────────────────────────────────────────────────────────

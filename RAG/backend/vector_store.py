@@ -15,6 +15,16 @@ def init_vector_db() -> None:
         with conn.cursor() as cur:
             cur.execute("CREATE EXTENSION IF NOT EXISTS vector")
 
+            # Topics sémantiques (doit exister avant messages pour la FK)
+            cur.execute(f"""
+                CREATE TABLE IF NOT EXISTS topics (
+                    id         TEXT PRIMARY KEY,
+                    name       TEXT NOT NULL UNIQUE,
+                    embedding  vector({EMBEDDING_DIM}),
+                    is_custom  BOOLEAN NOT NULL DEFAULT FALSE
+                )
+            """)
+
             cur.execute(f"""
                 CREATE TABLE IF NOT EXISTS document_chunks (
                     id          TEXT PRIMARY KEY,

@@ -67,6 +67,10 @@ def init_db() -> None:
                 CREATE INDEX IF NOT EXISTS idx_unans_status
                     ON unanswered(status)
             """)
+            # Migration : colonne topic_id sur messages (ajout si absente)
+            cur.execute("""
+                ALTER TABLE messages ADD COLUMN IF NOT EXISTS topic_id TEXT
+            """)
 
 
 def _is_unanswered(answer: str) -> bool:
@@ -75,7 +79,8 @@ def _is_unanswered(answer: str) -> bool:
 
 
 def log_message(
-    conversation_id: str, question: str, answer: str, sources: list
+    conversation_id: str, question: str, answer: str, sources: list,
+    topic_id: str | None = None,
 ) -> str:
     msg_id  = str(uuid.uuid4())
     had_ans = 0 if _is_unanswered(answer) else 1
@@ -91,9 +96,9 @@ def log_message(
             )
             cur.execute(
                 """INSERT INTO messages
-                   (id, conversation_id, question, answer, sources, had_answer)
-                   VALUES (%s, %s, %s, %s, %s, %s)""",
-                (msg_id, conversation_id, question, answer, json.dumps(sources), had_ans),
+                   (id, conversation_id, question, answer, sources, had_answer, topic_id)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+                (msg_id, conversation_id, question, answer, json.dumps(sources), had_ans, topic_id),
             )
             if not had_ans:
                 cur.execute(
@@ -113,20 +118,24 @@ def get_stats() -> dict:
             cur.execute("SELECT COUNT(*) AS c FROM conversations")
             convs = cur.fetchone()["c"]
             cur.execute("""
-                SELECT MIN(question) AS question, COUNT(*) AS cnt
-                FROM messages
-                GROUP BY LOWER(TRIM(question))
-                ORDER BY cnt DESC
-                LIMIT 10
+                SELECT t.id, t.name, COUNT(m.id) AS count
+                FROM topics t
+                LEFT JOIN messages m ON m.topic_id = t.id
+                GROUP BY t.id, t.name
+                ORDER BY count DESC
             """)
-            top_q = cur.fetchall()
+            top_topics = cur.fetchall()
+            cur.execute("SELECT COUNT(*) AS c FROM messages WHERE topic_id IS NULL")
+            unclassified = cur.fetchone()["c"]
     return {
         "total_questions":     total,
         "unanswered_pending":  pending,
         "total_conversations": convs,
-        "top_questions": [
-            {"question": r["question"], "count": r["cnt"]} for r in top_q
+        "top_topics": [
+            {"id": r["id"], "name": r["name"], "count": r["count"]}
+            for r in top_topics
         ],
+        "unclassified": unclassified,
     }
 
 

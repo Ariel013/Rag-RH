@@ -34,6 +34,14 @@ from .analytics import (
 )
 from .document_processor import process_document
 from .rag import RAGPipeline
+from .topics import (
+    assign_topic,
+    create_topic,
+    get_all_topics,
+    get_topic_messages,
+    reassign_message_topic,
+    seed_default_topics,
+)
 from .vector_store import init_vector_db
 
 # ─── App ───────────────────────────────────────────────────────────────────
@@ -125,6 +133,7 @@ def _init_rag() -> None:
             return
         _rag = RAGPipeline()
         _auto_ingest_samples(_rag)
+        seed_default_topics(_rag)
     _rag_ready.set()
 
 
@@ -178,9 +187,10 @@ def get_rag() -> RAGPipeline:
 
 @app.on_event("startup")
 async def startup_event() -> None:
-    # Initialise les tables PostgreSQL
-    await asyncio.to_thread(init_db)
+    # init_vector_db en premier (crée l'extension vector + table topics)
     await asyncio.to_thread(init_vector_db)
+    # init_db ensuite (peut migrer messages avec topic_id)
+    await asyncio.to_thread(init_db)
     print("→ Initialisation du pipeline RAG…")
     asyncio.create_task(asyncio.to_thread(_init_rag))
 
@@ -207,10 +217,37 @@ class ResolveRequest(BaseModel):
     admin_response: str
 
 
+class TopicCreateRequest(BaseModel):
+    name: str
+
+
+class MessageTopicRequest(BaseModel):
+    topic_id: str
+
+
 # ─── Logging du stream ────────────────────────────────────────────────────
 
+async def _do_log(
+    rag: RAGPipeline,
+    conversation_id: str,
+    question: str,
+    full_text: list[str],
+    sources: list,
+) -> None:
+    """Embedding + assignation topic + persistance — fire-and-forget."""
+    try:
+        embs = await rag.embed_texts([question])
+        topic_id = await asyncio.to_thread(assign_topic, embs[0])
+        await asyncio.to_thread(
+            log_message,
+            conversation_id, question, "".join(full_text), sources, topic_id,
+        )
+    except Exception as exc:
+        print(f"  ⚠ Erreur logging: {exc}")
+
+
 async def _stream_with_logging(
-    gen: AsyncGenerator, conversation_id: str, question: str
+    gen: AsyncGenerator, conversation_id: str, question: str, rag: RAGPipeline,
 ) -> AsyncGenerator:
     full_text: list[str] = []
     sources: list = []
@@ -224,9 +261,8 @@ async def _stream_with_logging(
                 elif t == "sources":
                     sources = data.get("sources", [])
                 elif t == "done" and conversation_id:
-                    await asyncio.to_thread(
-                        log_message,
-                        conversation_id, question, "".join(full_text), sources,
+                    asyncio.create_task(
+                        _do_log(rag, conversation_id, question, list(full_text), list(sources))
                     )
             except Exception:
                 pass
@@ -263,6 +299,7 @@ async def chat(request: Request, body: ChatRequest):
         rag.generate_stream(body.question, history),
         body.conversation_id,
         body.question,
+        rag,
     )
     return StreamingResponse(
         stream,
@@ -408,6 +445,46 @@ async def admin_resolve(unanswered_id: str, body: ResolveRequest, _: None = Depe
     rag.vector_store.add_documents([qa_text], embeddings, [meta], doc_id)
 
     return {"status": "resolved", "added_to_rag": True}
+
+
+# ─── Routes Admin Topics ──────────────────────────────────────────────────
+
+@app.get("/api/admin/topics")
+async def admin_list_topics(_: None = Depends(verify_admin)):
+    return await asyncio.to_thread(get_all_topics)
+
+
+@app.get("/api/admin/topics/{topic_id}/messages")
+async def admin_topic_messages(
+    topic_id: str,
+    page: int = Query(default=1, ge=1),
+    _: None = Depends(verify_admin),
+):
+    return await asyncio.to_thread(get_topic_messages, topic_id, page)
+
+
+@app.post("/api/admin/topics")
+async def admin_create_topic(body: TopicCreateRequest, _: None = Depends(verify_admin)):
+    if not body.name.strip():
+        raise HTTPException(status_code=400, detail="Le nom du topic ne peut pas être vide.")
+    rag  = await asyncio.to_thread(get_rag)
+    embs = await rag.embed_texts([body.name.strip()])
+    try:
+        return await asyncio.to_thread(create_topic, body.name.strip(), embs[0])
+    except ValueError as e:
+        raise HTTPException(status_code=409, detail=str(e))
+
+
+@app.put("/api/admin/messages/{message_id}/topic")
+async def admin_reassign_topic(
+    message_id: str,
+    body: MessageTopicRequest,
+    _: None = Depends(verify_admin),
+):
+    ok = await asyncio.to_thread(reassign_message_topic, message_id, body.topic_id)
+    if not ok:
+        raise HTTPException(status_code=404, detail="Message introuvable.")
+    return {"status": "updated"}
 
 
 # ─── Frontend statique ────────────────────────────────────────────────────
