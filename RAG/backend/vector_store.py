@@ -83,5 +83,13 @@ class VectorStore:
                 }
         return list(seen.values())
 
+    def delete_by_source_type(self, source_type: str) -> int:
+        """Supprime tous les chunks dont la métadonnée source_type correspond."""
+        results = self._col.get(where={"source_type": {"$eq": source_type}})
+        if results["ids"]:
+            self._col.delete(ids=results["ids"])
+            return len(results["ids"])
+        return 0
+
     def count(self) -> int:
         return self._col.count()

@@ -17,24 +17,25 @@ OLLAMA_URL="${OLLAMA_BASE_URL:-http://localhost:11434/v1}"
 # URL de base sans /v1 pour les endpoints natifs Ollama
 OLLAMA_BASE="${OLLAMA_URL%/v1}"
 
-# Vérifier qu'Ollama est accessible
-echo "→ Vérification d'Ollama ($OLLAMA_URL)…"
-if ! curl -sf "$OLLAMA_BASE/api/tags" > /dev/null 2>&1; then
-    echo ""
-    echo "⚠  Ollama n'est pas démarré !"
-    echo "   Lancez-le dans un autre terminal avec : ollama serve"
-    echo "   Puis installez le modèle            : ollama pull $OLLAMA_MODEL"
-    echo ""
-    exit 1
+# Vérifier Ollama uniquement si on utilise une instance locale
+if [[ "$OLLAMA_BASE" == *"localhost"* || "$OLLAMA_BASE" == *"127.0.0.1"* ]]; then
+    echo "→ Vérification d'Ollama local ($OLLAMA_URL)…"
+    if ! curl -sf "$OLLAMA_BASE/api/tags" > /dev/null 2>&1; then
+        echo ""
+        echo "⚠  Ollama n'est pas démarré !"
+        echo "   Lancez-le dans un autre terminal avec : ollama serve"
+        echo "   Puis installez le modèle            : ollama pull $OLLAMA_MODEL"
+        echo ""
+        exit 1
+    fi
+    if ! curl -sf "$OLLAMA_BASE/api/tags" | grep -q "\"$OLLAMA_MODEL\"" 2>/dev/null; then
+        echo "→ Modèle '$OLLAMA_MODEL' non trouvé, téléchargement…"
+        ollama pull "$OLLAMA_MODEL"
+    fi
+    echo "✓ Ollama prêt (modèle : $OLLAMA_MODEL)"
+else
+    echo "✓ API distante configurée : $OLLAMA_URL (modèle : $OLLAMA_MODEL)"
 fi
-
-# Vérifier que le modèle est disponible
-if ! curl -sf "$OLLAMA_BASE/api/tags" | grep -q "\"$OLLAMA_MODEL\"" 2>/dev/null; then
-    echo "→ Modèle '$OLLAMA_MODEL' non trouvé, téléchargement…"
-    ollama pull "$OLLAMA_MODEL"
-fi
-
-echo "✓ Ollama prêt (modèle : $OLLAMA_MODEL)"
 
 # Installer les dépendances Python
 echo "→ Installation des dépendances Python…"
