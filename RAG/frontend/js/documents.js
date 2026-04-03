@@ -1,3 +1,35 @@
+// ─── Notion sync ──────────────────────────────────────────────────────────
+async function syncNotion() {
+  const btn    = document.getElementById('sync-notion-btn');
+  const status = document.getElementById('sync-notion-status');
+  const msg    = document.getElementById('sync-notion-msg');
+
+  btn.disabled = true;
+  btn.classList.add('opacity-50', 'cursor-not-allowed');
+  status.classList.remove('hidden');
+  msg.textContent = 'Synchronisation en cours…';
+
+  try {
+    const token = getAdminToken();
+    const resp  = await fetch('/api/admin/sync-notion', {
+      method:  'POST',
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.detail || 'Erreur synchronisation');
+
+    status.classList.add('hidden');
+    showToast(`✓ Notion synchronisé : ${data.pages} pages, ${data.chunks} sections`, 'success');
+    loadDocuments();
+  } catch (err) {
+    status.classList.add('hidden');
+    showToast(`Erreur : ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+  }
+}
+
 // ─── File upload ──────────────────────────────────────────────────────────
 function triggerFileUpload() {
   if (!state.isAdmin) { openBaseTab(); return; }

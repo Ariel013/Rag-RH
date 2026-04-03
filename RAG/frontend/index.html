@@ -287,6 +287,24 @@
             </div>
           </div>
 
+          <!-- Notion sync -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-primary/10">
+            <h3 class="font-bold text-base text-highlight mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px]">sync</span>
+              Synchronisation Notion
+            </h3>
+            <p class="text-xs text-slate-400 mb-4">Recharge toutes les pages Notion dans la base de connaissances (images incluses via OCR).</p>
+            <button onclick="syncNotion()" id="sync-notion-btn"
+              class="w-full bg-primary hover:bg-primary/90 text-white py-2.5 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">cloud_sync</span>
+              Synchroniser Notion
+            </button>
+            <div id="sync-notion-status" class="hidden mt-3 flex items-center gap-2 text-sm text-primary">
+              <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+              <span id="sync-notion-msg">Synchronisation en cours…</span>
+            </div>
+          </div>
+
           <!-- Documents list -->
           <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-primary/10">
             <div class="flex items-center justify-between mb-4">
