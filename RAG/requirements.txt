@@ -26,3 +26,6 @@ slowapi>=0.1.9
 # Document parsers
 pypdf>=3.0.0
 python-docx>=0.8.11
+
+# Notion API
+notion-client>=2.2.1
