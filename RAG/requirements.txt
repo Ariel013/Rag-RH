@@ -9,11 +9,10 @@ pydantic>=2.0.0
 # Client OpenAI-compatible (Groq / Ollama)
 openai>=1.30.0
 
-# Embeddings via HF Inference API (remplace sentence-transformers + PyTorch ~1.5 GB)
-huggingface_hub>=0.23.0
-numpy>=1.24.0
+# Embeddings locaux via ONNX (rapide, ~90 MB, pas de PyTorch)
+fastembed>=0.3.0
 
-# PostgreSQL + pgvector (remplace ChromaDB)
+# PostgreSQL + pgvector (Supabase)
 psycopg2-binary>=2.9.0
 pgvector>=0.3.0
 

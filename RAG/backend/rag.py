@@ -1,7 +1,7 @@
 """
-Pipeline RAG — embeddings via HF Inference API, LLM via API OpenAI-compatible.
+Pipeline RAG — embeddings locaux via fastembed (ONNX), LLM via API OpenAI-compatible.
 
-Embeddings  : HuggingFace Inference API (gratuit, sans PyTorch local)
+Embeddings  : fastembed (ONNX local, ~90 MB, aucun appel réseau)
 Vector DB   : PostgreSQL + pgvector (Supabase)
 LLM         : Groq / Ollama via API OpenAI-compatible
 """
@@ -10,8 +10,7 @@ import json
 import os
 from typing import AsyncGenerator
 
-import numpy as np
-from huggingface_hub import InferenceClient
+from fastembed import TextEmbedding
 from openai import AsyncOpenAI
 
 from .vector_store import VectorStore
@@ -21,29 +20,23 @@ RELEVANCE_THRESHOLD = 0.4
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
 OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "llama3.2")
-HF_TOKEN        = os.getenv("HF_TOKEN")
 
 
 class RAGPipeline:
     def __init__(self):
         self.vector_store = VectorStore()
-        self._hf = InferenceClient(token=HF_TOKEN)
+        print(f"  Embeddings : fastembed ONNX local ({EMBED_MODEL})")
+        self._embedder = TextEmbedding(EMBED_MODEL)
         self._llm = AsyncOpenAI(
             base_url=OLLAMA_BASE_URL,
             api_key=os.getenv("GROQ_API_KEY", "ollama"),
         )
-        print(f"  Embeddings : HF Inference API ({EMBED_MODEL})")
         print(f"  LLM        : {OLLAMA_MODEL} — {OLLAMA_BASE_URL}")
 
-    # ── Embeddings (HF Inference API) ─────────────────────────────────────
+    # ── Embeddings (fastembed ONNX local) ─────────────────────────────────
 
     def _encode_sync(self, texts: list[str]) -> list[list[float]]:
-        result = self._hf.feature_extraction(texts, model=EMBED_MODEL)
-        arr = np.array(result)
-        # shape (n, 384) pour liste, (384,) pour texte unique
-        if arr.ndim == 1:
-            return [arr.tolist()]
-        return arr.tolist()
+        return [emb.tolist() for emb in self._embedder.embed(texts)]
 
     async def embed_texts(self, texts: list[str]) -> list[list[float]]:
         return await asyncio.to_thread(self._encode_sync, texts)
