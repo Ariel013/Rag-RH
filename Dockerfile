@@ -2,7 +2,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Dépendances système pour compiler certains packages Python
+# Dépendances système
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
@@ -12,12 +12,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY RAG/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copier le code applicatif
+# Pré-télécharger le modèle d'embedding au build (évite le délai au 1er démarrage)
+RUN python3 -c "from fastembed import TextEmbedding; TextEmbedding('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')"
+
+# Copier le code applicatif (plus de sample_docs — Notion est la source de vérité)
 COPY RAG/backend/ ./backend/
 COPY RAG/frontend/ ./frontend/
-COPY RAG/sample_docs/ ./sample_docs/
 
-# Créer le répertoire d'uploads (éphémère sur HF Spaces)
+# Répertoire d'uploads temporaires
 RUN mkdir -p uploads
 
 # HF Spaces impose le port 7860
