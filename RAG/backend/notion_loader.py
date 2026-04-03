@@ -31,19 +31,79 @@ def _get_client() -> Client:
 # ─── Extraction de texte depuis les blocs ────────────────────────────────────
 
 def _image_ocr(url: str) -> str:
-    """Télécharge une image Notion et en extrait le texte via OCR (tesseract)."""
+    """
+    Télécharge une image Notion et en extrait le texte.
+    Essaie d'abord le LLM vision (Groq), puis tesseract en fallback.
+    """
     try:
-        import pytesseract
-        from PIL import Image
-
         with httpx.Client(timeout=20) as client:
             resp = client.get(url)
             resp.raise_for_status()
-        img  = Image.open(io.BytesIO(resp.content))
-        text = pytesseract.image_to_string(img, lang="fra+eng")
-        return text.strip()
+        image_bytes = resp.content
+        content_type = resp.headers.get("content-type", "image/png").split(";")[0]
     except Exception as exc:
-        print(f"  ⚠ OCR image échoué : {exc}")
+        print(f"  ⚠ Téléchargement image échoué : {exc}")
+        return ""
+
+    # ── Tentative 1 : LLM vision via Groq ────────────────────────────────
+    groq_key = os.getenv("GROQ_API_KEY", "")
+    if groq_key and groq_key.lower() != "ollama":
+        try:
+            import base64
+            b64 = base64.standard_b64encode(image_bytes).decode("utf-8")
+            payload = {
+                "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "image_url",
+                                "image_url": {"url": f"data:{content_type};base64,{b64}"},
+                            },
+                            {
+                                "type": "text",
+                                "text": (
+                                    "Extrait tout le contenu textuel de cette image sous forme de texte structuré. "
+                                    "Si c'est un tableau, liste chaque ligne avec ses colonnes clairement associées "
+                                    "(ex: 'Rituel: X | Lead: Y | Lieu: Z | Fréquence: W'). "
+                                    "Ne résume pas, retranscris fidèlement toutes les informations."
+                                ),
+                            },
+                        ],
+                    }
+                ],
+                "max_tokens": 1024,
+            }
+            with httpx.Client(timeout=30) as client:
+                r = client.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    json=payload,
+                    headers={
+                        "Authorization": f"Bearer {groq_key}",
+                        "Content-Type": "application/json",
+                    },
+                )
+                r.raise_for_status()
+            text = r.json()["choices"][0]["message"]["content"].strip()
+            if text:
+                print(f"  ✓ OCR vision LLM réussi ({len(text)} chars)")
+                return text
+        except Exception as exc:
+            print(f"  ⚠ OCR vision LLM échoué : {exc}")
+
+    # ── Tentative 2 : tesseract (fallback) ───────────────────────────────
+    try:
+        import pytesseract
+        from PIL import Image
+        img  = Image.open(io.BytesIO(image_bytes))
+        text = pytesseract.image_to_string(img, lang="fra+eng")
+        text = text.strip()
+        if text:
+            print(f"  ✓ OCR tesseract réussi ({len(text)} chars)")
+        return text
+    except Exception as exc:
+        print(f"  ⚠ OCR tesseract échoué : {exc}")
         return ""
 
 
