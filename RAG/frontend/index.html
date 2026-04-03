@@ -28,11 +28,7 @@
   }
 </script>
 <style>
-<<<<<<< HEAD
-  body { font-family: 'Manrope', sans-serif; font-size: 14px; min-height: max(884px, 100dvh); }
-=======
   body { font-family: 'Manrope', sans-serif; font-size: 14px; }
->>>>>>> 9a68856 (Clean deployment — fix input, add new conversation button)
   .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
   .tab-content { display: none; }
   .tab-content.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
@@ -59,14 +55,10 @@
 
 <!-- ═══ HEADER ═══ -->
 <header class="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-900 border-b border-primary/10 sticky top-0 z-10">
-<<<<<<< HEAD
-  <div class="flex items-center gap-3">
-=======
   <div class="flex items-center gap-2">
     <button onclick="newConversation()" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Nouvelle conversation">
       <span class="material-symbols-outlined text-highlight dark:text-slate-100 text-[22px]">edit_square</span>
     </button>
->>>>>>> 9a68856 (Clean deployment — fix input, add new conversation button)
     <div class="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center bg-primary text-white">
       <span class="material-symbols-outlined text-[20px]">smart_toy</span>
     </div>
@@ -404,8 +396,6 @@ async function pollStatus() {
   }
 }
 
-<<<<<<< HEAD
-=======
 // ─── Nouvelle conversation ────────────────────────────────────────────────
 function newConversation() {
   if (state.isStreaming) return;
@@ -466,7 +456,7 @@ function newConversation() {
   input.focus();
 }
 
->>>>>>> 9a68856 (Clean deployment — fix input, add new conversation button)
+
 // ─── Tab switching ────────────────────────────────────────────────────────
 function switchTab(tab) {
   state.currentTab = tab;
