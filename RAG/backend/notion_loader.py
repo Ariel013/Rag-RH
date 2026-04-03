@@ -3,9 +3,11 @@ Notion Loader — synchronisation des pages Notion vers le vector store.
 Parcourt récursivement toutes les pages à partir d'une page racine,
 en traversant tous les types de blocs conteneurs (columns, toggles, etc.).
 """
+import io
 import os
 import uuid
 
+import httpx
 from notion_client import Client
 from notion_client.errors import APIResponseError
 
@@ -28,6 +30,23 @@ def _get_client() -> Client:
 
 # ─── Extraction de texte depuis les blocs ────────────────────────────────────
 
+def _image_ocr(url: str) -> str:
+    """Télécharge une image Notion et en extrait le texte via OCR (tesseract)."""
+    try:
+        import pytesseract
+        from PIL import Image
+
+        with httpx.Client(timeout=20) as client:
+            resp = client.get(url)
+            resp.raise_for_status()
+        img  = Image.open(io.BytesIO(resp.content))
+        text = pytesseract.image_to_string(img, lang="fra+eng")
+        return text.strip()
+    except Exception as exc:
+        print(f"  ⚠ OCR image échoué : {exc}")
+        return ""
+
+
 def _rich_text_to_str(rich_texts: list) -> str:
     return "".join(rt.get("plain_text", "") for rt in rich_texts)
 
@@ -47,6 +66,14 @@ def _block_to_text(block: dict) -> str:
         return _rich_text_to_str(data.get("rich_text", []))
     elif btype == "code":
         return _rich_text_to_str(data.get("rich_text", []))
+    elif btype == "image":
+        url = (
+            block.get("image", {}).get("file", {}).get("url")
+            or block.get("image", {}).get("external", {}).get("url")
+            or ""
+        )
+        if url:
+            return _image_ocr(url)
     return ""
 
 
