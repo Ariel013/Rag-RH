@@ -27,6 +27,7 @@ from .analytics import (
     get_conversation_messages,
     get_conversations,
     get_stats,
+    delete_unanswered,
     get_unanswered,
     init_db,
     log_message,
@@ -422,6 +423,14 @@ async def admin_unanswered(
     if status not in ("pending", "resolved"):
         raise HTTPException(status_code=400, detail="status doit être 'pending' ou 'resolved'")
     return await asyncio.to_thread(get_unanswered, status, page, page_size)
+
+
+@app.delete("/api/admin/unanswered/{unanswered_id}")
+async def admin_delete_unanswered(unanswered_id: str, _: None = Depends(verify_admin)):
+    deleted = await asyncio.to_thread(delete_unanswered, unanswered_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Question introuvable.")
+    return {"status": "deleted"}
 
 
 @app.post("/api/admin/unanswered/{unanswered_id}/resolve")

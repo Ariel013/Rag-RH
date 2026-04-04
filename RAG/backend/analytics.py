@@ -212,6 +212,14 @@ def get_unanswered(status: str = "pending", page: int = 1, page_size: int = 20) 
     return {"total": total, "items": items}
 
 
+def delete_unanswered(unanswered_id: str) -> bool:
+    """Supprime une question sans réponse. Retourne True si trouvée et supprimée."""
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM unanswered WHERE id = %s", (unanswered_id,))
+            return cur.rowcount > 0
+
+
 def resolve_unanswered(unanswered_id: str, admin_response: str) -> str | None:
     """Marque comme résolu et retourne la question (pour l'ajouter au RAG)."""
     with get_conn() as conn:

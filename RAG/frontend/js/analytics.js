@@ -408,13 +408,19 @@ function _unansweredCard(u) {
   return `
     <div class="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm border
       ${isPending ? 'border-amber-200 dark:border-amber-800' : 'border-green-200 dark:border-green-900'}">
-      <p class="text-xs font-bold text-slate-700 dark:text-slate-200 mb-1 flex items-start gap-2">
-        <span class="material-symbols-outlined text-[16px] shrink-0 mt-0.5
-          ${isPending ? 'text-amber-500' : 'text-green-500'}">
-          ${isPending ? 'help' : 'check_circle'}
-        </span>
-        ${escapeHtml(u.question)}
-      </p>
+      <div class="flex items-start justify-between gap-2 mb-1">
+        <p class="text-xs font-bold text-slate-700 dark:text-slate-200 flex items-start gap-2">
+          <span class="material-symbols-outlined text-[16px] shrink-0 mt-0.5
+            ${isPending ? 'text-amber-500' : 'text-green-500'}">
+            ${isPending ? 'help' : 'check_circle'}
+          </span>
+          ${escapeHtml(u.question)}
+        </p>
+        <button onclick="deleteUnanswered('${u.id}', this)"
+          class="shrink-0 p-1 rounded-lg hover:bg-red-50 hover:text-red-500 text-slate-300 transition-colors" title="Supprimer cette question">
+          <span class="material-symbols-outlined text-[16px]">delete</span>
+        </button>
+      </div>
       <p class="text-[10px] text-slate-400 ml-6 mb-3">${_fmtDate(u.asked_at)}</p>
       ${isPending ? _resolveForm(u.id) : _resolvedResponse(u.admin_response)}
     </div>`;
@@ -461,6 +467,17 @@ function _resolveForm(id) {
 
 function toggleResolveForm(id) {
   document.getElementById('rfc-' + id).classList.toggle('hidden');
+}
+
+async function deleteUnanswered(unansweredId, btnEl) {
+  if (!confirm('Supprimer cette question ?')) return;
+  try {
+    await _apiFetch(`/api/admin/unanswered/${unansweredId}`, { method: 'DELETE' });
+    btnEl.closest('.bg-white, .dark\\:bg-slate-800').remove();
+    showToast('Question supprimée', 'success');
+  } catch (err) {
+    showToast(`Erreur : ${err.message}`, 'error');
+  }
 }
 
 async function submitResolve(unansweredId) {
