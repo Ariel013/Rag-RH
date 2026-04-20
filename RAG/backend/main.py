@@ -140,10 +140,12 @@ def _init_rag() -> None:
 
 
 def _auto_ingest_notion(rag: RAGPipeline) -> None:
-    """Ingère les pages Notion si la base vectorielle est vide."""
-    if rag.vector_store.count() > 0:
-        return
-    print("→ Base vectorielle vide — synchronisation depuis Notion…")
+    """Synchronise Notion au démarrage (toujours, pour éviter les données périmées après un redémarrage)."""
+    count = rag.vector_store.count()
+    if count == 0:
+        print("→ Base vectorielle vide — synchronisation depuis Notion…")
+    else:
+        print(f"→ Resync Notion au démarrage ({count} chunks existants)…")
     _sync_notion_blocking(rag)
 
 

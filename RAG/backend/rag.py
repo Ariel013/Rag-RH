@@ -16,7 +16,7 @@ from openai import AsyncOpenAI
 from .vector_store import VectorStore
 
 EMBED_MODEL         = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-RELEVANCE_THRESHOLD = 0.5
+RELEVANCE_THRESHOLD = 0.60
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
 OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "llama3.2")
@@ -114,6 +114,8 @@ RÈGLES STRICTES — à respecter sans exception :
                 model=OLLAMA_MODEL,
                 messages=messages,
                 max_tokens=512,
+                temperature=0.1,
+                top_p=0.9,
                 stream=True,
             )
             async for chunk in stream:
