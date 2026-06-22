@@ -203,11 +203,7 @@ def _extract_blocks(client: Client, block_id: str, page_title: str = "") -> str:
                 if text:
                     lines.append(text)
             elif text:
-                # Préfixer avec le contexte de section si disponible
-                if current_heading:
-                    lines.append(f"[Section: {current_heading}] {text}")
-                else:
-                    lines.append(text)
+                lines.append(text)
 
             if block.get("has_children") and btype not in ("child_page", "child_database", "table"):
                 child_text = _extract_blocks(client, block["id"], page_title=page_title)

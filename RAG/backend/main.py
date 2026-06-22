@@ -141,9 +141,15 @@ def _sync_notion_blocking(rag: RAGPipeline, full: bool = False) -> dict:
             log_entry   = sync_log.get(page_id)
 
             if not full and log_entry:
-                # Comparer last_edited (ISO strings)
+                # Comparer last_edited : logged_ts est un datetime psycopg2 (espace),
+                # last_edited est une ISO string Notion ("T"). Normaliser sur les 19 premiers chars.
                 logged_ts = log_entry["last_edited"]
-                if logged_ts and str(logged_ts)[:19] == last_edited[:19]:
+                if logged_ts:
+                    # datetime → "2024-01-15 10:30:00…", Notion → "2024-01-15T10:30:00…"
+                    # Remplacer "T" par " " avant comparaison
+                    normalized_logged  = str(logged_ts).replace("T", " ")[:19]
+                    normalized_current = last_edited.replace("T", " ")[:19]
+                if logged_ts and normalized_logged == normalized_current:
                     unchanged += 1
                     continue
                 # Page modifiée : supprimer les anciens chunks

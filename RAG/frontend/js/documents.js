@@ -13,13 +13,23 @@ async function syncNotion() {
     const token = getAdminToken();
     const resp  = await fetch('/api/admin/sync-notion', {
       method:  'POST',
-      headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({ full: true }),
     });
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.detail || 'Erreur synchronisation');
 
     status.classList.add('hidden');
-    showToast(`✓ Notion synchronisé : ${data.pages} pages, ${data.chunks} sections`, 'success');
+    const total = (data.new || 0) + (data.updated || 0) + (data.unchanged || 0);
+    const detail = [
+      data.new       ? `${data.new} nouvelles`      : '',
+      data.updated   ? `${data.updated} mises à jour` : '',
+      data.unchanged ? `${data.unchanged} inchangées`  : '',
+    ].filter(Boolean).join(', ');
+    showToast(`✓ Notion synchronisé : ${total} pages (${detail}), ${data.chunks || 0} sections`, 'success');
     loadDocuments();
   } catch (err) {
     status.classList.add('hidden');
