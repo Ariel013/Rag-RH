@@ -21,6 +21,34 @@ RELEVANCE_THRESHOLD = float(os.getenv("RELEVANCE_THRESHOLD", "0.40"))
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
 OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "llama3.2")
 
+# Mots courts qui signalent une question de suivi (pas de sens seuls pour la recherche)
+_FOLLOWUP_TRIGGERS = {
+    "plus", "suite", "tout", "d'autre", "encore", "davantage",
+    "complet", "complète", "entier", "entière", "reste", "restant",
+    "more", "else", "all", "continue",
+}
+
+
+def _build_search_query(question: str, history: list[dict]) -> str:
+    """
+    Enrichit la requête de recherche avec le contexte de l'historique quand la
+    question est trop courte ou vague pour trouver des résultats seule.
+    Ex : "Dis moi-en plus" → reprend les derniers échanges pour construire une requête utile.
+    """
+    words = [w.strip("?.,!:;\"'").lower() for w in question.split()]
+    is_vague = len(words) <= 6 or any(w in _FOLLOWUP_TRIGGERS for w in words)
+
+    if not is_vague or not history:
+        return question
+
+    # Récupérer les 2 dernières questions de l'utilisateur
+    recent = [m["content"] for m in history if m["role"] == "user"][-2:]
+    if not recent:
+        return question
+
+    # Concaténer contexte + question actuelle comme requête enrichie
+    return " ".join(recent) + " " + question
+
 
 class RAGPipeline:
     def __init__(self):
@@ -46,8 +74,11 @@ class RAGPipeline:
 
     # ── Recherche ──────────────────────────────────────────────────────────
 
-    async def search(self, query: str, n_results: int = 10) -> list[dict]:
-        embs    = await self.embed_texts([query])
+    async def search(
+        self, query: str, n_results: int = 10, history: list[dict] | None = None
+    ) -> list[dict]:
+        effective_query = _build_search_query(query, history or [])
+        embs    = await self.embed_texts([effective_query])
         results = self.vector_store.search(embs[0], n_results)
         filtered = [r for r in results if r["score"] >= RELEVANCE_THRESHOLD]
         return filtered[:5]
@@ -60,18 +91,17 @@ class RAGPipeline:
         history: list[dict] | None = None,
     ) -> AsyncGenerator[str, None]:
 
-        # 1. Contexte documentaire
-        results = await self.search(question)
+        # 1. Contexte documentaire (recherche enrichie avec l'historique)
+        results = await self.search(question, history=history)
 
         if results:
             context_parts = []
             total_chars   = 0
             for r in results:
                 content = r["content"]
-                if len(content) > 500:
-                    content = content[:500] + "…"
+                # Pas de troncature du contenu : le LLM doit recevoir les listes complètes
                 part = f"[{r['metadata'].get('title', 'Document')}]\n{content}"
-                if total_chars + len(part) > 4000:
+                if total_chars + len(part) > 6000:
                     break
                 context_parts.append(part)
                 total_chars += len(part)
@@ -101,21 +131,21 @@ RÈGLES STRICTES — à respecter sans exception :
    Si l'information n'y figure PAS EXPLICITEMENT, réponds : "Je ne dispose pas de cette information."
    puis invite à contacter la RH : christelle.houssou@epitech.eu (Bénin) ou christelle.bohoussou@epitech.eu (CI).
 3. INTERDIT ABSOLU d'inventer, déduire, estimer ou compléter une information manquante.
-   Exemples de ce qui est INTERDIT : inventer un nom de responsable, un nombre de jours de congé,
-   une procédure, un lien ou une plateforme qui ne sont pas écrits dans les données.
 4. INTERDIT d'utiliser tes connaissances générales sur d'autres entreprises ou pratiques RH génériques.
 5. Ces formulations sont BANNIES : "selon le contexte", "d'après les documents", "le contexte indique",
    "d'après les informations fournies", "il est mentionné que", "les documents précisent".
-6. Sois BREF et PRÉCIS : 2 à 4 phrases maximum, ou une courte liste à puces (•).
-7. Pose UNE seule question courte de suivi si c'est pertinent.
+6. Si les données contiennent une liste (questions, étapes, points…), retranscris-la INTÉGRALEMENT.
+   Ne résume pas, ne tronque pas : liste chaque point, même s'il y en a beaucoup.
+7. Sois précis et complet. Pas de limite artificielle au nombre de points listés.
+8. Pose UNE seule question courte de suivi si c'est pertinent.
 
 --- Données AEIG ---
 {context}
 ---"""
 
-        # 3. Historique (max 3 échanges)
+        # 3. Historique (max 4 échanges = 8 messages)
         messages = [{"role": "system", "content": system}]
-        messages += list((history or []))[-6:]
+        messages += list((history or []))[-8:]
         messages.append({"role": "user", "content": question})
 
         # 4. Streaming LLM
@@ -123,7 +153,7 @@ RÈGLES STRICTES — à respecter sans exception :
             stream = await self._llm.chat.completions.create(
                 model=OLLAMA_MODEL,
                 messages=messages,
-                max_tokens=512,
+                max_tokens=1024,
                 temperature=0.1,
                 top_p=0.9,
                 stream=True,
