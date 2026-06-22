@@ -6,6 +6,7 @@ import json
 import os
 import threading
 import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import AsyncGenerator
 
@@ -33,8 +34,13 @@ from .analytics import (
     log_message,
     resolve_unanswered,
 )
+from .db import close_pool
 from .document_processor import process_document
-from .notion_loader import check_notion_connection, load_notion_pages
+from .notion_loader import (
+    check_notion_connection,
+    collect_all_notion_pages,
+    load_notion_page,
+)
 from .rag import RAGPipeline
 from .topics import (
     assign_topic,
@@ -46,11 +52,184 @@ from .topics import (
 )
 from .vector_store import init_vector_db
 
+# ─── Config ────────────────────────────────────────────────────────────────
+
+NOTION_SYNC_INTERVAL = int(os.getenv("NOTION_SYNC_INTERVAL_SECONDS", str(2 * 3600)))
+
+SUPABASE_URL    = os.getenv("SUPABASE_URL", "").rstrip("/")
+SUPABASE_KEY    = os.getenv("SUPABASE_SERVICE_KEY", "")
+STORAGE_BUCKET  = "uploads"
+UPLOAD_DIR      = Path("uploads")
+
+SUPPORTED_EXTENSIONS = {".pdf", ".docx", ".doc", ".txt", ".md"}
+
+ADMIN_EMAIL    = os.getenv("ADMIN_EMAIL", "").strip().lower()
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "").strip()
+ADMIN_TOKEN    = os.getenv("ADMIN_TOKEN", "").strip()
+
+# ─── Singleton RAG ────────────────────────────────────────────────────────
+
+_rag: RAGPipeline | None = None
+_rag_lock     = threading.Lock()
+_rag_ready    = threading.Event()
+_sync_lock    = threading.Lock()
+_sync_task: asyncio.Task | None = None
+
+
+def _init_rag() -> None:
+    global _rag
+    with _rag_lock:
+        if _rag is not None:
+            return
+        _rag = RAGPipeline()
+        _sync_notion_blocking(_rag, full=True)
+        seed_default_topics(_rag)
+    _rag_ready.set()
+
+
+def get_rag() -> RAGPipeline:
+    if not _rag_ready.is_set():
+        _rag_ready.wait()
+    return _rag  # type: ignore[return-value]
+
+
+# ─── Sync Notion ──────────────────────────────────────────────────────────
+
+def _sync_notion_blocking(rag: RAGPipeline, full: bool = False) -> dict:
+    """
+    Resynchronise les documents Notion (thread-safe).
+    full=True : supprime tout et réingère. full=False : sync incrémental.
+    """
+    with _sync_lock:
+        try:
+            notion_client, all_pages = collect_all_notion_pages()
+        except ValueError as exc:
+            print(f"  ✗ Notion non configuré : {exc}")
+            return {"status": "error", "detail": str(exc)}
+        except Exception as exc:
+            print(f"  ✗ Erreur inattendue lors du chargement Notion : {exc}")
+            return {"status": "error", "detail": str(exc)}
+
+        if not all_pages:
+            print("  ✗ Aucune page Notion — vérifiez NOTION_ROOT_PAGE_ID et les permissions.")
+            return {"status": "error", "detail": "Aucune page Notion trouvée."}
+
+        if full:
+            deleted_chunks = rag.vector_store.delete_notion_documents()
+            if deleted_chunks:
+                print(f"  → {deleted_chunks} anciens chunks Notion supprimés (full sync)")
+            # Vider le log de sync aussi
+            sync_log: dict = {}
+        else:
+            sync_log = rag.vector_store.get_notion_sync_log()
+
+        all_page_ids = {p["id"] for p in all_pages}
+
+        # Pages supprimées de Notion : nettoyer leurs chunks
+        removed = 0
+        if not full:
+            for page_id, log_entry in sync_log.items():
+                if page_id not in all_page_ids:
+                    rag.vector_store.delete_notion_page(page_id, log_entry["doc_id"])
+                    removed += 1
+
+        unchanged = updated = new = skipped = total_chunks = 0
+
+        for page_info in all_pages:
+            page_id     = page_info["id"]
+            last_edited = page_info.get("last_edited", "")
+            log_entry   = sync_log.get(page_id)
+
+            if not full and log_entry:
+                # Comparer last_edited (ISO strings)
+                logged_ts = log_entry["last_edited"]
+                if logged_ts and str(logged_ts)[:19] == last_edited[:19]:
+                    unchanged += 1
+                    continue
+                # Page modifiée : supprimer les anciens chunks
+                rag.vector_store.delete_notion_page(page_id, log_entry["doc_id"])
+
+            result = load_notion_page(notion_client, page_info)
+            if result is None:
+                skipped += 1
+                continue
+
+            chunks, metadatas, doc_id = result
+            if not chunks:
+                skipped += 1
+                continue
+
+            try:
+                embeddings = rag.embed_texts_sync(chunks)
+                rag.vector_store.add_documents(chunks, embeddings, metadatas, doc_id)
+                rag.vector_store.upsert_notion_sync_log(page_id, doc_id, last_edited or None)
+                total_chunks += len(chunks)
+                if log_entry:
+                    updated += 1
+                else:
+                    new += 1
+                print(f"  ✓ {page_info['title']} ({len(chunks)} chunks)")
+            except Exception as exc:
+                print(f"  ✗ Erreur embedding/stockage pour « {page_info['title']} » : {exc}")
+                skipped += 1
+
+        summary = (
+            f"→ Sync Notion : {unchanged} inchangées, {updated} mises à jour, "
+            f"{new} nouvelles, {removed} supprimées"
+            + (f", {skipped} ignorées" if skipped else "")
+        )
+        print(summary)
+        return {
+            "status":    "ok",
+            "unchanged": unchanged,
+            "updated":   updated,
+            "new":       new,
+            "deleted":   removed,
+            "skipped":   skipped,
+            "chunks":    total_chunks,
+        }
+
+
+# ─── Tâche de resync automatique ─────────────────────────────────────────
+
+async def _notion_sync_loop() -> None:
+    await asyncio.to_thread(_rag_ready.wait)
+    while True:
+        await asyncio.sleep(NOTION_SYNC_INTERVAL)
+        print("→ Resync automatique Notion…")
+        try:
+            rag = get_rag()
+            await asyncio.to_thread(_sync_notion_blocking, rag, False)
+        except Exception as exc:
+            print(f"  ✗ Erreur resync automatique Notion : {exc}")
+
+
+# ─── Lifespan ─────────────────────────────────────────────────────────────
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global _sync_task
+    UPLOAD_DIR.mkdir(exist_ok=True)
+    await asyncio.to_thread(init_vector_db)
+    await asyncio.to_thread(init_db)
+    print("→ Initialisation du pipeline RAG…")
+    asyncio.create_task(asyncio.to_thread(_init_rag))
+    _sync_task = asyncio.create_task(_notion_sync_loop())
+    yield
+    if _sync_task and not _sync_task.done():
+        _sync_task.cancel()
+        try:
+            await _sync_task
+        except asyncio.CancelledError:
+            pass
+    close_pool()
+
+
 # ─── App ───────────────────────────────────────────────────────────────────
 
 limiter = Limiter(key_func=get_remote_address)
 
-app = FastAPI(title="Assistant RH RAG API", version="2.0.0")
+app = FastAPI(title="Assistant RH RAG API", version="2.0.0", lifespan=lifespan)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -66,23 +245,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-UPLOAD_DIR = Path("uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
-
-SUPPORTED_EXTENSIONS = {".pdf", ".docx", ".doc", ".txt", ".md"}
-
-SUPABASE_URL = os.getenv("SUPABASE_URL", "").rstrip("/")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
-STORAGE_BUCKET = "uploads"
-
-NOTION_SYNC_INTERVAL = 2 * 60 * 60  # 2 heures en secondes
-
 # ─── Admin Auth ────────────────────────────────────────────────────────────
-
-ADMIN_EMAIL    = os.getenv("ADMIN_EMAIL", "").strip().lower()
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "").strip()
-ADMIN_TOKEN    = os.getenv("ADMIN_TOKEN", "").strip()
-
 
 def verify_admin(authorization: str | None = Header(default=None)) -> None:
     if not ADMIN_TOKEN:
@@ -120,93 +283,6 @@ async def _storage_delete(path: str) -> None:
             timeout=10,
         )
 
-# ─── Singleton RAG ────────────────────────────────────────────────────────
-
-_rag: RAGPipeline | None = None
-_rag_lock  = threading.Lock()
-_rag_ready = threading.Event()
-_sync_lock = threading.Lock()  # empêche les syncs Notion concurrentes
-
-
-def _init_rag() -> None:
-    global _rag
-    with _rag_lock:
-        if _rag is not None:
-            return
-        _rag = RAGPipeline()
-        _auto_ingest_notion(_rag)
-        seed_default_topics(_rag)
-    _rag_ready.set()
-
-
-def _auto_ingest_notion(rag: RAGPipeline) -> None:
-    """Synchronise Notion au démarrage (toujours, pour éviter les données périmées après un redémarrage)."""
-    count = rag.vector_store.count()
-    if count == 0:
-        print("→ Base vectorielle vide — synchronisation depuis Notion…")
-    else:
-        print(f"→ Resync Notion au démarrage ({count} chunks existants)…")
-    _sync_notion_blocking(rag)
-
-
-def _sync_notion_blocking(rag: RAGPipeline) -> dict:
-    """
-    Resynchronise les documents Notion dans le vector store (thread-safe).
-    Supprime les anciens chunks Notion puis réingère toutes les pages.
-    """
-    with _sync_lock:
-        try:
-            pages = load_notion_pages()
-        except ValueError as exc:
-            print(f"  ✗ Notion non configuré : {exc}")
-            return {"status": "error", "detail": str(exc)}
-
-        deleted = rag.vector_store.delete_notion_documents()
-        if deleted:
-            print(f"  → {deleted} anciens chunks Notion supprimés")
-
-        total_chunks = 0
-        total_pages = 0
-        for chunks, metadatas, doc_id in pages:
-            embeddings = rag.embed_texts_sync(chunks)
-            rag.vector_store.add_documents(chunks, embeddings, metadatas, doc_id)
-            total_chunks += len(chunks)
-            total_pages += 1
-
-        print(f"  ✓ Resync Notion terminé : {total_pages} pages, {total_chunks} chunks")
-        return {"status": "ok", "pages": total_pages, "chunks": total_chunks}
-
-
-def get_rag() -> RAGPipeline:
-    if not _rag_ready.is_set():
-        _rag_ready.wait()
-    return _rag  # type: ignore[return-value]
-
-
-# ─── Tâche de resync automatique toutes les 2h ────────────────────────────
-
-async def _notion_sync_loop() -> None:
-    """Tâche de fond : resync Notion toutes les 2 heures."""
-    await asyncio.to_thread(_rag_ready.wait)
-    while True:
-        await asyncio.sleep(NOTION_SYNC_INTERVAL)
-        print("→ Resync automatique Notion (toutes les 2h)…")
-        try:
-            rag = get_rag()
-            await asyncio.to_thread(_sync_notion_blocking, rag)
-        except Exception as exc:
-            print(f"  ✗ Erreur resync automatique Notion : {exc}")
-
-
-@app.on_event("startup")
-async def startup_event() -> None:
-    await asyncio.to_thread(init_vector_db)
-    await asyncio.to_thread(init_db)
-    print("→ Initialisation du pipeline RAG…")
-    asyncio.create_task(asyncio.to_thread(_init_rag))
-    asyncio.create_task(_notion_sync_loop())
-
-
 # ─── Modèles Pydantic ─────────────────────────────────────────────────────
 
 class AdminLoginRequest(BaseModel):
@@ -235,6 +311,10 @@ class TopicCreateRequest(BaseModel):
 
 class MessageTopicRequest(BaseModel):
     topic_id: str
+
+
+class SyncNotionRequest(BaseModel):
+    full: bool = False
 
 
 # ─── Logging du stream ────────────────────────────────────────────────────
@@ -271,6 +351,10 @@ async def _stream_with_logging(
                     full_text.append(data.get("content", ""))
                 elif t == "sources":
                     sources = data.get("sources", [])
+                elif t == "error" and conversation_id and full_text:
+                    asyncio.create_task(
+                        _do_log(rag, conversation_id, question, list(full_text), list(sources))
+                    )
                 elif t == "done" and conversation_id:
                     asyncio.create_task(
                         _do_log(rag, conversation_id, question, list(full_text), list(sources))
@@ -506,7 +590,6 @@ async def admin_reassign_topic(
 
 @app.get("/api/admin/notion-status")
 async def notion_status(_: None = Depends(verify_admin)):
-    """Vérifie la connexion à Notion et retourne le statut."""
     result = await asyncio.to_thread(check_notion_connection)
     if not result["ok"]:
         raise HTTPException(status_code=503, detail=result["error"])
@@ -514,10 +597,13 @@ async def notion_status(_: None = Depends(verify_admin)):
 
 
 @app.post("/api/admin/sync-notion")
-async def sync_notion(_: None = Depends(verify_admin)):
-    """Déclenche un resync immédiat depuis Notion."""
+async def sync_notion(
+    body: SyncNotionRequest = SyncNotionRequest(),
+    _: None = Depends(verify_admin),
+):
+    """Déclenche un resync depuis Notion. body.full=True pour forcer un full resync."""
     rag = await asyncio.to_thread(get_rag)
-    result = await asyncio.to_thread(_sync_notion_blocking, rag)
+    result = await asyncio.to_thread(_sync_notion_blocking, rag, body.full)
     if result["status"] == "error":
         raise HTTPException(status_code=503, detail=result["detail"])
     return result

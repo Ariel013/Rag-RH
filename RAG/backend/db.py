@@ -56,3 +56,10 @@ def get_conn(with_vector: bool = False):
         raise
     finally:
         pool.putconn(conn)
+
+
+def close_pool() -> None:
+    global _pool
+    if _pool is not None:
+        _pool.closeall()
+        _pool = None

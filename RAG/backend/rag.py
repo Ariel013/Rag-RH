@@ -16,7 +16,7 @@ from openai import AsyncOpenAI
 from .vector_store import VectorStore
 
 EMBED_MODEL         = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-RELEVANCE_THRESHOLD = 0.60
+RELEVANCE_THRESHOLD = float(os.getenv("RELEVANCE_THRESHOLD", "0.45"))
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
 OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "llama3.2")
@@ -46,10 +46,11 @@ class RAGPipeline:
 
     # ── Recherche ──────────────────────────────────────────────────────────
 
-    async def search(self, query: str, n_results: int = 8) -> list[dict]:
+    async def search(self, query: str, n_results: int = 10) -> list[dict]:
         embs    = await self.embed_texts([query])
         results = self.vector_store.search(embs[0], n_results)
-        return [r for r in results if r["score"] >= RELEVANCE_THRESHOLD]
+        filtered = [r for r in results if r["score"] >= RELEVANCE_THRESHOLD]
+        return filtered[:5]
 
     # ── Génération streaming ───────────────────────────────────────────────
 
@@ -60,15 +61,24 @@ class RAGPipeline:
     ) -> AsyncGenerator[str, None]:
 
         # 1. Contexte documentaire
-        results = await self.search(question, n_results=8)
+        results = await self.search(question)
 
         if results:
-            context = "\n\n---\n\n".join(
-                f"[{r['metadata'].get('title', 'Document')}]\n{r['content']}"
-                for r in results[:6]
-            )
+            context_parts = []
+            total_chars   = 0
+            for r in results:
+                content = r["content"]
+                if len(content) > 500:
+                    content = content[:500] + "…"
+                part = f"[{r['metadata'].get('title', 'Document')}]\n{content}"
+                if total_chars + len(part) > 4000:
+                    break
+                context_parts.append(part)
+                total_chars += len(part)
+            context = "\n\n---\n\n".join(context_parts)
+
             sources, seen = [], set()
-            for r in results[:5]:
+            for r in results:
                 t = r["metadata"].get("title", "Document")
                 if t not in seen:
                     seen.add(t)

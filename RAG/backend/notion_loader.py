@@ -5,6 +5,7 @@ en traversant tous les types de blocs conteneurs (columns, toggles, etc.).
 """
 import io
 import os
+import time
 import uuid
 
 import httpx
@@ -16,36 +17,61 @@ from .document_processor import chunk_text
 NOTION_TOKEN        = os.getenv("NOTION_TOKEN", "")
 NOTION_ROOT_PAGE_ID = os.getenv("NOTION_ROOT_PAGE_ID", "")
 
-# Blocs qui peuvent contenir d'autres blocs (y compris des child_page)
 _CONTAINER_TYPES = {
     "column_list", "column", "toggle", "bulleted_list_item",
     "numbered_list_item", "quote", "callout", "synced_block",
     "template", "table", "table_row",
 }
 
+_MAX_DB_ROWS = 200
+
 
 def _get_client() -> Client:
     return Client(auth=NOTION_TOKEN)
 
 
-# ─── Extraction de texte depuis les blocs ────────────────────────────────────
+# ─── Wrapper retry Notion API ────────────────────────────────────────────────
 
-def _image_ocr(url: str) -> str:
-    """
-    Télécharge une image Notion et en extrait le texte.
-    Essaie d'abord le LLM vision (Groq), puis tesseract en fallback.
-    """
+def _notion_call(fn, *args, **kwargs):
+    """Retry jusqu'à 3 fois avec backoff exponentiel sur rate-limit et erreurs 5xx."""
+    for attempt in range(3):
+        try:
+            return fn(*args, **kwargs)
+        except APIResponseError as exc:
+            if exc.status in (429,) or exc.status >= 500:
+                if attempt < 2:
+                    time.sleep(2 ** attempt)
+                    continue
+            raise
+        except httpx.TimeoutException:
+            if attempt < 2:
+                time.sleep(2 ** attempt)
+                continue
+            raise
+    raise RuntimeError("_notion_call: unreachable")
+
+
+# ─── OCR images ──────────────────────────────────────────────────────────────
+
+def _image_ocr(url: str, page_title: str = "") -> str:
     try:
         with httpx.Client(timeout=20) as client:
             resp = client.get(url)
-            resp.raise_for_status()
-        image_bytes = resp.content
+        if resp.status_code in (401, 403, 410):
+            short_url = url[:80] + "…" if len(url) > 80 else url
+            print(f"  ⚠ Image URL expirée (HTTP {resp.status_code}) — page « {page_title} » — {short_url}")
+            return ""
+        resp.raise_for_status()
+        image_bytes  = resp.content
         content_type = resp.headers.get("content-type", "image/png").split(";")[0]
+    except httpx.HTTPStatusError as exc:
+        short_url = url[:80] + "…" if len(url) > 80 else url
+        print(f"  ⚠ Téléchargement image échoué HTTP {exc.response.status_code} — page « {page_title} » — {short_url}")
+        return ""
     except Exception as exc:
         print(f"  ⚠ Téléchargement image échoué : {exc}")
         return ""
 
-    # ── Tentative 1 : LLM vision via Groq ────────────────────────────────
     groq_key = os.getenv("GROQ_API_KEY", "")
     if groq_key and groq_key.lower() != "ollama":
         try:
@@ -92,7 +118,6 @@ def _image_ocr(url: str) -> str:
         except Exception as exc:
             print(f"  ⚠ OCR vision LLM échoué : {exc}")
 
-    # ── Tentative 2 : tesseract (fallback) ───────────────────────────────
     try:
         import pytesseract
         from PIL import Image
@@ -107,11 +132,13 @@ def _image_ocr(url: str) -> str:
         return ""
 
 
+# ─── Extraction de texte depuis les blocs ────────────────────────────────────
+
 def _rich_text_to_str(rich_texts: list) -> str:
     return "".join(rt.get("plain_text", "") for rt in rich_texts)
 
 
-def _block_to_text(block: dict) -> str:
+def _block_to_text(block: dict, page_title: str = "") -> str:
     btype = block.get("type", "")
     data  = block.get(btype, {})
 
@@ -133,34 +160,57 @@ def _block_to_text(block: dict) -> str:
             or ""
         )
         if url:
-            return _image_ocr(url)
+            return _image_ocr(url, page_title=page_title)
     return ""
 
 
-def _extract_blocks(client: Client, block_id: str) -> str:
-    """Récupère récursivement tout le texte d'une page, en traversant tous les conteneurs."""
-    lines  = []
-    cursor = None
+def _extract_blocks(client: Client, block_id: str, page_title: str = "") -> str:
+    """
+    Récupère récursivement tout le texte d'une page en traversant tous les conteneurs.
+    Préfixe les chunks avec le contexte de section (heading courant).
+    Formate les tables Notion de façon structurée.
+    """
+    lines          = []
+    current_heading = ""
+    cursor         = None
+
     while True:
         kwargs: dict = {"block_id": block_id, "page_size": 100}
         if cursor:
             kwargs["start_cursor"] = cursor
-        response = client.blocks.children.list(**kwargs)
+        response = _notion_call(client.blocks.children.list, **kwargs)
 
         for block in response.get("results", []):
             btype = block.get("type", "")
 
-            # Ne jamais descendre dans une child_page — elle est indexée séparément
-            if btype == "child_page":
+            # Ne jamais descendre dans child_page (indexée séparément) ni child_database (API interdit)
+            if btype in ("child_page", "child_database"):
                 continue
 
-            text = _block_to_text(block)
-            if text:
-                lines.append(text)
+            # Traitement spécial des tables : collecter toutes les table_row
+            if btype == "table":
+                table_lines = _extract_table(client, block["id"])
+                if table_lines:
+                    lines.extend(table_lines)
+                continue
 
-            # Descendre dans tous les blocs qui peuvent contenir des enfants
-            if block.get("has_children"):
-                child_text = _extract_blocks(client, block["id"])
+            text = _block_to_text(block, page_title=page_title)
+
+            if btype in ("heading_1", "heading_2", "heading_3"):
+                raw = text.lstrip("# ").strip()
+                if raw:
+                    current_heading = raw
+                if text:
+                    lines.append(text)
+            elif text:
+                # Préfixer avec le contexte de section si disponible
+                if current_heading:
+                    lines.append(f"[Section: {current_heading}] {text}")
+                else:
+                    lines.append(text)
+
+            if block.get("has_children") and btype not in ("child_page", "child_database", "table"):
+                child_text = _extract_blocks(client, block["id"], page_title=page_title)
                 if child_text:
                     lines.append(child_text)
 
@@ -171,22 +221,80 @@ def _extract_blocks(client: Client, block_id: str) -> str:
     return "\n\n".join(filter(None, lines))
 
 
+def _extract_table(client: Client, table_block_id: str) -> list[str]:
+    """Extrait un tableau Notion et le formate en lignes structurées."""
+    try:
+        response = _notion_call(
+            client.blocks.children.list, block_id=table_block_id, page_size=100
+        )
+    except Exception:
+        return []
+
+    table_lines = []
+    for block in response.get("results", []):
+        if block.get("type") != "table_row":
+            continue
+        cells = block.get("table_row", {}).get("cells", [])
+        cell_texts = [_rich_text_to_str(cell) for cell in cells]
+        if any(cell_texts):
+            table_lines.append("Tableau — [" + " | ".join(cell_texts) + "]")
+
+    return table_lines
+
+
+# ─── Collecte des entrées d'une database Notion ───────────────────────────────
+
+def _collect_database_pages(client: Client, database_id: str) -> list[dict]:
+    pages  = []
+    cursor = None
+    total  = 0
+    while total < _MAX_DB_ROWS:
+        kwargs: dict = {"database_id": database_id, "page_size": 100}
+        if cursor:
+            kwargs["start_cursor"] = cursor
+        try:
+            response = _notion_call(client.databases.query, **kwargs)
+        except Exception:
+            break
+        for entry in response.get("results", []):
+            title = _get_page_title(entry)
+            pages.append({"id": entry["id"], "title": title})
+            total += 1
+        if not response.get("has_more"):
+            break
+        cursor = response.get("next_cursor")
+    return pages
+
+
 # ─── Collecte récursive de toutes les child_page ─────────────────────────────
 
-def _collect_child_pages(client: Client, block_id: str, depth: int = 0) -> list[dict]:
+def _collect_child_pages(
+    client: Client,
+    block_id: str,
+    depth: int = 0,
+    visited_ids: set | None = None,
+) -> list[dict]:
     """
-    Parcourt tous les blocs (y compris column_list, column, toggle…)
+    Parcourt tous les blocs (y compris column_list, column, toggle, child_database…)
     pour trouver les child_page à tous les niveaux.
+    visited_ids évite les boucles infinies dues aux synced_blocks.
     """
-    if depth > 8:
+    if visited_ids is None:
+        visited_ids = set()
+    if depth > 8 or block_id in visited_ids:
         return []
+    visited_ids.add(block_id)
+
     pages  = []
     cursor = None
     while True:
         kwargs: dict = {"block_id": block_id, "page_size": 100}
         if cursor:
             kwargs["start_cursor"] = cursor
-        response = client.blocks.children.list(**kwargs)
+        try:
+            response = _notion_call(client.blocks.children.list, **kwargs)
+        except Exception:
+            break
 
         for block in response.get("results", []):
             btype = block.get("type", "")
@@ -194,13 +302,23 @@ def _collect_child_pages(client: Client, block_id: str, depth: int = 0) -> list[
             if btype == "child_page":
                 child_id    = block["id"]
                 child_title = block.get("child_page", {}).get("title", "Page sans titre")
-                pages.append({"id": child_id, "title": child_title})
-                # Récursion dans la sous-page
-                pages.extend(_collect_child_pages(client, child_id, depth + 1))
+                if child_id not in visited_ids:
+                    pages.append({"id": child_id, "title": child_title})
+                    pages.extend(
+                        _collect_child_pages(client, child_id, depth + 1, visited_ids)
+                    )
+
+            elif btype == "child_database":
+                db_id    = block["id"]
+                db_title = block.get("child_database", {}).get("title", "Base de données")
+                db_pages = _collect_database_pages(client, db_id)
+                pages.extend(db_pages)
+                print(f"    → Base Notion « {db_title} » : {len(db_pages)} entrées")
 
             elif block.get("has_children"):
-                # Descendre dans les conteneurs (column_list, column, toggle, etc.)
-                pages.extend(_collect_child_pages(client, block["id"], depth + 1))
+                pages.extend(
+                    _collect_child_pages(client, block["id"], depth + 1, visited_ids)
+                )
 
         if not response.get("has_more"):
             break
@@ -252,28 +370,42 @@ def load_notion_pages() -> list[tuple[list[str], list[dict], str]]:
     client = _get_client()
 
     try:
-        root_page     = client.pages.retrieve(NOTION_ROOT_PAGE_ID)
+        root_page     = _notion_call(client.pages.retrieve, NOTION_ROOT_PAGE_ID)
         root_title    = _get_page_title(root_page)
         root_category = _get_page_category(root_page)
+        root_last_edited = root_page.get("last_edited_time", "")
     except APIResponseError as exc:
         raise ValueError(f"Impossible d'accéder à la page Notion racine : {exc}") from exc
 
-    # Collecte toutes les sous-pages (traversée complète de l'arborescence)
-    all_pages = [{"id": NOTION_ROOT_PAGE_ID, "title": root_title, "category": root_category}]
-    for cp in _collect_child_pages(client, NOTION_ROOT_PAGE_ID):
+    all_pages = [{
+        "id":          NOTION_ROOT_PAGE_ID,
+        "title":       root_title,
+        "category":    root_category,
+        "last_edited": root_last_edited,
+    }]
+
+    visited = {NOTION_ROOT_PAGE_ID}
+    for cp in _collect_child_pages(client, NOTION_ROOT_PAGE_ID, visited_ids=visited):
         try:
-            page_data = client.pages.retrieve(cp["id"])
-            category  = _get_page_category(page_data)
+            page_data    = _notion_call(client.pages.retrieve, cp["id"])
+            category     = _get_page_category(page_data)
+            last_edited  = page_data.get("last_edited_time", "")
         except APIResponseError:
-            category = "Général"
-        all_pages.append({"id": cp["id"], "title": cp["title"], "category": category})
+            category    = "Général"
+            last_edited = ""
+        all_pages.append({
+            "id":          cp["id"],
+            "title":       cp["title"],
+            "category":    category,
+            "last_edited": last_edited,
+        })
 
     print(f"  → {len(all_pages)} pages Notion trouvées")
 
     results = []
     for page_info in all_pages:
         try:
-            text = _extract_blocks(client, page_info["id"])
+            text = _extract_blocks(client, page_info["id"], page_title=page_info["title"])
             if not text.strip():
                 continue
             chunks = chunk_text(text)
@@ -282,11 +414,13 @@ def load_notion_pages() -> list[tuple[list[str], list[dict], str]]:
             doc_id    = str(uuid.uuid4())
             metadatas = [
                 {
-                    "doc_id":      doc_id,
-                    "title":       page_info["title"],
-                    "source":      f"notion:{page_info['id']}",
-                    "category":    page_info["category"],
-                    "chunk_index": i,
+                    "doc_id":          doc_id,
+                    "title":           page_info["title"],
+                    "source":          f"notion:{page_info['id']}",
+                    "category":        page_info["category"],
+                    "chunk_index":     i,
+                    "notion_page_id":  page_info["id"],
+                    "notion_last_edited": page_info.get("last_edited", ""),
                 }
                 for i in range(len(chunks))
             ]
@@ -298,6 +432,81 @@ def load_notion_pages() -> list[tuple[list[str], list[dict], str]]:
     return results
 
 
+def load_notion_page(
+    client: Client, page_info: dict
+) -> tuple[list[str], list[dict], str] | None:
+    """Charge et découpe une seule page Notion. Retourne None si vide."""
+    try:
+        text = _extract_blocks(client, page_info["id"], page_title=page_info["title"])
+        if not text.strip():
+            return None
+        chunks = chunk_text(text)
+        if not chunks:
+            return None
+        doc_id    = str(uuid.uuid4())
+        metadatas = [
+            {
+                "doc_id":             doc_id,
+                "title":              page_info["title"],
+                "source":             f"notion:{page_info['id']}",
+                "category":           page_info.get("category", "Général"),
+                "chunk_index":        i,
+                "notion_page_id":     page_info["id"],
+                "notion_last_edited": page_info.get("last_edited", ""),
+            }
+            for i in range(len(chunks))
+        ]
+        return chunks, metadatas, doc_id
+    except APIResponseError as exc:
+        print(f"  ✗ Erreur '{page_info['title']}': {exc}")
+        return None
+
+
+def collect_all_notion_pages() -> tuple[Client, list[dict]]:
+    """
+    Collecte la liste de toutes les pages Notion (sans extraction de texte).
+    Retourne (client, [page_info dict avec id/title/category/last_edited]).
+    """
+    if not NOTION_TOKEN or not NOTION_ROOT_PAGE_ID:
+        raise ValueError("NOTION_TOKEN et NOTION_ROOT_PAGE_ID doivent être définis dans .env")
+
+    client = _get_client()
+
+    try:
+        root_page    = _notion_call(client.pages.retrieve, NOTION_ROOT_PAGE_ID)
+        root_title   = _get_page_title(root_page)
+        root_category = _get_page_category(root_page)
+        root_last_edited = root_page.get("last_edited_time", "")
+    except APIResponseError as exc:
+        raise ValueError(f"Impossible d'accéder à la page Notion racine : {exc}") from exc
+
+    all_pages = [{
+        "id":          NOTION_ROOT_PAGE_ID,
+        "title":       root_title,
+        "category":    root_category,
+        "last_edited": root_last_edited,
+    }]
+
+    visited = {NOTION_ROOT_PAGE_ID}
+    for cp in _collect_child_pages(client, NOTION_ROOT_PAGE_ID, visited_ids=visited):
+        try:
+            page_data   = _notion_call(client.pages.retrieve, cp["id"])
+            category    = _get_page_category(page_data)
+            last_edited = page_data.get("last_edited_time", "")
+        except APIResponseError:
+            category    = "Général"
+            last_edited = ""
+        all_pages.append({
+            "id":          cp["id"],
+            "title":       cp["title"],
+            "category":    category,
+            "last_edited": last_edited,
+        })
+
+    print(f"  → {len(all_pages)} pages Notion trouvées")
+    return client, all_pages
+
+
 def check_notion_connection() -> dict:
     if not NOTION_TOKEN:
         return {"ok": False, "error": "NOTION_TOKEN manquant dans .env"}
@@ -305,7 +514,7 @@ def check_notion_connection() -> dict:
         return {"ok": False, "error": "NOTION_ROOT_PAGE_ID manquant dans .env"}
     try:
         client = _get_client()
-        page   = client.pages.retrieve(NOTION_ROOT_PAGE_ID)
+        page   = _notion_call(client.pages.retrieve, NOTION_ROOT_PAGE_ID)
         title  = _get_page_title(page)
         return {"ok": True, "root_page": title}
     except APIResponseError as exc:

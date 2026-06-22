@@ -57,6 +57,15 @@ def init_vector_db() -> None:
                     ON document_chunks USING hnsw (embedding vector_cosine_ops)
             """)
 
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS notion_sync_log (
+                    notion_page_id TEXT PRIMARY KEY,
+                    doc_id         TEXT NOT NULL,
+                    last_edited    TIMESTAMPTZ,
+                    synced_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                )
+            """)
+
 
 class VectorStore:
 
@@ -155,6 +164,46 @@ class VectorStore:
                     ORDER BY doc_id, chunk_index
                 """)
                 return [dict(r) for r in cur.fetchall()]
+
+    def get_notion_sync_log(self) -> dict[str, dict]:
+        """Retourne {notion_page_id: {doc_id, last_edited}} pour toutes les pages trackées."""
+        with get_conn() as conn:
+            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                cur.execute("SELECT notion_page_id, doc_id, last_edited FROM notion_sync_log")
+                return {
+                    r["notion_page_id"]: {
+                        "doc_id":      r["doc_id"],
+                        "last_edited": r["last_edited"],
+                    }
+                    for r in cur.fetchall()
+                }
+
+    def upsert_notion_sync_log(
+        self, notion_page_id: str, doc_id: str, last_edited: str | None
+    ) -> None:
+        with get_conn() as conn:
+            with conn.cursor() as cur:
+                cur.execute("""
+                    INSERT INTO notion_sync_log (notion_page_id, doc_id, last_edited, synced_at)
+                    VALUES (%s, %s, %s, NOW())
+                    ON CONFLICT (notion_page_id) DO UPDATE SET
+                        doc_id      = EXCLUDED.doc_id,
+                        last_edited = EXCLUDED.last_edited,
+                        synced_at   = NOW()
+                """, (notion_page_id, doc_id, last_edited or None))
+
+    def delete_notion_page(self, notion_page_id: str, doc_id: str) -> int:
+        """Supprime les chunks d'une page Notion et son entrée dans notion_sync_log."""
+        with get_conn() as conn:
+            with conn.cursor() as cur:
+                cur.execute("DELETE FROM document_chunks WHERE doc_id = %s", (doc_id,))
+                deleted = cur.rowcount
+                cur.execute("DELETE FROM documents_meta WHERE doc_id = %s", (doc_id,))
+                cur.execute(
+                    "DELETE FROM notion_sync_log WHERE notion_page_id = %s",
+                    (notion_page_id,),
+                )
+        return deleted
 
     def delete_notion_documents(self) -> int:
         """Supprime tous les chunks dont la source commence par 'notion:'."""
