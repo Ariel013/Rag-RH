@@ -380,7 +380,7 @@ def load_notion_pages() -> list[tuple[list[str], list[dict], str]]:
         "last_edited": root_last_edited,
     }]
 
-    visited = {NOTION_ROOT_PAGE_ID}
+    visited = set()  # _collect_child_pages ajoute lui-même le root ID à visited
     for cp in _collect_child_pages(client, NOTION_ROOT_PAGE_ID, visited_ids=visited):
         try:
             page_data    = _notion_call(client.pages.retrieve, cp["id"])
@@ -483,7 +483,7 @@ def collect_all_notion_pages() -> tuple[Client, list[dict]]:
         "last_edited": root_last_edited,
     }]
 
-    visited = {NOTION_ROOT_PAGE_ID}
+    visited = set()  # _collect_child_pages ajoute lui-même le root ID à visited
     for cp in _collect_child_pages(client, NOTION_ROOT_PAGE_ID, visited_ids=visited):
         try:
             page_data   = _notion_call(client.pages.retrieve, cp["id"])
