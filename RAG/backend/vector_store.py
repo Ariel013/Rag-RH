@@ -206,13 +206,13 @@ class VectorStore:
         return deleted
 
     def delete_notion_documents(self) -> int:
-        """Supprime tous les chunks dont la source commence par 'notion:'."""
+        """Supprime tous les chunks Notion et réinitialise le log de sync."""
         with get_conn() as conn:
             with conn.cursor() as cur:
-                # Récupère les doc_ids avant suppression
                 cur.execute("SELECT DISTINCT doc_id FROM document_chunks WHERE source LIKE 'notion:%'")
                 notion_doc_ids = [r[0] for r in cur.fetchall()]
                 if not notion_doc_ids:
+                    cur.execute("DELETE FROM notion_sync_log")
                     return 0
                 cur.execute("DELETE FROM document_chunks WHERE source LIKE 'notion:%'")
                 deleted = cur.rowcount
@@ -220,6 +220,7 @@ class VectorStore:
                     "DELETE FROM documents_meta WHERE doc_id = ANY(%s)",
                     (notion_doc_ids,),
                 )
+                cur.execute("DELETE FROM notion_sync_log")
         return deleted
 
     def count(self) -> int:
