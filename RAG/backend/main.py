@@ -82,7 +82,10 @@ def _init_rag() -> None:
         if _rag is not None:
             return
         _rag = RAGPipeline()
-        _sync_notion_blocking(_rag, full=True)
+        # Incrémental : évite de purger/réingérer tout Notion à chaque redémarrage
+        # (cold start HF Spaces, reprise après pause Supabase...). Le full resync
+        # reste disponible via le bouton admin pour une reconstruction volontaire.
+        _sync_notion_blocking(_rag, full=False)
         seed_default_topics(_rag)
     _rag_ready.set()
 

@@ -2,6 +2,7 @@
 Pool de connexions PostgreSQL partagé entre analytics et vector_store.
 """
 import os
+import time
 from contextlib import contextmanager
 
 import psycopg2
@@ -10,6 +11,12 @@ from pgvector.psycopg2 import register_vector
 from psycopg2.pool import ThreadedConnectionPool
 
 _pool: ThreadedConnectionPool | None = None
+
+# Retry/backoff à la création du pool : une reprise Supabase (sortie de pause,
+# maintenance) peut mettre quelques dizaines de secondes à devenir joignable.
+# Sans ça, le premier échec de connexion fait planter tout le process au boot.
+_POOL_MAX_ATTEMPTS = 5
+_POOL_RETRY_BASE_DELAY = 5  # secondes, doublé à chaque tentative (5, 10, 20, 40)
 
 
 def _parse_db_url(url: str) -> dict:
@@ -37,7 +44,21 @@ def _get_pool() -> ThreadedConnectionPool:
         if not url:
             raise RuntimeError("Variable d'environnement DATABASE_URL manquante.")
         params = _parse_db_url(url)
-        _pool = ThreadedConnectionPool(1, 10, **params)
+
+        delay = _POOL_RETRY_BASE_DELAY
+        for attempt in range(1, _POOL_MAX_ATTEMPTS + 1):
+            try:
+                _pool = ThreadedConnectionPool(1, 10, **params)
+                break
+            except psycopg2.OperationalError as exc:
+                if attempt == _POOL_MAX_ATTEMPTS:
+                    raise
+                print(
+                    f"  ✗ Connexion DB échouée (tentative {attempt}/{_POOL_MAX_ATTEMPTS}), "
+                    f"nouvelle tentative dans {delay}s : {exc}"
+                )
+                time.sleep(delay)
+                delay *= 2
     return _pool
 
 

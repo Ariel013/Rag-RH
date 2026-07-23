@@ -1,0 +1,27 @@
+name: Keep-alive Supabase / HF Space
+
+# Le plan gratuit Supabase met le projet en pause après ~1 semaine sans activité,
+# et une fois en pause le nombre de réactivations manuelles est limité.
+# Ce ping régulier maintient le projet actif en interrogeant réellement Postgres
+# (via /api/health, qui exécute vector_store.count() une fois le RAG prêt).
+on:
+  schedule:
+    - cron: '0 6 */3 * *'  # tous les 3 jours à 06:00 UTC — large marge sous le seuil de pause
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /api/health
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /tmp/health.json -w "%{http_code}" \
+              https://arieldev13-assistant-rh-rag.hf.space/api/health || echo "000")
+            echo "Tentative $i — HTTP $code"
+            cat /tmp/health.json 2>/dev/null; echo
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 30
+          done
+          echo "⚠ Le site n'a pas répondu 200 après 3 tentatives — vérifier le Space HF."
+          exit 1
