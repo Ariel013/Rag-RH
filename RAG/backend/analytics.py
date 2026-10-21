@@ -6,7 +6,7 @@ import uuid
 
 import psycopg2.extras
 
-from .db import get_conn
+from .db import enable_rls, get_conn
 
 # Phrases qui signalent l'absence de réponse
 _NO_ANSWER = [
@@ -71,6 +71,8 @@ def init_db() -> None:
             cur.execute("""
                 ALTER TABLE messages ADD COLUMN IF NOT EXISTS topic_id TEXT
             """)
+
+            enable_rls(cur, ["conversations", "messages", "unanswered"])
 
 
 def _is_unanswered(answer: str) -> bool:

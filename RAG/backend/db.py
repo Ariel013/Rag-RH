@@ -62,6 +62,30 @@ def _get_pool() -> ThreadedConnectionPool:
     return _pool
 
 
+def enable_rls(cur, tables: list[str]) -> None:
+    """
+    Active le RLS (sans aucune policy) sur les tables du schéma public.
+
+    Supabase expose le schéma public via son API REST : sans RLS, la clé anon
+    suffit pour lire et écrire ces tables. Sans policy, anon et authenticated
+    n'y voient plus rien ; le backend, propriétaire des tables, n'est pas
+    concerné (le RLS ne s'applique pas au propriétaire sans FORCE).
+    Seules les tables dont l'utilisateur courant est propriétaire sont
+    traitées, sinon le backend risquerait de se bloquer lui-même.
+    """
+    for table in tables:
+        cur.execute(
+            "SELECT tableowner = current_user FROM pg_tables "
+            "WHERE schemaname = 'public' AND tablename = %s",
+            (table,),
+        )
+        row = cur.fetchone()
+        if row and row[0]:
+            cur.execute(f"ALTER TABLE {table} ENABLE ROW LEVEL SECURITY")
+        else:
+            print(f"  ⚠ RLS non activé sur « {table} » : table absente ou d'un autre propriétaire")
+
+
 @contextmanager
 def get_conn(with_vector: bool = False):
     """Emprunte une connexion du pool, commit ou rollback automatiquement."""

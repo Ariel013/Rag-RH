@@ -4,7 +4,7 @@ Remplace ChromaDB : persistant, pas de dépendance lourde.
 """
 import psycopg2.extras
 
-from .db import get_conn
+from .db import enable_rls, get_conn
 
 EMBEDDING_DIM = 384  # paraphrase-multilingual-MiniLM-L12-v2
 
@@ -65,6 +65,8 @@ def init_vector_db() -> None:
                     synced_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 )
             """)
+
+            enable_rls(cur, ["topics", "document_chunks", "documents_meta", "notion_sync_log"])
 
 
 class VectorStore:
