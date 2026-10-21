@@ -105,7 +105,7 @@ def _sync_notion_blocking(rag: RAGPipeline, full: bool = False) -> dict:
     """
     with _sync_lock:
         try:
-            notion_client, all_pages = collect_all_notion_pages()
+            notion_client, all_pages, complete = collect_all_notion_pages()
         except ValueError as exc:
             print(f"  ✗ Notion non configuré : {exc}")
             return {"status": "error", "detail": str(exc)}
@@ -116,6 +116,12 @@ def _sync_notion_blocking(rag: RAGPipeline, full: bool = False) -> dict:
         if not all_pages:
             print("  ✗ Aucune page Notion — vérifiez NOTION_ROOT_PAGE_ID et les permissions.")
             return {"status": "error", "detail": "Aucune page Notion trouvée."}
+
+        if full and not complete:
+            # Purger puis réingérer une liste partielle viderait l'index des
+            # pages non lues jusqu'au prochain passage.
+            print("  ✗ Full sync annulé : liste Notion incomplète (erreur passagère)")
+            return {"status": "error", "detail": "Liste Notion incomplète (rate-limit) — réessayez plus tard."}
 
         if full:
             deleted_chunks = rag.vector_store.delete_notion_documents()
@@ -128,9 +134,13 @@ def _sync_notion_blocking(rag: RAGPipeline, full: bool = False) -> dict:
 
         all_page_ids = {p["id"] for p in all_pages}
 
-        # Pages supprimées de Notion : nettoyer leurs chunks
+        # Pages supprimées de Notion : nettoyer leurs chunks.
+        # Seulement si la liste est complète : une page absente parce que son
+        # parent n'a pas pu être lu (rate-limit) n'est pas une page supprimée.
         removed = 0
-        if not full:
+        if not full and not complete:
+            print("  ⚠ Liste Notion incomplète — aucune suppression à ce passage")
+        if not full and complete:
             for page_id, log_entry in sync_log.items():
                 if page_id not in all_page_ids:
                     rag.vector_store.delete_notion_page(page_id, log_entry["doc_id"])

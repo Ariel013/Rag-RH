@@ -32,26 +32,61 @@ def _get_client() -> Client:
 
 # ─── Wrapper retry Notion API ────────────────────────────────────────────────
 
+_NOTION_MAX_ATTEMPTS = 6
+_NOTION_MAX_DELAY    = 30  # secondes
+
+
+def _is_transient(exc: Exception) -> bool:
+    """Erreur passagère (rate-limit, 5xx, réseau) : la ressource existe peut-être."""
+    if isinstance(exc, APIResponseError):
+        return exc.status == 429 or exc.status >= 500
+    return isinstance(exc, (httpx.TimeoutException, httpx.TransportError))
+
+
+def _retry_delay(exc: Exception, attempt: int) -> float:
+    """Respecte Retry-After quand Notion le fournit, sinon backoff exponentiel."""
+    headers = getattr(exc, "headers", None)
+    retry_after = headers.get("retry-after") if headers else None
+    try:
+        delay = float(retry_after) if retry_after else 2 ** (attempt + 1)
+    except ValueError:
+        delay = 2 ** (attempt + 1)
+    return min(delay, _NOTION_MAX_DELAY)
+
+
 def _notion_call(fn, *args, **kwargs):
-    """Retry jusqu'à 3 fois avec backoff exponentiel sur rate-limit et erreurs 5xx."""
-    for attempt in range(3):
+    """Retry sur rate-limit, erreurs 5xx et réseau (Retry-After respecté)."""
+    for attempt in range(_NOTION_MAX_ATTEMPTS):
         try:
             return fn(*args, **kwargs)
-        except APIResponseError as exc:
-            if exc.status in (429,) or exc.status >= 500:
-                if attempt < 2:
-                    time.sleep(2 ** attempt)
-                    continue
-            raise
-        except httpx.TimeoutException:
-            if attempt < 2:
-                time.sleep(2 ** attempt)
-                continue
-            raise
+        except (APIResponseError, httpx.TimeoutException, httpx.TransportError) as exc:
+            if not _is_transient(exc) or attempt == _NOTION_MAX_ATTEMPTS - 1:
+                raise
+            time.sleep(_retry_delay(exc, attempt))
     raise RuntimeError("_notion_call: unreachable")
 
 
 # ─── OCR images ──────────────────────────────────────────────────────────────
+
+# Modèle vision Groq : llama-4-scout a été retiré le 17/07/2026 (HTTP 404).
+VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "qwen/qwen3.6-27b")
+
+# Groq refuse les images de plus de 4 Mo une fois encodées en base64 (HTTP 413).
+_VISION_MAX_BYTES = 3_000_000  # brut, soit ~4 Mo en base64
+_VISION_MAX_SIDE  = 2000       # pixels
+
+
+def _shrink_for_vision(image_bytes: bytes, content_type: str) -> tuple[bytes, str]:
+    """Réduit l'image (JPEG, côté max 2000 px) si elle dépasse la limite Groq."""
+    if len(image_bytes) <= _VISION_MAX_BYTES:
+        return image_bytes, content_type
+    from PIL import Image
+    img = Image.open(io.BytesIO(image_bytes))
+    img.thumbnail((_VISION_MAX_SIDE, _VISION_MAX_SIDE))
+    out = io.BytesIO()
+    img.convert("RGB").save(out, format="JPEG", quality=85)
+    return out.getvalue(), "image/jpeg"
+
 
 def _image_ocr(url: str, page_title: str = "") -> str:
     try:
@@ -76,16 +111,17 @@ def _image_ocr(url: str, page_title: str = "") -> str:
     if groq_key and groq_key.lower() != "ollama":
         try:
             import base64
-            b64 = base64.standard_b64encode(image_bytes).decode("utf-8")
+            vision_bytes, vision_type = _shrink_for_vision(image_bytes, content_type)
+            b64 = base64.standard_b64encode(vision_bytes).decode("utf-8")
             payload = {
-                "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+                "model": VISION_MODEL,
                 "messages": [
                     {
                         "role": "user",
                         "content": [
                             {
                                 "type": "image_url",
-                                "image_url": {"url": f"data:{content_type};base64,{b64}"},
+                                "image_url": {"url": f"data:{vision_type};base64,{b64}"},
                             },
                             {
                                 "type": "text",
@@ -240,7 +276,9 @@ def _extract_table(client: Client, table_block_id: str) -> list[str]:
 
 # ─── Collecte des entrées d'une database Notion ───────────────────────────────
 
-def _collect_database_pages(client: Client, database_id: str) -> list[dict]:
+def _collect_database_pages(
+    client: Client, database_id: str, failures: list | None = None,
+) -> list[dict]:
     pages  = []
     cursor = None
     total  = 0
@@ -254,6 +292,8 @@ def _collect_database_pages(client: Client, database_id: str) -> list[dict]:
             # Ne jamais avaler l'erreur : une base lue à « 0 entrées » sans trace
             # a déjà masqué une rupture d'API pendant des mois.
             print(f"    ✗ Lecture de la base Notion {database_id} échouée : {exc!r}")
+            if failures is not None and _is_transient(exc):
+                failures.append(database_id)
             break
         for entry in response.get("results", []):
             title = _get_page_title(entry)
@@ -272,11 +312,14 @@ def _collect_child_pages(
     block_id: str,
     depth: int = 0,
     visited_ids: set | None = None,
+    failures: list | None = None,
 ) -> list[dict]:
     """
     Parcourt tous les blocs (y compris column_list, column, toggle, child_database…)
     pour trouver les child_page à tous les niveaux.
     visited_ids évite les boucles infinies dues aux synced_blocks.
+    failures reçoit les blocs non lus pour cause d'erreur passagère : leur
+    sous-arbre manque à la liste, qui ne doit alors pas servir à supprimer.
     """
     if visited_ids is None:
         visited_ids = set()
@@ -294,6 +337,8 @@ def _collect_child_pages(
             response = _notion_call(client.blocks.children.list, **kwargs)
         except Exception as exc:
             print(f"    ✗ Lecture des blocs Notion {block_id} échouée : {exc!r}")
+            if failures is not None and _is_transient(exc):
+                failures.append(block_id)
             break
 
         for block in response.get("results", []):
@@ -305,19 +350,19 @@ def _collect_child_pages(
                 if child_id not in visited_ids:
                     pages.append({"id": child_id, "title": child_title})
                     pages.extend(
-                        _collect_child_pages(client, child_id, depth + 1, visited_ids)
+                        _collect_child_pages(client, child_id, depth + 1, visited_ids, failures)
                     )
 
             elif btype == "child_database":
                 db_id    = block["id"]
                 db_title = block.get("child_database", {}).get("title", "Base de données")
-                db_pages = _collect_database_pages(client, db_id)
+                db_pages = _collect_database_pages(client, db_id, failures)
                 pages.extend(db_pages)
                 print(f"    → Base Notion « {db_title} » : {len(db_pages)} entrées")
 
             elif block.get("has_children"):
                 pages.extend(
-                    _collect_child_pages(client, block["id"], depth + 1, visited_ids)
+                    _collect_child_pages(client, block["id"], depth + 1, visited_ids, failures)
                 )
 
         if not response.get("has_more"):
@@ -462,10 +507,11 @@ def load_notion_page(
         return None
 
 
-def collect_all_notion_pages() -> tuple[Client, list[dict]]:
+def collect_all_notion_pages() -> tuple[Client, list[dict], bool]:
     """
     Collecte la liste de toutes les pages Notion (sans extraction de texte).
-    Retourne (client, [page_info dict avec id/title/category/last_edited]).
+    Retourne (client, [page_info dict avec id/title/category/last_edited], complete).
+    complete=False si une erreur passagère a empêché de lire une partie de l'arbre.
     """
     if not NOTION_TOKEN or not NOTION_ROOT_PAGE_ID:
         raise ValueError("NOTION_TOKEN et NOTION_ROOT_PAGE_ID doivent être définis dans .env")
@@ -487,8 +533,12 @@ def collect_all_notion_pages() -> tuple[Client, list[dict]]:
         "last_edited": root_last_edited,
     }]
 
-    visited = set()  # _collect_child_pages ajoute lui-même le root ID à visited
-    for cp in _collect_child_pages(client, NOTION_ROOT_PAGE_ID, visited_ids=visited):
+    visited  = set()  # _collect_child_pages ajoute lui-même le root ID à visited
+    failures: list = []
+    child_pages = _collect_child_pages(
+        client, NOTION_ROOT_PAGE_ID, visited_ids=visited, failures=failures,
+    )
+    for cp in child_pages:
         try:
             page_data   = _notion_call(client.pages.retrieve, cp["id"])
             category    = _get_page_category(page_data)
@@ -504,7 +554,9 @@ def collect_all_notion_pages() -> tuple[Client, list[dict]]:
         })
 
     print(f"  → {len(all_pages)} pages Notion trouvées")
-    return client, all_pages
+    if failures:
+        print(f"  ⚠ {len(failures)} bloc(s) Notion non lus (erreur passagère) — liste incomplète")
+    return client, all_pages, not failures
 
 
 def check_notion_connection() -> dict:
