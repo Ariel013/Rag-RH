@@ -7,7 +7,8 @@ Document de référence du projet. Objectif : permettre à **n'importe quelle in
 Chatbot RH basé sur un pipeline **RAG (Retrieval-Augmented Generation)** pour le groupe fictif **AEIG (African Education and Innovation Group)**. Les collaborateurs posent des questions RH (congés, paie, procédures, organigramme…) et l'assistant répond **uniquement** à partir d'une base de connaissances vectorielle — jamais à partir des connaissances générales du LLM.
 
 - **Statut** : déployé et fonctionnel (pas un simple POC). DB Supabase en prod, Notion connecté en prod, LLM Groq en prod.
-- **Finalité confirmée** : le contenu métier est fictif (voir la mémoire `project_aeig_dataset.md`), mais **le projet est destiné à devenir la base d'un vrai déploiement** (vraie organisation, vraies données RH). Conséquence directe : la dette technique listée en §8 doit être traitée comme une vraie priorité, pas comme un confort optionnel — voir §9 pour l'ordre de traitement retenu.
+- **Données** : le contenu métier est **fictif** et **versionné dans le dépôt** (`RAG/seed/`, voir §11 et ADR 0001). Il est publié dans un Notion personnel par `RAG/seed/push_notion.py`. Jusqu'au 2026-10-21, la prod lisait le Notion d'un ancien employeur (données réelles) : ce Notion n'est plus utilisé et ne doit plus l'être.
+- **Finalité confirmée** : malgré le contenu fictif, **le projet est destiné à devenir la base d'un vrai déploiement** (vraie organisation, vraies données RH). Conséquence directe : la dette technique listée en §8 doit être traitée comme une vraie priorité, pas comme un confort optionnel — voir §9 pour l'ordre de traitement retenu.
 - **Langue** : le code, les commentaires et les réponses de l'assistant sont en français.
 
 ## 2. Stack technique
@@ -17,13 +18,14 @@ Chatbot RH basé sur un pipeline **RAG (Retrieval-Augmented Generation)** pour l
 | Backend | FastAPI (Python 3.11) | API REST + streaming SSE |
 | Vector DB | PostgreSQL + pgvector | Hébergé sur Supabase, remplace un ancien ChromaDB |
 | Embeddings | fastembed (ONNX local) | `paraphrase-multilingual-MiniLM-L12-v2`, 384 dim, aucun appel réseau, ~90 Mo |
-| LLM | API OpenAI-compatible | Groq en prod (`llama-3.3-70b-versatile`), Ollama local possible en dev |
+| Recherche | Hybride | pgvector (sens) + plein texte Postgres `french` (mots-clés), fusion RRF — voir ADR 0002 |
+| LLM | API OpenAI-compatible | Groq en prod (`openai/gpt-oss-120b`, réglé par la **variable** HF `OLLAMA_MODEL`) ; Ollama local possible en dev. Les modèles llama de Groq ont été retirés le 2026-08-16 |
 | Source de vérité documentaire | Notion API | Complétée par des uploads admin ponctuels — voir §5 |
 | Stockage fichiers uploadés | Supabase Storage | Bucket `uploads` |
 | Frontend | HTML/CSS/JS vanilla + Tailwind (CDN) | Pas de framework, pas de build step |
 | Déploiement | Docker → Hugging Face Spaces | Auto-déployé via GitHub Actions à chaque push sur `main` |
 | Rate limiting | slowapi | 10 req/min sur `/api/chat` |
-| OCR (images Notion) | Vision LLM Groq (llama-4-scout) puis fallback Tesseract | fra+eng |
+| OCR (images Notion) | Vision LLM Groq (`GROQ_VISION_MODEL`, défaut `qwen/qwen3.6-27b`) puis fallback Tesseract | fra+eng — prise en charge des images par ce modèle non vérifiée |
 
 ## 3. Structure du repo
 
@@ -59,6 +61,11 @@ Rag-RH/
     │       ├── storage.js          # Persistance locale des conversations (localStorage, expiry 24h)
     │       ├── ui.js               # Helpers DOM génériques (sidebar, toggle, etc.)
     │       └── utils.js
+    ├── seed/                        # Jeu de données fictif versionné (voir seed/README.md)
+    │   ├── referentiel.md          # Faits de référence (53 collaborateurs, règles RH chiffrées…) — non publié
+    │   ├── notion/                 # 81 pages + 4 bases, en Markdown/JSON, publiées dans Notion
+    │   ├── eval/                   # 62 questions avec réponse attendue (mesure de la qualité)
+    │   └── push_notion.py          # Publie seed/notion/ dans Notion (--dry-run, --reset)
     └── uploads/                     # Fichiers temporaires (gitignored, supprimés après traitement)
 ```
 
@@ -81,7 +88,9 @@ Rag-RH/
 - Enrichissement de requête pour les questions de suivi vagues (« dis-m'en plus », « et le reste ? ») en réinjectant les 2 derniers messages utilisateur — voir `_build_search_query` dans `rag.py`.
 - Historique de conversation limité aux 4 derniers échanges (8 messages) envoyés au LLM.
 - Persistance locale des conversations (24h, localStorage) côté frontend.
-- Garde-fous stricts dans le prompt système : réponse uniquement à partir du contexte fourni, formulations d'attribution interdites (« selon le contexte », etc.), retranscription intégrale des listes, sinon réponse standard invitant à contacter la RH.
+- Garde-fous stricts dans le prompt système : réponse uniquement à partir du contexte fourni, formulations d'attribution interdites (« selon le contexte », etc.), retranscription intégrale des listes, sinon réponse standard invitant à contacter la RH ; refus des questions sur la vie privée d'un collaborateur (règle 9).
+- **Recherche hybride** (ADR 0002) : 30 candidats sémantiques (pgvector, filtrés par `RELEVANCE_THRESHOLD`) + 30 candidats plein texte (`tsv`, config `french`), fusionnés par RRF ; 8 chunks, 9000 caractères max envoyés au LLM.
+- Le chat est disponible **dès le chargement du modèle**, pendant le sync Notion de démarrage (qui peut durer longtemps : OCR, rate-limit Notion).
 
 ### Côté admin (protégé par token)
 
@@ -103,14 +112,17 @@ Implication pratique : ne jamais supposer que retirer le endpoint d'upload ou le
 
 ### Sync Notion (mécanisme central)
 
-1. **Full sync** (au démarrage du serveur, ou déclenché manuellement) : purge tous les chunks `source LIKE 'notion:%'` et le `notion_sync_log`, puis réingère tout.
+1. **Full sync** (bouton admin uniquement) : purge tous les chunks `source LIKE 'notion:%'` et le `notion_sync_log`, puis réingère tout. **Annulé avant purge** si la liste des pages est incomplète (erreur passagère Notion). Au démarrage, c'est un sync **incrémental**.
 2. **Sync incrémental** (tâche de fond toutes les `NOTION_SYNC_INTERVAL_SECONDS`, défaut 7200s = 2h, + bouton manuel) : compare `last_edited_time` de chaque page Notion au log ; ne réingère que les pages nouvelles/modifiées ; supprime les chunks des pages retirées de Notion.
-3. Parcours récursif de tous les blocs (colonnes, toggles, tables, callouts…), OCR sur les images embarquées, gestion des databases Notion (limite 200 lignes), retry avec backoff exponentiel sur 429/5xx.
+3. Parcours récursif de tous les blocs (colonnes, toggles, tables, callouts…), OCR sur les images embarquées, gestion des databases Notion (limite 200 lignes), retry jusqu'à 6 fois sur 429/5xx/réseau en respectant `Retry-After`. **Aucune suppression** lors d'un sync incrémental dont la liste est incomplète : une page non lue n'est pas une page supprimée.
+5. **Vie privée** (ADR 0001) : à l'import, les pages dont le titre commence par « Anniversaire » sont exclues, et les lignes mentionnant date de naissance, anniversaire, téléphone/adresse personnels, domicile ou situation familiale sont retirées (`_PRIVATE_LINE_RE` dans `notion_loader.py`).
+6. `notion-client` est **figé à 2.5.0** : à partir de 2.6.0, `databases.query` disparaît (API Notion 2025-09-03, `data_sources`). Une version non figée a vidé silencieusement toutes les bases Notion pendant des mois.
 4. Le endpoint `/api/admin/notion-status` vérifie la connexion (token + accès à la page racine).
 
 ## 6. Modèle de données (PostgreSQL)
 
-- `document_chunks(id, doc_id, title, source, category, chunk_index, content, embedding vector(384))` + index HNSW cosinus.
+- `document_chunks(id, doc_id, title, source, category, chunk_index, content, embedding vector(384), tsv tsvector)` + index HNSW cosinus + index GIN sur `tsv` (colonne générée : `to_tsvector('french', title || content)`).
+- **RLS activé sans policy** sur les 7 tables (`enable_rls` dans `db.py`) : la clé anon Supabase n'y a aucun accès ; le backend, propriétaire, n'est pas concerné.
 - `documents_meta(doc_id, storage_path, uploaded_at)` — pour retrouver/supprimer le fichier dans Supabase Storage.
 - `notion_sync_log(notion_page_id, doc_id, last_edited, synced_at)` — état du sync incrémental.
 - `topics(id, name, embedding vector(384), is_custom)`.
@@ -126,7 +138,8 @@ Voir `RAG/.env.example` pour la liste complète. Points clés :
 - `DATABASE_URL` : Postgres Supabase (parsing manuel dans `db.py` pour supporter les mots de passe à caractères spéciaux).
 - `SUPABASE_URL` / `SUPABASE_SERVICE_KEY` : Storage des uploads (optionnel — si absent, upload fonctionne mais sans persistance du fichier source).
 - `NOTION_TOKEN` / `NOTION_ROOT_PAGE_ID` : intégration Notion, source de vérité principale.
-- `OLLAMA_BASE_URL` / `OLLAMA_MODEL` / `GROQ_API_KEY` : LLM (compatible OpenAI). Le nom `OLLAMA_*` est trompeur une fois pointé vers Groq — hérité de l'implémentation initiale 100% locale.
+- `OLLAMA_BASE_URL` / `OLLAMA_MODEL` / `GROQ_API_KEY` : LLM (compatible OpenAI). Le nom `OLLAMA_*` est trompeur une fois pointé vers Groq — hérité de l'implémentation initiale 100% locale. Sur HF, `OLLAMA_MODEL` est une **variable** (pas un secret) : un secret et une variable de même nom bloquent le Space (`Collision on variables and secrets names`). Groq retire régulièrement des modèles : vérifier https://console.groq.com/docs/deprecations en cas d'erreur `model_not_found`.
+- `GROQ_VISION_MODEL` : modèle vision pour l'OCR des images Notion (défaut `qwen/qwen3.6-27b`).
 - `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_TOKEN` : auth admin — **un seul compte admin possible actuellement**.
 - `ALLOWED_ORIGINS` : CORS, `*` par défaut.
 - `RELEVANCE_THRESHOLD` : seuil de similarité cosinus pour filtrer les résultats de recherche (0–1). Le `.env` réel de prod ne définit pas cette clé, donc le défaut du code (`rag.py`, 0.40) s'applique — confirmé comme l'état voulu, pas un oubli.
@@ -139,7 +152,10 @@ Voir `RAG/.env.example` pour la liste complète. Points clés :
 - **Détection "sans réponse"** basée sur du pattern-matching de phrases dans `analytics.py::_NO_ANSWER` — couplée au wording exact du prompt système dans `rag.py`. Si le prompt change, penser à mettre à jour la liste (et vice-versa).
 - **Un seul compte admin** (`ADMIN_EMAIL`/`ADMIN_PASSWORD` fixes dans l'env, token statique unique) — pas de multi-utilisateur, pas d'expiration de token. À revoir avant un vrai déploiement (voir §9).
 - **Déploiement par force-push** : `deploy-hf.yml` fait un `git push hf main --force` à chaque push sur `main` — pas de rollback automatique, pas d'environnement de staging, pas de CI de test avant déploiement.
-- **Aucun test automatisé** dans le repo actuellement — confirmé comme une lacune à combler prochainement, pas un choix définitif (voir §9).
+- **Aucun test automatisé** dans le repo actuellement — confirmé comme une lacune à combler prochainement, pas un choix définitif (voir §9). `RAG/seed/eval/` (62 questions) en est la première brique.
+- **Dépendances non figées** (sauf `notion-client`) : un rebuild peut installer une version incompatible, comme notion-client 2.6 l'a fait. fastembed est passé en 0.9 le 2026-10-07. À figer.
+- **API Notion ancienne** (2022-06-28, via notion-client 2.5.0) : migration vers `data_sources` à faire.
+- **Keep-alive Supabase cassé** : `.github/workflows/keep-alive.yml` passe par l'appli (donc échoue quand la base dort) et GitHub l'a désactivé pour inactivité. Le projet Supabase (gratuit) s'est mis en pause en juillet 2026 sans que personne ne le voie. Remplacement prévu : cron externe interrogeant Supabase directement (voir `A-FAIRE.md`).
 
 ## 9. Roadmap — dette à combler en priorité
 
@@ -157,16 +173,18 @@ Le projet vise un vrai déploiement futur (§1), donc l'ordre de traitement rete
 - **pgvector remplace ChromaDB** : passage à PostgreSQL/Supabase pour la persistance vectorielle (pas de volume à gérer sur HF Spaces).
 - **Notion devient la source de vérité principale**, en complément des uploads admin qui restent un canal légitime pour les documents ponctuels (confirmé le 2026-07-23 — ce n'est pas un mode dégradé, voir §5).
 - **fastembed (ONNX) remplace sentence-transformers/PyTorch** pour les embeddings — plus léger, pas de dépendance GPU/PyTorch, adapté à HF Spaces CPU.
-- **OCR images Notion** : vision LLM Groq (llama-4-scout) en premier choix, fallback Tesseract si pas de clé Groq ou échec.
+- **OCR images Notion** : vision LLM Groq en premier choix (llama-4-scout jusqu'à son retrait le 2026-07-17, puis modèle configurable), fallback Tesseract si pas de clé Groq ou échec.
 - **Seuil de pertinence** ajusté plusieurs fois (0.15 → 0.5 → ~0.40/0.45) après tests empiriques sur la qualité des réponses.
 - **Auth admin** ajoutée pour protéger l'upload/suppression de documents et les analytics (avant : accès libre).
 - **Frontend éclaté** en 9 fichiers JS/CSS modulaires (avant : un seul `index.html` monolithique).
+- **2026-10-21 — reprise après panne** : Supabase en pause, modèles Groq retirés, bases Notion lues à vide, Notion d'un ancien employeur. Remplacé par un jeu de données fictif versionné (ADR 0001), recherche hybride (ADR 0002), RLS, filtre vie privée. Détail dans `JOURNAL.md`.
 - **2026-07-23** : confirmation que le projet vise un vrai déploiement futur (pas juste un portfolio figé) ; README.md corrigé pour refléter la stack réelle (Groq llama-3.3-70b-versatile, pgvector) au lieu de l'ancienne description (llama-3.1-8b-instant, ChromaDB) ; tests automatisés actés comme prochaine priorité.
 
 ## 11. Comment reprendre ce projet en pratique
 
-- Lire ce fichier en premier.
+- Lire `JOURNAL.md` en premier, puis ce fichier.
 - Vérifier `RAG/.env` (local, gitignored) pour l'état de config réel — ne jamais commiter de secret.
 - Lancer en local avec `RAG/start.sh` (installe les dépendances, vérifie Ollama si config locale, démarre uvicorn avec reload).
 - Le déploiement prod se fait uniquement via push sur `main` (GitHub Actions → force-push vers le Space HF `arieldev13/assistant-rh-rag`). **Un push sur `main` déploie en prod immédiatement** — pas de CI de test avant.
-- Pour enrichir la base de connaissances : modifier Notion directement, ou upload via l'onglet admin du frontend — les deux canaux sont légitimes (§5).
+- Pour enrichir la base de connaissances : modifier `RAG/seed/notion/` puis republier (`python seed/push_notion.py --reset`, depuis `RAG/`), ou upload via l'onglet admin du frontend — les deux canaux sont légitimes (§5). Une modification faite **seulement dans Notion** sera perdue au prochain `--reset`.
+- Mesurer la qualité : `RAG/seed/eval/` contient 62 questions avec la réponse attendue ; toute modification de la recherche ou du prompt se mesure dessus avant d'être poussée.
