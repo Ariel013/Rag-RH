@@ -26,8 +26,9 @@ slowapi>=0.1.9
 pypdf>=3.0.0
 python-docx>=0.8.11
 
-# Notion API
-notion-client>=2.2.1
+# Notion API — figé < 2.6 : à partir de 2.6.0, databases.query disparaît
+# (API Notion 2025-09-03, remplacé par data_sources.query). Migration à faire.
+notion-client==2.5.0
 
 # OCR pour les images Notion
 pytesseract>=0.3.10

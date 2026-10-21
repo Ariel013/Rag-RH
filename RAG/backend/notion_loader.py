@@ -250,7 +250,10 @@ def _collect_database_pages(client: Client, database_id: str) -> list[dict]:
             kwargs["start_cursor"] = cursor
         try:
             response = _notion_call(client.databases.query, **kwargs)
-        except Exception:
+        except Exception as exc:
+            # Ne jamais avaler l'erreur : une base lue à « 0 entrées » sans trace
+            # a déjà masqué une rupture d'API pendant des mois.
+            print(f"    ✗ Lecture de la base Notion {database_id} échouée : {exc!r}")
             break
         for entry in response.get("results", []):
             title = _get_page_title(entry)
@@ -289,7 +292,8 @@ def _collect_child_pages(
             kwargs["start_cursor"] = cursor
         try:
             response = _notion_call(client.blocks.children.list, **kwargs)
-        except Exception:
+        except Exception as exc:
+            print(f"    ✗ Lecture des blocs Notion {block_id} échouée : {exc!r}")
             break
 
         for block in response.get("results", []):
