@@ -5,6 +5,7 @@ en traversant tous les types de blocs conteneurs (columns, toggles, etc.).
 """
 import io
 import os
+import re
 import time
 import uuid
 
@@ -24,6 +25,39 @@ _CONTAINER_TYPES = {
 }
 
 _MAX_DB_ROWS = 200
+
+# ─── Vie privée ──────────────────────────────────────────────────────────────
+# Les fiches collaborateurs sont réelles. Les informations très personnelles
+# sont retirées à l'import : absentes de l'index, elles ne peuvent pas fuiter
+# par le chat, quelle que soit la question posée.
+
+# Pages exclues entièrement (annonces d'anniversaire du News Feed).
+_PRIVATE_TITLE_RE = re.compile(r"^\s*anniversaires?\b", re.IGNORECASE)
+
+# Lignes retirées du texte de toutes les pages Notion (OCR compris).
+_PRIVATE_LINE_RE = re.compile(
+    r"\b("
+    r"anniversaires?|birthday|date\s+de\s+naissance|birth\s*date|née?\s+le"
+    r"|t[ée]l[ée]phone\s+(perso|personnel)|adresse\s+(perso|personnelle)|domicile"
+    r"|situation\s+(familiale|matrimoniale)"
+    r")\b",
+    re.IGNORECASE,
+)
+
+
+def _is_private_page(title: str) -> bool:
+    return bool(_PRIVATE_TITLE_RE.match(title or ""))
+
+
+def _strip_private_lines(text: str) -> tuple[str, int]:
+    """Retire les lignes contenant une information personnelle. Renvoie (texte, nb retirées)."""
+    kept, removed = [], 0
+    for line in text.splitlines():
+        if _PRIVATE_LINE_RE.search(line):
+            removed += 1
+        else:
+            kept.append(line)
+    return "\n".join(kept), removed
 
 
 def _get_client() -> Client:
@@ -483,6 +517,9 @@ def load_notion_page(
     """Charge et découpe une seule page Notion. Retourne None si vide."""
     try:
         text = _extract_blocks(client, page_info["id"], page_title=page_info["title"])
+        text, private_lines = _strip_private_lines(text)
+        if private_lines:
+            print(f"  → « {page_info['title']} » : {private_lines} ligne(s) personnelle(s) retirée(s)")
         if not text.strip():
             return None
         chunks = chunk_text(text)
@@ -538,7 +575,13 @@ def collect_all_notion_pages() -> tuple[Client, list[dict], bool]:
     child_pages = _collect_child_pages(
         client, NOTION_ROOT_PAGE_ID, visited_ids=visited, failures=failures,
     )
+    excluded = 0
     for cp in child_pages:
+        # Exclue de la liste (et non seulement ignorée) : le sync incrémental
+        # supprime ainsi aussi les pages déjà indexées avant cette règle.
+        if _is_private_page(cp["title"]):
+            excluded += 1
+            continue
         try:
             page_data   = _notion_call(client.pages.retrieve, cp["id"])
             category    = _get_page_category(page_data)
@@ -553,7 +596,7 @@ def collect_all_notion_pages() -> tuple[Client, list[dict], bool]:
             "last_edited": last_edited,
         })
 
-    print(f"  → {len(all_pages)} pages Notion trouvées")
+    print(f"  → {len(all_pages)} pages Notion trouvées ({excluded} exclues — vie privée)")
     if failures:
         print(f"  ⚠ {len(failures)} bloc(s) Notion non lus (erreur passagère) — liste incomplète")
     return client, all_pages, not failures
