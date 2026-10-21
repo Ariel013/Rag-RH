@@ -1,0 +1,12 @@
+[
+  {"question": "Quand et par qui AEIG a-t-elle été fondée ?", "reponse_attendue": "En mars 2016 à Cotonou, par Rodrigue ADJOVI.", "page": "Histoire et dates clés"},
+  {"question": "Quand la filiale de Côte d'Ivoire a-t-elle ouvert ?", "reponse_attendue": "En septembre 2020, à Abidjan.", "page": "AEIG Côte d'Ivoire — filiale"},
+  {"question": "Quelles sont les valeurs d'AEIG ?", "reponse_attendue": "Excellence, Audace, Bienveillance, Impact, Intégrité.", "page": "Mission, vision et valeurs"},
+  {"question": "Quels sont les objectifs de la Vision 2030 ?", "reponse_attendue": "10 000 personnes formées, 150 startups accompagnées, présence dans 4 pays.", "page": "Mission, vision et valeurs"},
+  {"question": "Quelle est l'adresse du siège à Cotonou ?", "reponse_attendue": "Immeuble Les Cocotiers, 3e étage, Boulevard de la Marina, Haie Vive, Cotonou.", "page": "AEIG Bénin — maison mère"},
+  {"question": "Combien de collaborateurs compte le groupe ?", "reponse_attendue": "53 collaborateurs : 34 au Bénin et 19 en Côte d'Ivoire.", "page": "Chiffres clés 2025"},
+  {"question": "Quel est le chiffre d'affaires du groupe en 2025 ?", "reponse_attendue": "1,9 milliard FCFA (Academy 52 %, Services 38 %, Lab 10 %).", "page": "Chiffres clés 2025"},
+  {"question": "Combien dure le programme Envol et quand démarrent les promotions ?", "reponse_attendue": "6 mois, deux promotions par an, en février et en septembre.", "page": "AEIG Lab"},
+  {"question": "Quand se réunit le CODIR ?", "reponse_attendue": "Chaque mardi à 10h.", "page": "Gouvernance"},
+  {"question": "Quel parcours de formation est proposé uniquement à Abidjan ?", "reponse_attendue": "La cybersécurité (formateur Jean-Marc AKA).", "page": "AEIG Academy"}
+]

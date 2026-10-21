@@ -1,0 +1,12 @@
+[
+  {"question": "Qui est le directeur général du groupe AEIG ?", "reponse_attendue": "Rodrigue ADJOVI, Directeur Général Groupe et fondateur d'AEIG.", "page": "Organigramme du groupe"},
+  {"question": "Qui dirige AEIG Côte d'Ivoire ?", "reponse_attendue": "Aminata OUATTARA, Directrice Générale d'AEIG Côte d'Ivoire et DG adjointe du groupe.", "page": "Direction générale"},
+  {"question": "Combien de collaborateurs compte AEIG et comment sont-ils répartis ?", "reponse_attendue": "53 collaborateurs : 34 au Bénin (Cotonou) et 19 en Côte d'Ivoire (Abidjan).", "page": "Organisation et annuaire"},
+  {"question": "Quand se réunit le comité de direction ?", "reponse_attendue": "Chaque mardi à 10h.", "page": "Organigramme du groupe"},
+  {"question": "Qui contacter pour une question sur mon bulletin de paie ?", "reponse_attendue": "Fidèle GBAGUIDI, chargé de paie, à paie@aeig.example.", "page": "Qui contacter ?"},
+  {"question": "Qui est la RH de proximité en Côte d'Ivoire et comment la joindre ?", "reponse_attendue": "Adjoua KOUADIO, Chargée RH Côte d'Ivoire : rh.ci@aeig.example, +225 07 00 00 20 31.", "page": "Ressources humaines"},
+  {"question": "À qui signaler une situation de harcèlement ?", "reponse_attendue": "À Carine AKAKPO, référente éthique, de façon confidentielle à ethique@aeig.example.", "page": "Ressources humaines"},
+  {"question": "Qui est le manager d'Arsène KACOU ?", "reponse_attendue": "Aminata OUATTARA (hiérarchique), avec Josué KIKI comme référent fonctionnel groupe.", "page": "People Book"},
+  {"question": "Quelles langues parle Rosine ADANDE et quel est son poste ?", "reponse_attendue": "Formatrice data & IA à AEIG Academy (Bénin), elle travaille en français et en anglais.", "page": "People Book"},
+  {"question": "Qui contacter si mon ordinateur ne fonctionne plus ?", "reponse_attendue": "Steve HOUNDJO, support IT, via support-it@aeig.example ou le canal Slack #entraide-it.", "page": "Qui contacter ?"}
+]

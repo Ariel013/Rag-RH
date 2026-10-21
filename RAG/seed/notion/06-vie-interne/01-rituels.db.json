@@ -1,0 +1,101 @@
+{
+  "title": "Rituels",
+  "icon": "🔁",
+  "properties": {
+    "Rituel": "title",
+    "Fréquence": {"select": ["Hebdomadaire", "Mensuel", "Trimestriel", "Annuel"]},
+    "Public": "rich_text",
+    "Animateur": "rich_text",
+    "Lieu": "rich_text"
+  },
+  "rows": [
+    {
+      "Rituel": "Lundi ensemble",
+      "Fréquence": "Hebdomadaire",
+      "Public": "Chaque service, tous les collaborateurs",
+      "Animateur": "Le responsable de chaque service",
+      "Lieu": "Sur site : siège de Cotonou et bureaux d'Abidjan",
+      "_body": "## Objectif\n\nLancer la semaine ensemble : partager les priorités, repérer les blocages et répartir les sujets urgents.\n\n## Déroulé\n\nChaque lundi de **9h à 9h45**, chaque service se réunit **sur site**. C'est pour cela que le télétravail n'est jamais possible le lundi.\n\n1. Tour de table rapide : une priorité par personne.\n2. Points bloquants et demandes d'aide.\n3. Annonces du service et rappels RH éventuels.\n\n## Qui participe\n\nTous les membres du service, y compris les nouveaux arrivants dès leur premier lundi.\n\n## Inscription\n\nAucune inscription : l'invitation récurrente est ajoutée à ton agenda Google par ton manager à ton arrivée."
+    },
+    {
+      "Rituel": "CODIR",
+      "Fréquence": "Hebdomadaire",
+      "Public": "Comité de direction groupe (9 membres)",
+      "Animateur": "Rodrigue ADJOVI, Directeur Général Groupe",
+      "Lieu": "Salle Ouémé, siège de Cotonou, et visio pour Abidjan",
+      "_body": "## Objectif\n\nPiloter le groupe : suivre les résultats des trois activités, arbitrer les priorités et préparer les décisions.\n\n## Déroulé\n\nChaque **mardi à 10h**. Ordre du jour envoyé la veille par Prisca ZINSOU, assistante de direction. Compte rendu partagé sur le Drive du CODIR sous 48 h.\n\n## Qui participe\n\nRodrigue ADJOVI, Aminata OUATTARA, Serge TOSSOU, Nadège HOUNSA, Hervé AHOUANSOU, Josué KIKI, Léa DOSSOU-YOVO, Olivier KOUTON et Sylvie DEGBEY.\n\n## Proposer un sujet\n\nTout collaborateur peut proposer un sujet en passant par son manager ou en écrivant à Prisca ZINSOU (`prisca.zinsou@aeig.example`) avant le lundi midi."
+    },
+    {
+      "Rituel": "Café Direction",
+      "Fréquence": "Mensuel",
+      "Public": "Ouvert à tous, 12 places",
+      "Animateur": "Rodrigue ADJOVI, Directeur Général Groupe",
+      "Lieu": "Cafétéria du siège, Cotonou (visio pour Abidjan)",
+      "_body": "## Objectif\n\nÉchanger librement avec le Directeur Général, poser ses questions sans filtre et faire remonter les idées du terrain.\n\n## Déroulé\n\nLe **1er mercredi du mois à 8h30**, autour d'un café et de beignets. Pas d'ordre du jour : les questions viennent des participants. Le DG s'engage à répondre par écrit, sous deux semaines, aux questions restées ouvertes.\n\n## Qui participe\n\nDouze collaborateurs maximum, de tous les services et des deux entités. Priorité aux personnes qui n'ont encore jamais participé.\n\n## Inscription\n\nInscription sur le canal Slack **#annonces**, à partir du message publié le dernier lundi du mois précédent. Premier arrivé, premier servi."
+    },
+    {
+      "Rituel": "AEIG Talks",
+      "Fréquence": "Mensuel",
+      "Public": "Tout le groupe",
+      "Animateur": "Inès AGUEH (organisation), un collaborateur différent chaque mois",
+      "Lieu": "Espace Lab au siège de Cotonou, retransmis en visio",
+      "_body": "## Objectif\n\nPartager un savoir, un projet ou une passion. Chacun peut être intervenant, quel que soit son poste.\n\n## Déroulé\n\nLe **dernier jeudi du mois à 16h** : 30 minutes de présentation, puis 15 minutes de questions. Les sessions sont enregistrées et déposées sur le Drive « AEIG Talks ».\n\n## Qui participe\n\nTout le groupe, sur place à Cotonou ou en visio depuis Abidjan. Les apprenants de l'Academy sont invités une fois par trimestre.\n\n## Proposer un talk\n\nÉcris à Inès AGUEH (`ines.agueh@aeig.example`) avec un titre et trois lignes de résumé. Le programme 2026 est détaillé sur la page AEIG Talks."
+    },
+    {
+      "Rituel": "AEIG Quarterly",
+      "Fréquence": "Trimestriel",
+      "Public": "Tout le groupe",
+      "Animateur": "Rodrigue ADJOVI et Serge TOSSOU",
+      "Lieu": "Visio pour tout le groupe",
+      "_body": "## Objectif\n\nPrésenter à tous les résultats du trimestre : activité de l'Academy, du Lab et des Services, chiffres financiers et projets à venir.\n\n## Déroulé\n\nUne heure trente en visio, deux semaines après la fin de chaque trimestre.\n\n1. Mot du DG et faits marquants.\n2. Résultats financiers par le DAF, Serge TOSSOU.\n3. Une présentation par activité.\n4. Questions ouvertes, y compris anonymes via un formulaire.\n\n## Qui participe\n\nTous les collaborateurs d'AEIG Bénin et d'AEIG Côte d'Ivoire.\n\n## Inscription\n\nAucune : l'invitation est envoyée à tous par Prisca ZINSOU. Le support est partagé dans #annonces le jour même."
+    },
+    {
+      "Rituel": "Vendredi sport",
+      "Fréquence": "Hebdomadaire",
+      "Public": "Volontaires, tous niveaux",
+      "Animateur": "Les responsables des clubs sportifs",
+      "Lieu": "Stade de l'Amitié (Cotonou) ; terrain de basket de Cocody (Abidjan)",
+      "_body": "## Objectif\n\nFinir la semaine en bougeant, et créer des liens entre services et entre pays.\n\n## Déroulé\n\nChaque **vendredi à 17h**, juste après la fin de journée (16h30) :\n\n- à Cotonou : football au Stade de l'Amitié ;\n- à Abidjan : basket sur le terrain de Cocody.\n\nÉchauffement collectif de 15 minutes, puis matchs en équipes mélangées. Eau fournie par AEIG.\n\n## Qui participe\n\nTous les volontaires, débutants bienvenus. Les apprenants peuvent rejoindre une fois par mois.\n\n## Inscription\n\nUn sondage est publié dans #vie-aeig chaque jeudi : réponds pour que l'on prévoie les équipes. Détails sur la page Clubs sportifs."
+    },
+    {
+      "Rituel": "Onboarding mensuel",
+      "Fréquence": "Mensuel",
+      "Public": "Nouveaux arrivants du mois",
+      "Animateur": "Nadège HOUNSA (Bénin) et Adjoua KOUADIO (Côte d'Ivoire)",
+      "Lieu": "Salle Ouémé (Cotonou) ; salle Lagune (Abidjan)",
+      "_body": "## Objectif\n\nAccueillir collectivement les personnes arrivées dans le mois et leur donner les clés du groupe.\n\n## Déroulé\n\nUne matinée, le **2e jeudi du mois de 9h à 12h30** :\n\n1. Histoire, mission et valeurs d'AEIG.\n2. Présentation des trois activités : Academy, Lab, Services.\n3. Outils : Kalia RH, Google Workspace, Slack, Notion.\n4. Règles RH essentielles : congés, télétravail, notes de frais.\n5. Déjeuner offert avec un membre du CODIR.\n\n## Qui participe\n\nTous les nouveaux arrivants du mois, en CDI, CDD ou stage.\n\n## Inscription\n\nAutomatique : la RH envoie l'invitation dès la signature du contrat."
+    },
+    {
+      "Rituel": "Séminaire annuel",
+      "Fréquence": "Annuel",
+      "Public": "Tout le groupe",
+      "Animateur": "Comité de direction et Inès AGUEH",
+      "Lieu": "Grand-Popo, Bénin",
+      "_body": "## Objectif\n\nRéunir les deux entités pour faire le bilan de l'année, construire la feuille de route et renforcer la cohésion.\n\n## Déroulé\n\nTrois jours en **mars** à **Grand-Popo** : une journée de bilan et de stratégie, une journée d'ateliers par activité, une journée de cohésion. Transport et hébergement pris en charge par AEIG, y compris pour les collègues d'Abidjan.\n\n## Qui participe\n\nTous les collaborateurs du groupe. Les personnes en période d'essai sont aussi invitées.\n\n## Inscription\n\nUn formulaire est envoyé en janvier pour les besoins logistiques (régime alimentaire, transport). Programme détaillé sur la page Séminaire annuel."
+    },
+    {
+      "Rituel": "Journée RSE",
+      "Fréquence": "Annuel",
+      "Public": "Tout le groupe, apprenants volontaires",
+      "Animateur": "Grâce AMOUSSOU (Bénin) et Laetitia ASSI (Côte d'Ivoire)",
+      "Lieu": "Écoles et sites partenaires, à Cotonou et à Abidjan",
+      "_body": "## Objectif\n\nAgir concrètement pour notre environnement et nos communautés, en lien avec la valeur **Impact**.\n\n## Déroulé\n\nUne journée en **juin**, comptée comme journée travaillée :\n\n- le matin, plantation d'arbres avec une association partenaire ;\n- l'après-midi, dons de matériel informatique reconditionné à des écoles, avec une initiation au numérique animée par nos formateurs.\n\n## Qui participe\n\nTous les collaborateurs, avec les apprenants volontaires de l'Academy.\n\n## Inscription\n\nInscription par équipe dans #vie-aeig à partir de mai. Détails sur la page RSE et solidarité."
+    },
+    {
+      "Rituel": "AEIG Hack",
+      "Fréquence": "Annuel",
+      "Public": "Collaborateurs et apprenants",
+      "Animateur": "Josué KIKI et Léa DOSSOU-YOVO",
+      "Lieu": "Siège de Cotonou et bureaux d'Abidjan, en simultané",
+      "_body": "## Objectif\n\nPendant 48 heures, prototyper des solutions numériques à un défi réel, en mélangeant collaborateurs et apprenants.\n\n## Déroulé\n\nEn **novembre**, du vendredi 9h au dimanche 9h. Équipes de 4 à 6 personnes, mentorat par les équipes AEIG Services et AEIG Lab, pitch final devant un jury. Les meilleurs projets peuvent intégrer le programme d'incubation Envol.\n\n## Qui participe\n\nCollaborateurs volontaires et apprenants de l'Academy, dans les deux pays.\n\n## Inscription\n\nOuverture des inscriptions en septembre via le formulaire publié dans #annonces. Règlement complet sur la page AEIG Hack."
+    },
+    {
+      "Rituel": "Fête de fin d'année",
+      "Fréquence": "Annuel",
+      "Public": "Tout le groupe, avec un accompagnant",
+      "Animateur": "Inès AGUEH (Bénin) et Patrick YAO (Côte d'Ivoire)",
+      "Lieu": "Un lieu différent chaque année, dans chaque pays",
+      "_body": "## Objectif\n\nCélébrer l'année écoulée et remercier chacun pour son engagement.\n\n## Déroulé\n\nLe **3e vendredi de décembre**, dans chaque pays : dîner, remise des trophées AEIG (un par valeur), animations et soirée dansante. La journée de travail se termine à 14h ce jour-là.\n\n## Qui participe\n\nTous les collaborateurs, chacun pouvant venir avec un accompagnant.\n\n## Inscription\n\nConfirmation de présence via le formulaire envoyé mi-novembre. Détails sur la page Fête de fin d'année."
+    }
+  ]
+}

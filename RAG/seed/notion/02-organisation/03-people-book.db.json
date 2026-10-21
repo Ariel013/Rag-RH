@@ -1,0 +1,820 @@
+{
+  "title": "People Book",
+  "icon": "👥",
+  "properties": {
+    "Nom": "title",
+    "Poste": "rich_text",
+    "Département": {
+      "select": [
+        "Direction générale",
+        "Finance & Comptabilité",
+        "Ressources humaines",
+        "AEIG Academy",
+        "AEIG Lab",
+        "AEIG Services",
+        "Commercial & Partenariats",
+        "Communication & Marketing",
+        "Moyens généraux & IT"
+      ]
+    },
+    "Entité": {
+      "select": [
+        "AEIG Bénin",
+        "AEIG Côte d'Ivoire"
+      ]
+    },
+    "Manager": "rich_text",
+    "Arrivée": "number",
+    "Email": "email",
+    "Langues": {
+      "multi_select": [
+        "Agni",
+        "Anglais",
+        "Baoulé",
+        "Bété",
+        "Dioula",
+        "Fon",
+        "Français",
+        "Goun",
+        "Malinké",
+        "Mina",
+        "Yoruba"
+      ]
+    }
+  },
+  "rows": [
+    {
+      "Nom": "Rodrigue ADJOVI",
+      "Poste": "Directeur Général Groupe, fondateur",
+      "Département": "Direction générale",
+      "Entité": "AEIG Bénin",
+      "Manager": "—",
+      "Arrivée": 2016,
+      "Email": "rodrigue.adjovi@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Rodrigue ADJOVI — Directeur Général Groupe, fondateur\n\n!> 👋 J'ai fondé AEIG en 2016 avec une conviction : les talents du numérique sont déjà là, il faut leur ouvrir les portes.\n\n**Poste** : Directeur Général Groupe, fondateur, département Direction générale, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2016. Rattaché(e) directement au conseil d'administration du groupe.\n\n**Compétences** : stratégie, développement international, partenariats institutionnels, levée de fonds.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : les orientations stratégiques du groupe, les partenariats institutionnels et les sujets qui engagent AEIG à l'extérieur.\n\n**Contact professionnel** : rodrigue.adjovi@aeig.example, ou sur Slack (@rodrigue)."
+    },
+    {
+      "Nom": "Aminata OUATTARA",
+      "Poste": "Directrice Générale AEIG Côte d'Ivoire, DG adjointe groupe",
+      "Département": "Direction générale",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Rodrigue ADJOVI",
+      "Arrivée": 2018,
+      "Email": "aminata.ouattara@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Dioula"
+      ],
+      "_body": "## Aminata OUATTARA — Directrice Générale AEIG Côte d'Ivoire, DG adjointe groupe\n\n!> 👋 J'ai ouvert la filiale d'Abidjan en 2020 et je veille à ce que les deux pays avancent comme une seule équipe.\n\n**Poste** : Directrice Générale AEIG Côte d'Ivoire, DG adjointe groupe, département Direction générale, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2018. Manager : Rodrigue ADJOVI.\n\n**Compétences** : pilotage de filiale, développement commercial, gestion d'équipes multisites, finances.\n\n**Langues de travail** : Français, Anglais, Dioula.\n\n**Me contacter pour** : toute question relative à AEIG Côte d'Ivoire, les arbitrages entre équipes ivoiriennes et les projets communs Bénin–Côte d'Ivoire.\n\n**Contact professionnel** : aminata.ouattara@aeig.example, ou sur Slack (@aminata)."
+    },
+    {
+      "Nom": "Serge TOSSOU",
+      "Poste": "Directeur Administratif et Financier Groupe",
+      "Département": "Finance & Comptabilité",
+      "Entité": "AEIG Bénin",
+      "Manager": "Rodrigue ADJOVI",
+      "Arrivée": 2017,
+      "Email": "serge.tossou@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Serge TOSSOU — Directeur Administratif et Financier Groupe\n\n!> 👋 Mon rôle : que chaque franc investi par AEIG serve la mission, et que nos comptes restent irréprochables.\n\n**Poste** : Directeur Administratif et Financier Groupe, département Finance & Comptabilité, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2017. Manager : Rodrigue ADJOVI.\n\n**Compétences** : finance d'entreprise, budget, fiscalité Bénin et Côte d'Ivoire, achats.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : les budgets de service, les engagements de dépense importants, les achats et les contrats fournisseurs.\n\n**Contact professionnel** : serge.tossou@aeig.example, ou sur Slack (@serge)."
+    },
+    {
+      "Nom": "Nadège HOUNSA",
+      "Poste": "Responsable RH Groupe",
+      "Département": "Ressources humaines",
+      "Entité": "AEIG Bénin",
+      "Manager": "Rodrigue ADJOVI",
+      "Arrivée": 2018,
+      "Email": "nadege.hounsa@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Goun"
+      ],
+      "_body": "## Nadège HOUNSA — Responsable RH Groupe\n\n!> 👋 Je suis convaincue qu'une entreprise grandit au rythme de ses collaborateurs : ma porte est toujours ouverte.\n\n**Poste** : Responsable RH Groupe, département Ressources humaines, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2018. Manager : Rodrigue ADJOVI.\n\n**Compétences** : droit du travail béninois et ivoirien, relations sociales, politique RH, accompagnement managérial.\n\n**Langues de travail** : Français, Anglais, Goun.\n\n**Me contacter pour** : la politique RH du groupe, les questions de contrat, de mobilité, les situations individuelles délicates et l'accompagnement des managers.\n\n**Contact professionnel** : nadege.hounsa@aeig.example, ou sur Slack (@nadège)."
+    },
+    {
+      "Nom": "Prisca ZINSOU",
+      "Poste": "Assistante de direction",
+      "Département": "Direction générale",
+      "Entité": "AEIG Bénin",
+      "Manager": "Rodrigue ADJOVI",
+      "Arrivée": 2019,
+      "Email": "prisca.zinsou@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Prisca ZINSOU — Assistante de direction\n\n!> 👋 J'aime que tout soit prêt avant même qu'on en ait besoin, et je connais tous les recoins du siège.\n\n**Poste** : Assistante de direction, département Direction générale, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2019. Manager : Rodrigue ADJOVI.\n\n**Compétences** : organisation, gestion d'agenda, logistique d'événements, rédaction de comptes rendus.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : un rendez-vous avec le DG, l'inscription au Café Direction, l'organisation des réunions du CODIR et du séminaire annuel.\n\n**Contact professionnel** : prisca.zinsou@aeig.example, ou sur Slack (@prisca)."
+    },
+    {
+      "Nom": "Fidèle GBAGUIDI",
+      "Poste": "Chargé de paie et administration du personnel",
+      "Département": "Ressources humaines",
+      "Entité": "AEIG Bénin",
+      "Manager": "Nadège HOUNSA",
+      "Arrivée": 2020,
+      "Email": "fidele.gbaguidi@aeig.example",
+      "Langues": [
+        "Français",
+        "Fon"
+      ],
+      "_body": "## Fidèle GBAGUIDI — Chargé de paie et administration du personnel\n\n!> 👋 La paie est une affaire de confiance : je réponds à chaque question, même la plus petite.\n\n**Poste** : Chargé de paie et administration du personnel, département Ressources humaines, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2020. Manager : Nadège HOUNSA.\n\n**Compétences** : paie, déclarations sociales, gestion administrative du personnel, Kalia RH.\n\n**Langues de travail** : Français, Fon.\n\n**Me contacter pour** : une question sur le bulletin de paie, les primes, le 13e mois, les remboursements de notes de frais ou une attestation de travail.\n\n**Contact professionnel** : fidele.gbaguidi@aeig.example, ou sur Slack (@fidèle)."
+    },
+    {
+      "Nom": "Carine AKAKPO",
+      "Poste": "Chargée recrutement et formation, référente éthique",
+      "Département": "Ressources humaines",
+      "Entité": "AEIG Bénin",
+      "Manager": "Nadège HOUNSA",
+      "Arrivée": 2021,
+      "Email": "carine.akakpo@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Mina"
+      ],
+      "_body": "## Carine AKAKPO — Chargée recrutement et formation, référente éthique\n\n!> 👋 Je recrute les talents de demain et je veille à ce que chacun se sente respecté au quotidien.\n\n**Poste** : Chargée recrutement et formation, référente éthique, département Ressources humaines, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2021. Manager : Nadège HOUNSA.\n\n**Compétences** : recrutement, ingénierie de formation, marque employeur, écoute et médiation.\n\n**Langues de travail** : Français, Anglais, Mina.\n\n**Me contacter pour** : un recrutement dans ton équipe, la cooptation, ton plan de formation, et en toute confidentialité un signalement éthique ou de harcèlement.\n\n**Contact professionnel** : carine.akakpo@aeig.example, ou sur Slack (@carine)."
+    },
+    {
+      "Nom": "Ulrich KPADONOU",
+      "Poste": "Comptable principal",
+      "Département": "Finance & Comptabilité",
+      "Entité": "AEIG Bénin",
+      "Manager": "Serge TOSSOU",
+      "Arrivée": 2017,
+      "Email": "ulrich.kpadonou@aeig.example",
+      "Langues": [
+        "Français",
+        "Fon"
+      ],
+      "_body": "## Ulrich KPADONOU — Comptable principal\n\n!> 👋 Rigueur et disponibilité : je tiens les comptes d'AEIG depuis presque le début.\n\n**Poste** : Comptable principal, département Finance & Comptabilité, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2017. Manager : Serge TOSSOU.\n\n**Compétences** : comptabilité générale, clôtures, Odoo, relations avec les commissaires aux comptes.\n\n**Langues de travail** : Français, Fon.\n\n**Me contacter pour** : la facturation, les règlements fournisseurs, les écritures comptables et les clôtures mensuelles.\n\n**Contact professionnel** : ulrich.kpadonou@aeig.example, ou sur Slack (@ulrich)."
+    },
+    {
+      "Nom": "Mireille SOSSA",
+      "Poste": "Contrôleuse de gestion",
+      "Département": "Finance & Comptabilité",
+      "Entité": "AEIG Bénin",
+      "Manager": "Serge TOSSOU",
+      "Arrivée": 2022,
+      "Email": "mireille.sossa@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Mireille SOSSA — Contrôleuse de gestion\n\n!> 👋 Je transforme les chiffres en décisions : viens me voir avant de lancer un projet.\n\n**Poste** : Contrôleuse de gestion, département Finance & Comptabilité, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2022. Manager : Serge TOSSOU.\n\n**Compétences** : contrôle de gestion, tableaux de bord, analyse de rentabilité, Excel et Power BI.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : le suivi de ton budget de service, les tableaux de bord mensuels et les analyses de rentabilité par activité.\n\n**Contact professionnel** : mireille.sossa@aeig.example, ou sur Slack (@mireille)."
+    },
+    {
+      "Nom": "Bénédicte DAGBO",
+      "Poste": "Comptable",
+      "Département": "Finance & Comptabilité",
+      "Entité": "AEIG Bénin",
+      "Manager": "Ulrich KPADONOU",
+      "Arrivée": 2023,
+      "Email": "benedicte.dagbo@aeig.example",
+      "Langues": [
+        "Français",
+        "Goun"
+      ],
+      "_body": "## Bénédicte DAGBO — Comptable\n\n!> 👋 Arrivée en 2023, je m'occupe du quotidien comptable avec méthode et bonne humeur.\n\n**Poste** : Comptable, département Finance & Comptabilité, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2023. Manager : Ulrich KPADONOU.\n\n**Compétences** : comptabilité fournisseurs et clients, rapprochements bancaires, Odoo.\n\n**Langues de travail** : Français, Goun.\n\n**Me contacter pour** : le suivi d'une facture fournisseur, une relance client et les justificatifs comptables.\n\n**Contact professionnel** : benedicte.dagbo@aeig.example, ou sur Slack (@bénédicte)."
+    },
+    {
+      "Nom": "Hervé AHOUANSOU",
+      "Poste": "Directeur pédagogique groupe",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Bénin",
+      "Manager": "Rodrigue ADJOVI",
+      "Arrivée": 2016,
+      "Email": "herve.ahouansou@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Hervé AHOUANSOU — Directeur pédagogique groupe\n\n!> 👋 Formateur de métier, j'ai rejoint Rodrigue dès 2016 pour construire une école qui apprend en faisant.\n\n**Poste** : Directeur pédagogique groupe, département AEIG Academy, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2016. Manager : Rodrigue ADJOVI.\n\n**Compétences** : ingénierie pédagogique, accréditation des diplômes, pédagogie par projet.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : les programmes de formation, les partenariats académiques et toute question sur la qualité pédagogique d'AEIG Academy.\n\n**Contact professionnel** : herve.ahouansou@aeig.example, ou sur Slack (@hervé)."
+    },
+    {
+      "Nom": "Sandrine LOKO",
+      "Poste": "Coordinatrice pédagogique",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Bénin",
+      "Manager": "Hervé AHOUANSOU",
+      "Arrivée": 2019,
+      "Email": "sandrine.loko@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Sandrine LOKO — Coordinatrice pédagogique\n\n!> 👋 Je fais en sorte que chaque cours ait lieu au bon moment, dans la bonne salle, avec le bon formateur.\n\n**Poste** : Coordinatrice pédagogique, département AEIG Academy, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2019. Manager : Hervé AHOUANSOU.\n\n**Compétences** : planification des cours, suivi des apprenants, Moodle, relation avec les intervenants.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : les emplois du temps, l'affectation des salles, Moodle et le suivi des apprenants au Bénin.\n\n**Contact professionnel** : sandrine.loko@aeig.example, ou sur Slack (@sandrine)."
+    },
+    {
+      "Nom": "Gildas HOUETO",
+      "Poste": "Formateur développement web & mobile",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Bénin",
+      "Manager": "Hervé AHOUANSOU",
+      "Arrivée": 2018,
+      "Email": "gildas.houeto@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Gildas HOUETO — Formateur développement web & mobile\n\n!> 👋 Développeur passé formateur, j'aime voir un apprenant déployer sa première application.\n\n**Poste** : Formateur développement web & mobile, département AEIG Academy, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2018. Manager : Hervé AHOUANSOU.\n\n**Compétences** : JavaScript, React, Node.js, Flutter, pédagogie par projet.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : les contenus des parcours développement web et mobile et le mentorat technique des apprenants.\n\n**Contact professionnel** : gildas.houeto@aeig.example, ou sur Slack (@gildas)."
+    },
+    {
+      "Nom": "Rosine ADANDE",
+      "Poste": "Formatrice data & IA",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Bénin",
+      "Manager": "Hervé AHOUANSOU",
+      "Arrivée": 2021,
+      "Email": "rosine.adande@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Rosine ADANDE — Formatrice data & IA\n\n!> 👋 Je rends la data accessible : pas besoin d'être matheux pour commencer, il faut être curieux.\n\n**Poste** : Formatrice data & IA, département AEIG Academy, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2021. Manager : Hervé AHOUANSOU.\n\n**Compétences** : Python, SQL, statistiques, machine learning, visualisation de données.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : le parcours data & IA, les projets data des apprenants et les ateliers d'initiation à l'IA.\n\n**Contact professionnel** : rosine.adande@aeig.example, ou sur Slack (@rosine)."
+    },
+    {
+      "Nom": "Thierry AZONHIHO",
+      "Poste": "Formateur design UX/UI",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Bénin",
+      "Manager": "Hervé AHOUANSOU",
+      "Arrivée": 2022,
+      "Email": "thierry.azonhiho@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Goun"
+      ],
+      "_body": "## Thierry AZONHIHO — Formateur design UX/UI\n\n!> 👋 Je forme des designers qui partent toujours des besoins réels des utilisateurs.\n\n**Poste** : Formateur design UX/UI, département AEIG Academy, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2022. Manager : Hervé AHOUANSOU.\n\n**Compétences** : design d'interface, recherche utilisateur, Figma, design system.\n\n**Langues de travail** : Français, Anglais, Goun.\n\n**Me contacter pour** : le parcours design UX/UI, les ateliers Figma et les revues de maquettes.\n\n**Contact professionnel** : thierry.azonhiho@aeig.example, ou sur Slack (@thierry)."
+    },
+    {
+      "Nom": "Wilfried CAPO",
+      "Poste": "Chargé des admissions",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Bénin",
+      "Manager": "Sandrine LOKO",
+      "Arrivée": 2023,
+      "Email": "wilfried.capo@aeig.example",
+      "Langues": [
+        "Français",
+        "Fon"
+      ],
+      "_body": "## Wilfried CAPO — Chargé des admissions\n\n!> 👋 Je suis le premier visage d'AEIG Academy pour les futurs apprenants.\n\n**Poste** : Chargé des admissions, département AEIG Academy, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2023. Manager : Sandrine LOKO.\n\n**Compétences** : relation candidats, tests d'admission, salons étudiants, CRM.\n\n**Langues de travail** : Français, Fon.\n\n**Me contacter pour** : les candidatures aux formations, les tests d'admission, les bourses et les salons d'orientation.\n\n**Contact professionnel** : wilfried.capo@aeig.example, ou sur Slack (@wilfried)."
+    },
+    {
+      "Nom": "Léa DOSSOU-YOVO",
+      "Poste": "Responsable AEIG Lab",
+      "Département": "AEIG Lab",
+      "Entité": "AEIG Bénin",
+      "Manager": "Rodrigue ADJOVI",
+      "Arrivée": 2018,
+      "Email": "lea.dossou-yovo@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Léa DOSSOU-YOVO — Responsable AEIG Lab\n\n!> 👋 J'ai lancé AEIG Lab en 2018 : 64 startups accompagnées depuis, et ce n'est qu'un début.\n\n**Poste** : Responsable AEIG Lab, département AEIG Lab, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2018. Manager : Rodrigue ADJOVI.\n\n**Compétences** : entrepreneuriat, accompagnement de startups, financement, animation d'écosystème.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : le programme d'incubation « Envol », les partenariats avec les investisseurs et l'écosystème startup.\n\n**Contact professionnel** : lea.dossou-yovo@aeig.example, ou sur Slack (@léa)."
+    },
+    {
+      "Nom": "Romaric GANDONOU",
+      "Poste": "Chargé d'accompagnement startups",
+      "Département": "AEIG Lab",
+      "Entité": "AEIG Bénin",
+      "Manager": "Léa DOSSOU-YOVO",
+      "Arrivée": 2020,
+      "Email": "romaric.gandonou@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Yoruba"
+      ],
+      "_body": "## Romaric GANDONOU — Chargé d'accompagnement startups\n\n!> 👋 J'accompagne les fondateurs au quotidien, du premier prototype au premier client.\n\n**Poste** : Chargé d'accompagnement startups, département AEIG Lab, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2020. Manager : Léa DOSSOU-YOVO.\n\n**Compétences** : business model, coaching d'entrepreneurs, préparation aux levées de fonds.\n\n**Langues de travail** : Français, Anglais, Yoruba.\n\n**Me contacter pour** : le suivi des startups incubées au Bénin, les sessions de coaching et les jurys de sélection.\n\n**Contact professionnel** : romaric.gandonou@aeig.example, ou sur Slack (@romaric)."
+    },
+    {
+      "Nom": "Inès AGUEH",
+      "Poste": "Chargée d'événements et de communauté",
+      "Département": "AEIG Lab",
+      "Entité": "AEIG Bénin",
+      "Manager": "Léa DOSSOU-YOVO",
+      "Arrivée": 2024,
+      "Email": "ines.agueh@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Inès AGUEH — Chargée d'événements et de communauté\n\n!> 👋 J'ai rejoint AEIG en 2024 pour faire vivre la communauté des entrepreneurs.\n\n**Poste** : Chargée d'événements et de communauté, département AEIG Lab, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2024. Manager : Léa DOSSOU-YOVO.\n\n**Compétences** : organisation d'événements, animation de communauté, réseaux sociaux.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : les événements AEIG Lab (Demo Day, meetups), la logistique d'AEIG Hack et la communauté des alumni.\n\n**Contact professionnel** : ines.agueh@aeig.example, ou sur Slack (@inès)."
+    },
+    {
+      "Nom": "Josué KIKI",
+      "Poste": "Directeur technique groupe (CTO)",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Bénin",
+      "Manager": "Rodrigue ADJOVI",
+      "Arrivée": 2017,
+      "Email": "josue.kiki@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Josué KIKI — Directeur technique groupe (CTO)\n\n!> 👋 Je dirige AEIG Services et l'IT du groupe : la technique au service de nos clients et de nos équipes.\n\n**Poste** : Directeur technique groupe (CTO), département AEIG Services, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2017. Manager : Rodrigue ADJOVI.\n\n**Compétences** : architecture logicielle, cloud, sécurité, direction technique.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : les choix techniques, l'architecture des projets clients, la sécurité informatique et les outils internes.\n\n**Contact professionnel** : josue.kiki@aeig.example, ou sur Slack (@josué)."
+    },
+    {
+      "Nom": "Arnaud HOUNKANRIN",
+      "Poste": "Lead développeur",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Bénin",
+      "Manager": "Josué KIKI",
+      "Arrivée": 2019,
+      "Email": "arnaud.hounkanrin@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Arnaud HOUNKANRIN — Lead développeur\n\n!> 👋 J'anime l'équipe de développement de Cotonou et je défends un code simple et testé.\n\n**Poste** : Lead développeur, département AEIG Services, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2019. Manager : Josué KIKI.\n\n**Compétences** : Python, Django, React, revue de code, GitLab CI.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : les standards de code, les revues techniques, GitLab et la montée en compétence des développeurs.\n\n**Contact professionnel** : arnaud.hounkanrin@aeig.example, ou sur Slack (@arnaud)."
+    },
+    {
+      "Nom": "Merveille AHO",
+      "Poste": "Développeuse full-stack",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Bénin",
+      "Manager": "Arnaud HOUNKANRIN",
+      "Arrivée": 2021,
+      "Email": "merveille.aho@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Merveille AHO — Développeuse full-stack\n\n!> 👋 Ancienne apprenante d'AEIG Academy, je développe aujourd'hui les projets de nos clients.\n\n**Poste** : Développeuse full-stack, département AEIG Services, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2021. Manager : Arnaud HOUNKANRIN.\n\n**Compétences** : React, Node.js, PostgreSQL, intégration d'API.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : les applications web clients, l'intégration de paiements mobiles et les API.\n\n**Contact professionnel** : merveille.aho@aeig.example, ou sur Slack (@merveille)."
+    },
+    {
+      "Nom": "Brice DJOGBENOU",
+      "Poste": "Développeur mobile",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Bénin",
+      "Manager": "Arnaud HOUNKANRIN",
+      "Arrivée": 2022,
+      "Email": "brice.djogbenou@aeig.example",
+      "Langues": [
+        "Français",
+        "Goun"
+      ],
+      "_body": "## Brice DJOGBENOU — Développeur mobile\n\n!> 👋 Je conçois des applications qui fonctionnent même quand le réseau ne suit pas.\n\n**Poste** : Développeur mobile, département AEIG Services, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2022. Manager : Arnaud HOUNKANRIN.\n\n**Compétences** : Flutter, Kotlin, publication sur les stores, applications hors ligne.\n\n**Langues de travail** : Français, Goun.\n\n**Me contacter pour** : les applications mobiles, leur publication sur les stores et les usages hors connexion.\n\n**Contact professionnel** : brice.djogbenou@aeig.example, ou sur Slack (@brice)."
+    },
+    {
+      "Nom": "Yasmine SANNI",
+      "Poste": "Développeuse back-end",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Bénin",
+      "Manager": "Arnaud HOUNKANRIN",
+      "Arrivée": 2024,
+      "Email": "yasmine.sanni@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Yoruba"
+      ],
+      "_body": "## Yasmine SANNI — Développeuse back-end\n\n!> 👋 Arrivée en 2024, j'aime les systèmes robustes et bien documentés.\n\n**Poste** : Développeuse back-end, département AEIG Services, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2024. Manager : Arnaud HOUNKANRIN.\n\n**Compétences** : Python, FastAPI, PostgreSQL, Docker.\n\n**Langues de travail** : Français, Anglais, Yoruba.\n\n**Me contacter pour** : les API back-end, les bases de données et la mise en production des services.\n\n**Contact professionnel** : yasmine.sanni@aeig.example, ou sur Slack (@yasmine)."
+    },
+    {
+      "Nom": "Ange HOUNGNIBO",
+      "Poste": "Data engineer",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Bénin",
+      "Manager": "Josué KIKI",
+      "Arrivée": 2023,
+      "Email": "ange.houngnibo@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Ange HOUNGNIBO — Data engineer\n\n!> 👋 Je construis les tuyaux qui amènent la bonne donnée au bon endroit.\n\n**Poste** : Data engineer, département AEIG Services, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2023. Manager : Josué KIKI.\n\n**Compétences** : pipelines de données, SQL, Airflow, tableaux de bord.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : les projets data des clients, les entrepôts de données et les tableaux de bord.\n\n**Contact professionnel** : ange.houngnibo@aeig.example, ou sur Slack (@ange)."
+    },
+    {
+      "Nom": "Aurore ZOHOUN",
+      "Poste": "Cheffe de projet",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Bénin",
+      "Manager": "Josué KIKI",
+      "Arrivée": 2020,
+      "Email": "aurore.zohoun@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Aurore ZOHOUN — Cheffe de projet\n\n!> 👋 Je fais le lien entre nos clients et nos équipes techniques, avec des délais tenus.\n\n**Poste** : Cheffe de projet, département AEIG Services, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2020. Manager : Josué KIKI.\n\n**Compétences** : gestion de projet agile, relation client, Jira, planification.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : le suivi d'un projet client, le planning des équipes de Cotonou et les comités de pilotage.\n\n**Contact professionnel** : aurore.zohoun@aeig.example, ou sur Slack (@aurore)."
+    },
+    {
+      "Nom": "Pacôme ATINDEHOU",
+      "Poste": "Designer UX/UI",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Bénin",
+      "Manager": "Aurore ZOHOUN",
+      "Arrivée": 2022,
+      "Email": "pacome.atindehou@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Pacôme ATINDEHOU — Designer UX/UI\n\n!> 👋 Je dessine des interfaces simples, pensées pour les utilisateurs d'ici.\n\n**Poste** : Designer UX/UI, département AEIG Services, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2022. Manager : Aurore ZOHOUN.\n\n**Compétences** : design d'interface, prototypage Figma, tests utilisateurs, accessibilité.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : les maquettes des projets clients, les tests utilisateurs et le design system d'AEIG Services.\n\n**Contact professionnel** : pacome.atindehou@aeig.example, ou sur Slack (@pacôme)."
+    },
+    {
+      "Nom": "Olivier KOUTON",
+      "Poste": "Responsable développement commercial groupe",
+      "Département": "Commercial & Partenariats",
+      "Entité": "AEIG Bénin",
+      "Manager": "Rodrigue ADJOVI",
+      "Arrivée": 2019,
+      "Email": "olivier.kouton@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Olivier KOUTON — Responsable développement commercial groupe\n\n!> 👋 Je développe les relations d'AEIG avec les entreprises et les institutions de la sous-région.\n\n**Poste** : Responsable développement commercial groupe, département Commercial & Partenariats, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2019. Manager : Rodrigue ADJOVI.\n\n**Compétences** : vente B2B, réponse aux appels d'offres, négociation, pilotage commercial.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : les opportunités commerciales, les appels d'offres et les grilles tarifaires d'AEIG Services et d'AEIG Academy.\n\n**Contact professionnel** : olivier.kouton@aeig.example, ou sur Slack (@olivier)."
+    },
+    {
+      "Nom": "Grâce AMOUSSOU",
+      "Poste": "Chargée de partenariats",
+      "Département": "Commercial & Partenariats",
+      "Entité": "AEIG Bénin",
+      "Manager": "Olivier KOUTON",
+      "Arrivée": 2021,
+      "Email": "grace.amoussou@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Mina"
+      ],
+      "_body": "## Grâce AMOUSSOU — Chargée de partenariats\n\n!> 👋 Je construis des ponts entre AEIG et les entreprises qui recrutent nos talents.\n\n**Poste** : Chargée de partenariats, département Commercial & Partenariats, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2021. Manager : Olivier KOUTON.\n\n**Compétences** : partenariats entreprises, conventions de stage, relations écoles.\n\n**Langues de travail** : Français, Anglais, Mina.\n\n**Me contacter pour** : les entreprises partenaires, les conventions de stage et d'alternance et les sponsors d'événements.\n\n**Contact professionnel** : grace.amoussou@aeig.example, ou sur Slack (@grâce)."
+    },
+    {
+      "Nom": "Sylvie DEGBEY",
+      "Poste": "Responsable communication groupe",
+      "Département": "Communication & Marketing",
+      "Entité": "AEIG Bénin",
+      "Manager": "Rodrigue ADJOVI",
+      "Arrivée": 2019,
+      "Email": "sylvie.degbey@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Sylvie DEGBEY — Responsable communication groupe\n\n!> 👋 Je raconte l'histoire d'AEIG, à l'extérieur comme à l'intérieur.\n\n**Poste** : Responsable communication groupe, département Communication & Marketing, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2019. Manager : Rodrigue ADJOVI.\n\n**Compétences** : communication institutionnelle, marketing digital, relations presse, charte graphique.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : la charte graphique, les publications sur les réseaux sociaux, les relations presse et la communication interne.\n\n**Contact professionnel** : sylvie.degbey@aeig.example, ou sur Slack (@sylvie)."
+    },
+    {
+      "Nom": "Jordan HOUNTONDJI",
+      "Poste": "Graphiste et vidéaste",
+      "Département": "Communication & Marketing",
+      "Entité": "AEIG Bénin",
+      "Manager": "Sylvie DEGBEY",
+      "Arrivée": 2023,
+      "Email": "jordan.hountondji@aeig.example",
+      "Langues": [
+        "Français",
+        "Fon"
+      ],
+      "_body": "## Jordan HOUNTONDJI — Graphiste et vidéaste\n\n!> 👋 Derrière l'objectif ou sur Illustrator, je donne une image à nos projets.\n\n**Poste** : Graphiste et vidéaste, département Communication & Marketing, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2023. Manager : Sylvie DEGBEY.\n\n**Compétences** : création graphique, montage vidéo, photographie, motion design.\n\n**Langues de travail** : Français, Fon.\n\n**Me contacter pour** : un visuel, une vidéo, des photos d'événement ou un modèle de présentation aux couleurs d'AEIG.\n\n**Contact professionnel** : jordan.hountondji@aeig.example, ou sur Slack (@jordan)."
+    },
+    {
+      "Nom": "Basile KOKO",
+      "Poste": "Responsable moyens généraux",
+      "Département": "Moyens généraux & IT",
+      "Entité": "AEIG Bénin",
+      "Manager": "Serge TOSSOU",
+      "Arrivée": 2017,
+      "Email": "basile.koko@aeig.example",
+      "Langues": [
+        "Français",
+        "Fon"
+      ],
+      "_body": "## Basile KOKO — Responsable moyens généraux\n\n!> 👋 Si quelque chose ne fonctionne pas au siège, je suis souvent le premier prévenu.\n\n**Poste** : Responsable moyens généraux, département Moyens généraux & IT, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2017. Manager : Serge TOSSOU.\n\n**Compétences** : gestion des locaux, logistique, sécurité des bâtiments, prestataires.\n\n**Langues de travail** : Français, Fon.\n\n**Me contacter pour** : les locaux du siège, les badges d'accès, les véhicules, les fournitures et la sécurité des bâtiments.\n\n**Contact professionnel** : basile.koko@aeig.example, ou sur Slack (@basile)."
+    },
+    {
+      "Nom": "Steve HOUNDJO",
+      "Poste": "Administrateur systèmes et support IT",
+      "Département": "Moyens généraux & IT",
+      "Entité": "AEIG Bénin",
+      "Manager": "Josué KIKI",
+      "Arrivée": 2020,
+      "Email": "steve.houndjo@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Steve HOUNDJO — Administrateur systèmes et support IT\n\n!> 👋 J'équipe chaque nouvel arrivant et je garde le réseau du groupe en bonne santé.\n\n**Poste** : Administrateur systèmes et support IT, département Moyens généraux & IT, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2020. Manager : Josué KIKI.\n\n**Compétences** : administration systèmes, réseau, Google Workspace, support utilisateurs.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : un ordinateur, un compte (Google, Slack, Kalia RH), le Wi-Fi, un accès VPN ou tout ticket via support-it@aeig.example.\n\n**Contact professionnel** : steve.houndjo@aeig.example, ou sur Slack (@steve)."
+    },
+    {
+      "Nom": "Edwige TCHIBOZO",
+      "Poste": "Chargée d'accueil",
+      "Département": "Moyens généraux & IT",
+      "Entité": "AEIG Bénin",
+      "Manager": "Basile KOKO",
+      "Arrivée": 2021,
+      "Email": "edwige.tchibozo@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Fon"
+      ],
+      "_body": "## Edwige TCHIBOZO — Chargée d'accueil\n\n!> 👋 Je suis le premier sourire que l'on voit en arrivant au siège.\n\n**Poste** : Chargée d'accueil, département Moyens généraux & IT, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2021. Manager : Basile KOKO.\n\n**Compétences** : accueil, standard téléphonique, gestion du courrier, réservation de salles.\n\n**Langues de travail** : Français, Anglais, Fon.\n\n**Me contacter pour** : l'accueil des visiteurs, le courrier, les colis et la réservation des salles de réunion du siège.\n\n**Contact professionnel** : edwige.tchibozo@aeig.example, ou sur Slack (@edwige)."
+    },
+    {
+      "Nom": "Adjoua KOUADIO",
+      "Poste": "Chargée RH Côte d'Ivoire",
+      "Département": "Ressources humaines",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Aminata OUATTARA (fonctionnel : Nadège HOUNSA)",
+      "Arrivée": 2020,
+      "Email": "adjoua.kouadio@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Baoulé"
+      ],
+      "_body": "## Adjoua KOUADIO — Chargée RH Côte d'Ivoire\n\n!> 👋 Je suis la RH de proximité de l'équipe d'Abidjan, en lien étroit avec la RH groupe.\n\n**Poste** : Chargée RH Côte d'Ivoire, département Ressources humaines, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2020. Manager : Aminata OUATTARA (fonctionnel : Nadège HOUNSA).\n\n**Compétences** : droit du travail ivoirien, administration du personnel, recrutement local, paie CI.\n\n**Langues de travail** : Français, Anglais, Baoulé.\n\n**Me contacter pour** : toute question RH des collaborateurs ivoiriens : congés, absences, contrats, mutuelle, attestations, via rh.ci@aeig.example.\n\n**Contact professionnel** : adjoua.kouadio@aeig.example, ou sur Slack (@adjoua)."
+    },
+    {
+      "Nom": "Ibrahim TOURE",
+      "Poste": "Comptable Côte d'Ivoire",
+      "Département": "Finance & Comptabilité",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Aminata OUATTARA (fonctionnel : Serge TOSSOU)",
+      "Arrivée": 2020,
+      "Email": "ibrahim.toure@aeig.example",
+      "Langues": [
+        "Français",
+        "Dioula"
+      ],
+      "_body": "## Ibrahim TOURE — Comptable Côte d'Ivoire\n\n!> 👋 Je tiens les comptes de la filiale et je travaille main dans la main avec la finance groupe.\n\n**Poste** : Comptable Côte d'Ivoire, département Finance & Comptabilité, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2020. Manager : Aminata OUATTARA (fonctionnel : Serge TOSSOU).\n\n**Compétences** : comptabilité, fiscalité ivoirienne, trésorerie, Odoo.\n\n**Langues de travail** : Français, Dioula.\n\n**Me contacter pour** : les factures et règlements d'AEIG Côte d'Ivoire et les notes de frais des collaborateurs ivoiriens.\n\n**Contact professionnel** : ibrahim.toure@aeig.example, ou sur Slack (@ibrahim)."
+    },
+    {
+      "Nom": "Yves KONAN",
+      "Poste": "Responsable pédagogique Côte d'Ivoire",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Aminata OUATTARA (fonctionnel : Hervé AHOUANSOU)",
+      "Arrivée": 2020,
+      "Email": "yves.konan@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Baoulé"
+      ],
+      "_body": "## Yves KONAN — Responsable pédagogique Côte d'Ivoire\n\n!> 👋 J'ai ouvert AEIG Academy à Abidjan en 2020 : former localement, pour l'emploi local.\n\n**Poste** : Responsable pédagogique Côte d'Ivoire, département AEIG Academy, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2020. Manager : Aminata OUATTARA (fonctionnel : Hervé AHOUANSOU).\n\n**Compétences** : pilotage pédagogique, cybersécurité, relations entreprises.\n\n**Langues de travail** : Français, Anglais, Baoulé.\n\n**Me contacter pour** : les formations d'AEIG Academy à Abidjan, le parcours cybersécurité et les partenariats académiques ivoiriens.\n\n**Contact professionnel** : yves.konan@aeig.example, ou sur Slack (@yves)."
+    },
+    {
+      "Nom": "Estelle N'GUESSAN",
+      "Poste": "Coordinatrice pédagogique",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Yves KONAN",
+      "Arrivée": 2021,
+      "Email": "estelle.nguessan@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Agni"
+      ],
+      "_body": "## Estelle N'GUESSAN — Coordinatrice pédagogique\n\n!> 👋 Je veille à ce que chaque apprenant d'Abidjan soit suivi et accompagné.\n\n**Poste** : Coordinatrice pédagogique, département AEIG Academy, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2021. Manager : Yves KONAN.\n\n**Compétences** : planification, suivi des apprenants, Moodle, admissions.\n\n**Langues de travail** : Français, Anglais, Agni.\n\n**Me contacter pour** : les emplois du temps, les admissions et le suivi des apprenants à Abidjan.\n\n**Contact professionnel** : estelle.nguessan@aeig.example, ou sur Slack (@estelle)."
+    },
+    {
+      "Nom": "Hermann BROU",
+      "Poste": "Formateur développement web",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Yves KONAN",
+      "Arrivée": 2020,
+      "Email": "hermann.brou@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Hermann BROU — Formateur développement web\n\n!> 👋 Formateur depuis l'ouverture de la filiale, j'aime le code bien fait et bien expliqué.\n\n**Poste** : Formateur développement web, département AEIG Academy, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2020. Manager : Yves KONAN.\n\n**Compétences** : PHP, Laravel, JavaScript, Vue.js.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : le parcours développement web à Abidjan et les projets techniques des apprenants.\n\n**Contact professionnel** : hermann.brou@aeig.example, ou sur Slack (@hermann)."
+    },
+    {
+      "Nom": "Mariam DIABATE",
+      "Poste": "Formatrice data & IA",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Yves KONAN",
+      "Arrivée": 2022,
+      "Email": "mariam.diabate@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Malinké"
+      ],
+      "_body": "## Mariam DIABATE — Formatrice data & IA\n\n!> 👋 Je fais découvrir la donnée et l'IA à des profils très variés.\n\n**Poste** : Formatrice data & IA, département AEIG Academy, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2022. Manager : Yves KONAN.\n\n**Compétences** : Python, data science, IA générative, Power BI.\n\n**Langues de travail** : Français, Anglais, Malinké.\n\n**Me contacter pour** : le parcours data & IA à Abidjan et les ateliers IA pour les entreprises.\n\n**Contact professionnel** : mariam.diabate@aeig.example, ou sur Slack (@mariam)."
+    },
+    {
+      "Nom": "Jean-Marc AKA",
+      "Poste": "Formateur cybersécurité",
+      "Département": "AEIG Academy",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Yves KONAN",
+      "Arrivée": 2023,
+      "Email": "jean-marc.aka@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Jean-Marc AKA — Formateur cybersécurité\n\n!> 👋 Je forme les défenseurs numériques de demain et je sensibilise toute l'équipe.\n\n**Poste** : Formateur cybersécurité, département AEIG Academy, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2023. Manager : Yves KONAN.\n\n**Compétences** : sécurité réseau, tests d'intrusion, sensibilisation, normes ISO 27001.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : le parcours cybersécurité, les sessions de sensibilisation des collaborateurs et les exercices de phishing.\n\n**Contact professionnel** : jean-marc.aka@aeig.example, ou sur Slack (@jean-marc)."
+    },
+    {
+      "Nom": "Arsène KACOU",
+      "Poste": "Chef de projet",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Aminata OUATTARA (fonctionnel : Josué KIKI)",
+      "Arrivée": 2021,
+      "Email": "arsene.kacou@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Baoulé"
+      ],
+      "_body": "## Arsène KACOU — Chef de projet\n\n!> 👋 Je pilote les projets ivoiriens et je coordonne l'équipe technique d'Abidjan.\n\n**Poste** : Chef de projet, département AEIG Services, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2021. Manager : Aminata OUATTARA (fonctionnel : Josué KIKI).\n\n**Compétences** : gestion de projet, relation client, méthodes agiles, Jira.\n\n**Langues de travail** : Français, Anglais, Baoulé.\n\n**Me contacter pour** : les projets AEIG Services en Côte d'Ivoire et le planning de l'équipe technique d'Abidjan.\n\n**Contact professionnel** : arsene.kacou@aeig.example, ou sur Slack (@arsène)."
+    },
+    {
+      "Nom": "Sékou BAMBA",
+      "Poste": "Développeur full-stack",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Arsène KACOU",
+      "Arrivée": 2021,
+      "Email": "sekou.bamba@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Dioula"
+      ],
+      "_body": "## Sékou BAMBA — Développeur full-stack\n\n!> 👋 Je code les plateformes de nos clients, de la base de données à l'écran.\n\n**Poste** : Développeur full-stack, département AEIG Services, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2021. Manager : Arsène KACOU.\n\n**Compétences** : React, Node.js, MongoDB, paiement mobile.\n\n**Langues de travail** : Français, Anglais, Dioula.\n\n**Me contacter pour** : les applications web des clients ivoiriens et l'intégration des paiements mobiles.\n\n**Contact professionnel** : sekou.bamba@aeig.example, ou sur Slack (@sékou)."
+    },
+    {
+      "Nom": "Ruth GNAGNE",
+      "Poste": "Développeuse front-end",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Arsène KACOU",
+      "Arrivée": 2023,
+      "Email": "ruth.gnagne@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Bété"
+      ],
+      "_body": "## Ruth GNAGNE — Développeuse front-end\n\n!> 👋 Je transforme les maquettes en interfaces rapides et accessibles.\n\n**Poste** : Développeuse front-end, département AEIG Services, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2023. Manager : Arsène KACOU.\n\n**Compétences** : React, TypeScript, accessibilité, intégration de maquettes.\n\n**Langues de travail** : Français, Anglais, Bété.\n\n**Me contacter pour** : les interfaces web, l'intégration des maquettes et l'accessibilité.\n\n**Contact professionnel** : ruth.gnagne@aeig.example, ou sur Slack (@ruth)."
+    },
+    {
+      "Nom": "Désiré TANOH",
+      "Poste": "Développeur back-end",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Arsène KACOU",
+      "Arrivée": 2024,
+      "Email": "desire.tanoh@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais"
+      ],
+      "_body": "## Désiré TANOH — Développeur back-end\n\n!> 👋 Arrivé en 2024, je construis des services solides et bien testés.\n\n**Poste** : Développeur back-end, département AEIG Services, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2024. Manager : Arsène KACOU.\n\n**Compétences** : Java, Spring Boot, PostgreSQL, API REST.\n\n**Langues de travail** : Français, Anglais.\n\n**Me contacter pour** : les API et les traitements back-end des projets ivoiriens.\n\n**Contact professionnel** : desire.tanoh@aeig.example, ou sur Slack (@désiré)."
+    },
+    {
+      "Nom": "Fatou CISSE",
+      "Poste": "Data analyst",
+      "Département": "AEIG Services",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Arsène KACOU",
+      "Arrivée": 2022,
+      "Email": "fatou.cisse@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Dioula"
+      ],
+      "_body": "## Fatou CISSE — Data analyst\n\n!> 👋 Je fais parler les données de nos clients pour éclairer leurs décisions.\n\n**Poste** : Data analyst, département AEIG Services, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2022. Manager : Arsène KACOU.\n\n**Compétences** : SQL, Power BI, analyse statistique, enquêtes.\n\n**Langues de travail** : Français, Anglais, Dioula.\n\n**Me contacter pour** : les tableaux de bord clients, les analyses de données et les études statistiques.\n\n**Contact professionnel** : fatou.cisse@aeig.example, ou sur Slack (@fatou)."
+    },
+    {
+      "Nom": "Didier BEUGRE",
+      "Poste": "Chargé d'affaires",
+      "Département": "Commercial & Partenariats",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Aminata OUATTARA (fonctionnel : Olivier KOUTON)",
+      "Arrivée": 2020,
+      "Email": "didier.beugre@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Bété"
+      ],
+      "_body": "## Didier BEUGRE — Chargé d'affaires\n\n!> 👋 Je développe le portefeuille clients d'AEIG en Côte d'Ivoire.\n\n**Poste** : Chargé d'affaires, département Commercial & Partenariats, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2020. Manager : Aminata OUATTARA (fonctionnel : Olivier KOUTON).\n\n**Compétences** : vente B2B, prospection, négociation, appels d'offres.\n\n**Langues de travail** : Français, Anglais, Bété.\n\n**Me contacter pour** : les opportunités commerciales en Côte d'Ivoire et les propositions commerciales.\n\n**Contact professionnel** : didier.beugre@aeig.example, ou sur Slack (@didier)."
+    },
+    {
+      "Nom": "Awa SANOGO",
+      "Poste": "Chargée de clientèle",
+      "Département": "Commercial & Partenariats",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Didier BEUGRE",
+      "Arrivée": 2023,
+      "Email": "awa.sanogo@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Dioula"
+      ],
+      "_body": "## Awa SANOGO — Chargée de clientèle\n\n!> 👋 Je suis l'interlocutrice de nos clients ivoiriens au quotidien.\n\n**Poste** : Chargée de clientèle, département Commercial & Partenariats, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2023. Manager : Didier BEUGRE.\n\n**Compétences** : relation client, suivi de satisfaction, CRM, facturation.\n\n**Langues de travail** : Français, Anglais, Dioula.\n\n**Me contacter pour** : le suivi des clients ivoiriens, les devis et les inscriptions des entreprises aux formations courtes.\n\n**Contact professionnel** : awa.sanogo@aeig.example, ou sur Slack (@awa)."
+    },
+    {
+      "Nom": "Laetitia ASSI",
+      "Poste": "Chargée d'incubation",
+      "Département": "AEIG Lab",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Aminata OUATTARA (fonctionnel : Léa DOSSOU-YOVO)",
+      "Arrivée": 2022,
+      "Email": "laetitia.assi@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Agni"
+      ],
+      "_body": "## Laetitia ASSI — Chargée d'incubation\n\n!> 👋 J'accompagne les entrepreneurs ivoiriens, de l'idée au marché.\n\n**Poste** : Chargée d'incubation, département AEIG Lab, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2022. Manager : Aminata OUATTARA (fonctionnel : Léa DOSSOU-YOVO).\n\n**Compétences** : accompagnement de startups, animation d'ateliers, réseau d'experts.\n\n**Langues de travail** : Français, Anglais, Agni.\n\n**Me contacter pour** : le programme « Envol » à Abidjan et l'accompagnement des startups ivoiriennes.\n\n**Contact professionnel** : laetitia.assi@aeig.example, ou sur Slack (@laetitia)."
+    },
+    {
+      "Nom": "Patrick YAO",
+      "Poste": "Chargé de communication",
+      "Département": "Communication & Marketing",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Aminata OUATTARA (fonctionnel : Sylvie DEGBEY)",
+      "Arrivée": 2022,
+      "Email": "patrick.yao@aeig.example",
+      "Langues": [
+        "Français",
+        "Anglais",
+        "Baoulé"
+      ],
+      "_body": "## Patrick YAO — Chargé de communication\n\n!> 👋 Je relaie la vie d'AEIG Côte d'Ivoire et je fais connaître nos actions à Abidjan.\n\n**Poste** : Chargé de communication, département Communication & Marketing, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2022. Manager : Aminata OUATTARA (fonctionnel : Sylvie DEGBEY).\n\n**Compétences** : réseaux sociaux, rédaction, événementiel, relations presse locales.\n\n**Langues de travail** : Français, Anglais, Baoulé.\n\n**Me contacter pour** : la communication de la filiale, les publications locales et la couverture des événements d'Abidjan.\n\n**Contact professionnel** : patrick.yao@aeig.example, ou sur Slack (@patrick)."
+    },
+    {
+      "Nom": "Bintou FOFANA",
+      "Poste": "Assistante administrative",
+      "Département": "Moyens généraux & IT",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Aminata OUATTARA",
+      "Arrivée": 2021,
+      "Email": "bintou.fofana@aeig.example",
+      "Langues": [
+        "Français",
+        "Dioula"
+      ],
+      "_body": "## Bintou FOFANA — Assistante administrative\n\n!> 👋 Je fais tourner les bureaux d'Abidjan au quotidien.\n\n**Poste** : Assistante administrative, département Moyens généraux & IT, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2021. Manager : Aminata OUATTARA.\n\n**Compétences** : administration, accueil, logistique, achats courants.\n\n**Langues de travail** : Français, Dioula.\n\n**Me contacter pour** : l'accueil des bureaux d'Abidjan, les fournitures, les badges, les salles et la logistique des déplacements.\n\n**Contact professionnel** : bintou.fofana@aeig.example, ou sur Slack (@bintou)."
+    },
+    {
+      "Nom": "Siaka DIARRA",
+      "Poste": "Chauffeur et coursier",
+      "Département": "Moyens généraux & IT",
+      "Entité": "AEIG Côte d'Ivoire",
+      "Manager": "Bintou FOFANA",
+      "Arrivée": 2022,
+      "Email": "siaka.diarra@aeig.example",
+      "Langues": [
+        "Français",
+        "Dioula",
+        "Malinké"
+      ],
+      "_body": "## Siaka DIARRA — Chauffeur et coursier\n\n!> 👋 Je connais Abidjan comme ma poche et j'emmène l'équipe à bon port.\n\n**Poste** : Chauffeur et coursier, département Moyens généraux & IT, AEIG Côte d'Ivoire. Basé(e) au bureaux d'Abidjan (Cocody Riviera 3). Chez AEIG depuis 2022. Manager : Bintou FOFANA.\n\n**Compétences** : conduite, courses administratives, logistique.\n\n**Langues de travail** : Français, Dioula, Malinké.\n\n**Me contacter pour** : les déplacements professionnels à Abidjan, les transferts aéroport et les courses administratives.\n\n**Contact professionnel** : siaka.diarra@aeig.example, ou sur Slack (@siaka)."
+    },
+    {
+      "Nom": "Prosper AVOCE",
+      "Poste": "Chauffeur et coursier",
+      "Département": "Moyens généraux & IT",
+      "Entité": "AEIG Bénin",
+      "Manager": "Basile KOKO",
+      "Arrivée": 2018,
+      "Email": "prosper.avoce@aeig.example",
+      "Langues": [
+        "Français",
+        "Fon",
+        "Goun"
+      ],
+      "_body": "## Prosper AVOCE — Chauffeur et coursier\n\n!> 👋 Je conduis l'équipe de Cotonou depuis 2018, toujours à l'heure.\n\n**Poste** : Chauffeur et coursier, département Moyens généraux & IT, AEIG Bénin. Basé(e) au siège de Cotonou (Haie Vive). Chez AEIG depuis 2018. Manager : Basile KOKO.\n\n**Compétences** : conduite, courses administratives, logistique.\n\n**Langues de travail** : Français, Fon, Goun.\n\n**Me contacter pour** : les déplacements professionnels à Cotonou, les transferts aéroport et le dépôt de courrier.\n\n**Contact professionnel** : prosper.avoce@aeig.example, ou sur Slack (@prosper)."
+    }
+  ]
+}

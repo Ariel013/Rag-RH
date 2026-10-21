@@ -1,0 +1,117 @@
+{
+  "title": "Actualités",
+  "icon": "📰",
+  "properties": {
+    "Titre": "title",
+    "Date": "date",
+    "Catégorie": {"select": ["Groupe", "Academy", "Lab", "Services", "Vie interne", "RH"]},
+    "Entité": {"select": ["Groupe", "AEIG Bénin", "AEIG Côte d'Ivoire"]}
+  },
+  "rows": [
+    {
+      "Titre": "AEIG a formé 620 apprenants en 2025",
+      "Date": "2026-01-15",
+      "Catégorie": "Academy",
+      "Entité": "Groupe",
+      "_body": "L'année 2025 a été une année record pour **AEIG Academy** : **620 apprenants** ont suivi une formation dans nos deux centres, à Cotonou et à Abidjan. Depuis 2016, le total atteint **4 200 personnes formées**.\n\nLe taux d'insertion à 6 mois de nos diplômés atteint **81 %**, un résultat que Hervé AHOUANSOU, directeur pédagogique groupe, attribue au travail des formateurs et aux partenariats avec les entreprises.\n\nProchaine étape : ouvrir une nouvelle filière en 2026, présentée lors du séminaire annuel."
+    },
+    {
+      "Titre": "Résultats 2025 : un chiffre d'affaires de 1,9 milliard FCFA",
+      "Date": "2026-01-29",
+      "Catégorie": "Groupe",
+      "Entité": "Groupe",
+      "_body": "Lors de l'AEIG Quarterly de janvier, Serge TOSSOU, Directeur Administratif et Financier Groupe, a présenté les résultats de l'année 2025.\n\n- Chiffre d'affaires groupe : **1,9 milliard FCFA**.\n- Répartition : Academy **52 %**, Services **38 %**, Lab **10 %**.\n- Clients AEIG Services : **37**.\n\nRodrigue ADJOVI a remercié l'ensemble des 53 collaborateurs et rappelé le cap de la Vision 2030 : 10 000 personnes formées, 150 startups accompagnées et une présence dans 4 pays."
+    },
+    {
+      "Titre": "Programme Envol : 9 startups accompagnées en 2025",
+      "Date": "2025-12-10",
+      "Catégorie": "Lab",
+      "Entité": "Groupe",
+      "_body": "**AEIG Lab** clôture l'année avec **9 startups** accompagnées dans le programme d'incubation **Envol**, réparties sur les promotions de février et de septembre. Depuis 2018, le Lab a accompagné **64 startups**.\n\nParmi les projets de la promotion de septembre : une application de suivi de tontines, une plateforme de mise en relation entre artisans et clients, et un outil de gestion de stocks pour les pharmacies.\n\nLes candidatures pour la promotion de février 2026 sont ouvertes jusqu'au 15 janvier. Contact : Léa DOSSOU-YOVO (`lea.dossou-yovo@aeig.example`)."
+    },
+    {
+      "Titre": "AEIG Hack 2025 : « Le numérique au service de la santé de proximité »",
+      "Date": "2025-11-24",
+      "Catégorie": "Vie interne",
+      "Entité": "Groupe",
+      "_body": "La septième édition de l'**AEIG Hack** s'est tenue du 21 au 23 novembre 2025, en simultané à Cotonou et à Abidjan, sur le thème **« Le numérique au service de la santé de proximité »**.\n\n14 équipes, soit 72 participants, ont relevé le défi pendant 48 heures. L'équipe **Kpota Santé** remporte le premier prix avec un service de rappel de vaccination par SMS. Bravo aussi aux équipes **MediRoute** et **Pharma'Lien**, deuxième et troisième.\n\nRésultats complets et règlement sur la page AEIG Hack."
+    },
+    {
+      "Titre": "Ouverture d'une formation cybersécurité à Abidjan",
+      "Date": "2025-09-08",
+      "Catégorie": "Academy",
+      "Entité": "AEIG Côte d'Ivoire",
+      "_body": "AEIG Academy Côte d'Ivoire accueille sa deuxième promotion de la formation **cybersécurité**, animée par Jean-Marc AKA. La formation dure 9 mois et compte 24 apprenants.\n\nYves KONAN, responsable pédagogique Côte d'Ivoire, rappelle que cette filière n'existe pour l'instant qu'à Abidjan. Une ouverture à Cotonou est à l'étude pour 2027.\n\nLes entreprises intéressées par un stage de fin de formation peuvent écrire à Didier BEUGRE (`didier.beugre@aeig.example`)."
+    },
+    {
+      "Titre": "AEIG Services signe avec un réseau de microfinance",
+      "Date": "2025-07-03",
+      "Catégorie": "Services",
+      "Entité": "AEIG Bénin",
+      "_body": "**AEIG Services** a remporté l'appel d'offres d'un réseau de microfinance béninois pour la refonte de son application mobile de gestion de comptes.\n\nLe projet, piloté par Aurore ZOHOUN, cheffe de projet, mobilise six personnes pendant huit mois, dont Brice DJOGBENOU sur le développement mobile et Pacôme ATINDEHOU sur le design.\n\nJosué KIKI, directeur technique groupe, y voit « la preuve que nos équipes peuvent porter des projets critiques pour le secteur financier »."
+    },
+    {
+      "Titre": "Journée RSE 2025 : 400 arbres plantés et 60 ordinateurs donnés",
+      "Date": "2025-06-20",
+      "Catégorie": "Vie interne",
+      "Entité": "Groupe",
+      "_body": "Pour la journée RSE du 13 juin 2025, les équipes de Cotonou et d'Abidjan se sont mobilisées avec des apprenants volontaires.\n\n- **400 arbres** plantés avec des associations partenaires, à Abomey-Calavi et à Bingerville.\n- **60 ordinateurs** reconditionnés donnés à 5 écoles.\n- 12 ateliers d'initiation au numérique animés par nos formateurs.\n\nMerci à Grâce AMOUSSOU et Laetitia ASSI pour l'organisation."
+    },
+    {
+      "Titre": "Mise à jour de Kalia RH : demandes de congé sur mobile",
+      "Date": "2025-05-12",
+      "Catégorie": "RH",
+      "Entité": "Groupe",
+      "_body": "Depuis le 12 mai 2025, l'application mobile **Kalia RH** permet de poser et de suivre ses demandes de congé, de consulter son solde et de télécharger ses bulletins de paie.\n\nRappel des délais : **15 jours calendaires** avant le départ pour un congé de 3 jours ou plus, **48 heures** avant pour 1 ou 2 jours. La demande est validée par le manager, puis par la RH.\n\nQuestions : `rh.benin@aeig.example` ou `rh.ci@aeig.example`."
+    },
+    {
+      "Titre": "Séminaire 2025 à Grand-Popo : retour en images",
+      "Date": "2025-03-24",
+      "Catégorie": "Vie interne",
+      "Entité": "Groupe",
+      "_body": "Du 19 au 21 mars 2025, tout le groupe s'est retrouvé à **Grand-Popo** pour le séminaire annuel. Au programme : bilan 2024, ateliers par activité et une journée de cohésion sur la plage.\n\nLe trophée **Audace** a été remis à l'équipe AEIG Services Côte d'Ivoire pour la livraison de sa première plateforme pour un client public.\n\nLes photos sont disponibles dans le Drive « Séminaire 2025 », grâce à Jordan HOUNTONDJI."
+    },
+    {
+      "Titre": "Nouvelle salle de formation à Cocody",
+      "Date": "2025-10-06",
+      "Catégorie": "Academy",
+      "Entité": "AEIG Côte d'Ivoire",
+      "_body": "Les bureaux d'AEIG Côte d'Ivoire, Villa 14, Rue des Jardins à Cocody Riviera 3, accueillent une nouvelle salle de formation de **30 places**, équipée d'ordinateurs et d'un écran interactif.\n\nLa salle porte le nom de **« Salle Comoé »**. Les réservations se font auprès de Bintou FOFANA, assistante administrative (`bintou.fofana@aeig.example`)."
+    },
+    {
+      "Titre": "Partenariat avec une université pour des doubles diplômes",
+      "Date": "2025-04-15",
+      "Catégorie": "Academy",
+      "Entité": "AEIG Bénin",
+      "_body": "AEIG Academy a signé un partenariat avec une université privée de Cotonou pour proposer, à partir de la rentrée 2025, un **double diplôme** en développement web et en data.\n\nLe partenariat a été négocié par Grâce AMOUSSOU, chargée de partenariats, avec Hervé AHOUANSOU. Les apprenants admis suivent la moitié de leurs cours chez AEIG et l'autre moitié à l'université.\n\nInformations : Wilfried CAPO, chargé des admissions (`wilfried.capo@aeig.example`)."
+    },
+    {
+      "Titre": "Bienvenue aux nouveaux arrivants de 2024",
+      "Date": "2025-01-20",
+      "Catégorie": "RH",
+      "Entité": "Groupe",
+      "_body": "Le groupe a accueilli de nouveaux collaborateurs en 2024 :\n\n- Inès AGUEH, chargée d'événements et de communauté, AEIG Lab (Bénin) ;\n- Yasmine SANNI, développeuse back-end, AEIG Services (Bénin) ;\n- Désiré TANOH, développeur back-end, AEIG Services (Côte d'Ivoire).\n\nN'hésitez pas à leur proposer un café. Rappel : la prime de cooptation est de **150 000 FCFA** lorsque la personne cooptée valide sa période d'essai."
+    },
+    {
+      "Titre": "Le Café Direction passe à 12 places",
+      "Date": "2025-02-05",
+      "Catégorie": "Vie interne",
+      "Entité": "Groupe",
+      "_body": "Face au succès du **Café Direction**, Rodrigue ADJOVI a décidé de passer de 8 à **12 places** à partir de février 2025.\n\nLe rendez-vous reste fixé au **1er mercredi du mois à 8h30**, à la cafétéria du siège, avec une connexion en visio pour les collègues d'Abidjan. Les inscriptions se font sur Slack dans **#annonces**, à partir du dernier lundi du mois précédent."
+    },
+    {
+      "Titre": "Fête de fin d'année 2025 : les trophées AEIG",
+      "Date": "2025-12-22",
+      "Catégorie": "Vie interne",
+      "Entité": "Groupe",
+      "_body": "Le vendredi 19 décembre 2025, les fêtes de fin d'année se sont tenues à Cotonou et à Abidjan. Les trophées AEIG, un par valeur, ont été remis :\n\n| Valeur | Lauréat |\n| --- | --- |\n| Excellence | Équipe pédagogique data & IA |\n| Audace | Équipe AEIG Hack |\n| Bienveillance | Équipe Moyens généraux Bénin |\n| Impact | Équipe AEIG Lab |\n| Intégrité | Équipe Finance & Comptabilité |\n\nMerci à Inès AGUEH et Patrick YAO pour l'organisation."
+    },
+    {
+      "Titre": "AEIG fête ses dix ans en 2026",
+      "Date": "2026-02-02",
+      "Catégorie": "Groupe",
+      "Entité": "Groupe",
+      "_body": "Fondée en **mars 2016** à Cotonou par Rodrigue ADJOVI, AEIG aura dix ans en 2026. Plusieurs temps forts marqueront ces dix ans :\n\n1. une édition spéciale du séminaire annuel à Grand-Popo, en mars ;\n2. une journée portes ouvertes dans nos deux centres ;\n3. un livre retraçant dix ans d'histoire, coordonné par Sylvie DEGBEY.\n\nVous avez des photos ou des souvenirs des débuts ? Écrivez à `communication@aeig.example`."
+    }
+  ]
+}

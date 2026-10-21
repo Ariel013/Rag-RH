@@ -1,0 +1,77 @@
+[
+  {
+    "question": "Combien de temps à l'avance faut-il demander un congé de 5 jours ?",
+    "reponse_attendue": "Au moins 15 jours calendaires avant, dans Kalia RH (48 h suffisent pour 1 ou 2 jours).",
+    "page": "Procédures > Demander un congé"
+  },
+  {
+    "question": "Combien de jours de congé ai-je pour mon mariage ?",
+    "reponse_attendue": "4 jours de congé spécial payé.",
+    "page": "Procédures > Demander un congé"
+  },
+  {
+    "question": "Que dois-je faire si je suis malade ce matin ?",
+    "reponse_attendue": "Prévenir son manager avant 10h, puis transmettre le certificat médical à la RH dans Kalia RH sous 48 heures.",
+    "page": "Procédures > Déclarer un arrêt maladie"
+  },
+  {
+    "question": "Avant quelle date envoyer ma note de frais ?",
+    "reponse_attendue": "Avant le 5 du mois suivant la dépense, dans Kalia RH, avec justificatifs ; remboursement avec la paie.",
+    "page": "Procédures > Soumettre une note de frais"
+  },
+  {
+    "question": "Quel est le per diem pour une mission en Côte d'Ivoire ?",
+    "reponse_attendue": "20 000 FCFA par jour.",
+    "page": "Procédures > Organiser une mission"
+  },
+  {
+    "question": "Combien de temps avant une mission faut-il créer l'ordre de mission ?",
+    "reponse_attendue": "10 jours avant le départ, dans Kalia RH.",
+    "page": "Procédures > Organiser une mission"
+  },
+  {
+    "question": "Quelle est la prime de cooptation ?",
+    "reponse_attendue": "150 000 FCFA si le candidat coopté valide sa période d'essai.",
+    "page": "Procédures > Recruter un collaborateur"
+  },
+  {
+    "question": "En combien de temps la RH délivre-t-elle une attestation de travail ?",
+    "reponse_attendue": "Sous 3 jours ouvrés.",
+    "page": "Procédures > Demander une attestation"
+  },
+  {
+    "question": "Qui contacter pour signaler un harcèlement ?",
+    "reponse_attendue": "La référente harcèlement et éthique, Carine AKAKPO, à ethique@aeig.example (ligne confidentielle).",
+    "page": "Procédures > Signaler un incident ou un harcèlement"
+  },
+  {
+    "question": "Comment demander un nouvel écran ?",
+    "reponse_attendue": "Ouvrir un ticket au Helpdesk IT (support-it@aeig.example ou #entraide-it) ; validation du manager au-delà de 150 000 FCFA.",
+    "page": "Procédures > Demander du matériel informatique"
+  },
+  {
+    "question": "Puis-je télétravailler pendant ma période d'essai ?",
+    "reponse_attendue": "Non, le télétravail est possible seulement après la période d'essai, jusqu'à 2 jours par semaine, jamais le lundi.",
+    "page": "Nouvel arrivant > FAQ des nouveaux arrivants"
+  },
+  {
+    "question": "Que signifie CODIR chez AEIG ?",
+    "reponse_attendue": "Le comité de direction groupe, réuni chaque mardi à 10h.",
+    "page": "Nouvel arrivant > Glossaire AEIG"
+  },
+  {
+    "question": "Quelle est la longueur minimale d'un mot de passe chez AEIG ?",
+    "reponse_attendue": "12 caractères, avec validation en deux étapes obligatoire.",
+    "page": "Cadre et règles > Charte informatique"
+  },
+  {
+    "question": "Quel est le numéro d'urgence sécurité au Bénin ?",
+    "reponse_attendue": "+229 01 90 00 99 99, disponible 24h/24.",
+    "page": "Cadre et règles > Sécurité des locaux"
+  },
+  {
+    "question": "Quels sont les horaires d'ouverture des locaux d'Abidjan ?",
+    "reponse_attendue": "Du lundi au vendredi, de 7h30 à 19h.",
+    "page": "Outils > Locaux et accès"
+  }
+]

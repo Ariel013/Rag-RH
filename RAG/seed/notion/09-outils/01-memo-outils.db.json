@@ -1,0 +1,75 @@
+{
+  "title": "Mémo outils",
+  "icon": "🧰",
+  "properties": {
+    "Outil": "title",
+    "Usage": "rich_text",
+    "Accès": "rich_text",
+    "Contact": "rich_text"
+  },
+  "rows": [
+    {
+      "Outil": "Kalia RH",
+      "Usage": "SIRH : congés, absences, notes de frais, bulletins de paie, attestations",
+      "Accès": "Connexion Google sur kalia.aeig.example",
+      "Contact": "RH du pays",
+      "_body": "## À quoi ça sert\n\nSIRH : congés, absences, notes de frais, bulletins de paie, attestations.\n\n## En pratique\n\nKalia RH est le système d'information RH d'AEIG. Tu y poses tes congés, déclares un arrêt maladie, soumets tes notes de frais avant le 5 du mois suivant, télécharges tes bulletins de paie disponibles le 30 et demandes tes attestations, délivrées sous 3 jours ouvrés. Connexion avec ton compte Google. Bonne pratique : vérifie ton solde de congés avant toute demande et joins toujours un justificatif lisible. Contact : rh.benin@aeig.example ou rh.ci@aeig.example."
+    },
+    {
+      "Outil": "Google Workspace",
+      "Usage": "Messagerie, agenda, Drive, visioconférence",
+      "Accès": "Compte prenom.nom@aeig.example",
+      "Contact": "Support IT",
+      "_body": "## À quoi ça sert\n\nMessagerie, agenda, Drive, visioconférence.\n\n## En pratique\n\nGoogle Workspace regroupe ta messagerie prenom.nom@aeig.example, ton agenda, Google Drive et Google Meet. Les documents de travail se rangent dans le Drive partagé de ton équipe, jamais dans un Drive personnel. Réserve les salles de réunion en les ajoutant comme invités dans Google Agenda. La validation en deux étapes est obligatoire. En cas de problème de connexion ou de mot de passe oublié, écris à support-it@aeig.example."
+    },
+    {
+      "Outil": "Slack",
+      "Usage": "Messagerie instantanée interne",
+      "Accès": "Connexion Google",
+      "Contact": "Support IT",
+      "_body": "## À quoi ça sert\n\nMessagerie instantanée interne.\n\n## En pratique\n\nSlack est la messagerie instantanée du groupe. Canaux principaux : #general pour l'information générale, #annonces pour les annonces officielles, #entraide-it pour les questions informatiques et #vie-aeig pour les événements, clubs et sorties. Mets à jour ton statut quand tu es en congé, en télétravail ou en mission. Les informations confidentielles se partagent en message direct ou dans des canaux privés, jamais dans #general."
+    },
+    {
+      "Outil": "Notion",
+      "Usage": "Base de connaissances interne",
+      "Accès": "Connexion Google",
+      "Contact": "Équipe communication",
+      "_body": "## À quoi ça sert\n\nBase de connaissances interne.\n\n## En pratique\n\nNotion héberge la base de connaissances d'AEIG : politique RH, procédures, organisation, vie interne. C'est aussi la source de l'assistant RH virtuel. Avant de poser une question à la RH, cherche d'abord dans Notion. Si une information te semble obsolète, signale-la à la RH de ton pays ou à l'équipe communication pour qu'elle soit mise à jour."
+    },
+    {
+      "Outil": "Jira",
+      "Usage": "Suivi des projets AEIG Services",
+      "Accès": "Compte Google, sur demande du manager",
+      "Contact": "Josué KIKI (CTO)",
+      "_body": "## À quoi ça sert\n\nSuivi des projets AEIG Services.\n\n## En pratique\n\nJira est utilisé par les équipes d'AEIG Services pour suivre les projets clients : tickets, sprints de deux semaines, priorités. L'accès est ouvert sur demande du manager au support IT. Bonne pratique : chaque ticket décrit le besoin, le critère de fin et le client concerné. Les chefs de projet Aurore ZOHOUN (Bénin) et Arsène KACOU (Côte d'Ivoire) en sont les référents."
+    },
+    {
+      "Outil": "GitLab",
+      "Usage": "Hébergement du code source",
+      "Accès": "Compte Google, sur demande du manager",
+      "Contact": "Arnaud HOUNKANRIN (Lead développeur)",
+      "_body": "## À quoi ça sert\n\nHébergement du code source.\n\n## En pratique\n\nGitLab héberge tout le code source d'AEIG Services et des outils internes. Chaque modification passe par une merge request relue par au moins un autre développeur. Il est interdit de stocker du code AEIG sur un dépôt personnel. Le lead développeur, Arnaud HOUNKANRIN, gère les droits d'accès aux projets. Les secrets et mots de passe ne doivent jamais être commités."
+    },
+    {
+      "Outil": "Odoo",
+      "Usage": "Comptabilité et facturation",
+      "Accès": "Compte dédié, sur demande du manager",
+      "Contact": "Serge TOSSOU (DAF)",
+      "_body": "## À quoi ça sert\n\nComptabilité et facturation.\n\n## En pratique\n\nOdoo est l'outil de comptabilité et de facturation du groupe, utilisé par les équipes finance et commerciales. Les devis et factures clients y sont créés ; les commerciaux y suivent leurs opportunités. L'accès se fait par un compte dédié, ouvert sur demande du manager. Pour toute question comptable, contacte Ulrich KPADONOU (Bénin) ou Ibrahim TOURE (Côte d'Ivoire)."
+    },
+    {
+      "Outil": "Moodle",
+      "Usage": "Plateforme pédagogique AEIG Academy",
+      "Accès": "Connexion Google pour les formateurs",
+      "Contact": "Hervé AHOUANSOU (Directeur pédagogique)",
+      "_body": "## À quoi ça sert\n\nPlateforme pédagogique AEIG Academy.\n\n## En pratique\n\nMoodle est la plateforme pédagogique d'AEIG Academy. Les formateurs y déposent leurs supports de cours, exercices et évaluations ; les apprenants y suivent leur parcours. Les données des apprenants sont confidentielles et ne doivent jamais être exportées hors de Moodle. Les coordinatrices pédagogiques Sandrine LOKO (Bénin) et Estelle N'GUESSAN (Côte d'Ivoire) accompagnent les formateurs."
+    },
+    {
+      "Outil": "Helpdesk IT",
+      "Usage": "Support informatique et demandes de matériel",
+      "Accès": "support-it@aeig.example ou Slack #entraide-it",
+      "Contact": "Steve HOUNDJO",
+      "_body": "## À quoi ça sert\n\nSupport informatique et demandes de matériel.\n\n## En pratique\n\nLe Helpdesk IT traite les demandes informatiques : comptes, accès, matériel, pannes, sécurité. Écris à support-it@aeig.example pour créer un ticket, ou pose une question rapide dans #entraide-it. Les urgences (compte piraté, ordinateur volé) sont prises en charge en 1 heure. Le support IT ne demande jamais ton mot de passe : tout message qui le fait est une tentative de phishing."
+    }
+  ]
+}

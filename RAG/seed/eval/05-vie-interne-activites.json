@@ -1,0 +1,14 @@
+[
+  {"question": "Quand a lieu le Lundi ensemble et peut-on le faire en télétravail ?", "reponse_attendue": "Chaque lundi de 9h à 9h45, par service, sur site ; le télétravail n'est jamais possible le lundi.", "page": "Rituels — Lundi ensemble"},
+  {"question": "Comment s'inscrire au Café Direction et combien de places y a-t-il ?", "reponse_attendue": "12 places ; inscription sur Slack dans #annonces à partir du message publié le dernier lundi du mois précédent. Il a lieu le 1er mercredi du mois à 8h30.", "page": "Rituels — Café Direction"},
+  {"question": "Quand ont lieu les AEIG Talks et combien de temps dure un talk ?", "reponse_attendue": "Le dernier jeudi du mois à 16h ; 30 minutes de présentation puis 15 minutes de questions.", "page": "AEIG Talks"},
+  {"question": "Qui présente l'AEIG Talk de mai 2026 et sur quel sujet ?", "reponse_attendue": "Jean-Marc AKA, sur « Cybersécurité : les cinq réflexes qui protègent tout le monde ».", "page": "AEIG Talks"},
+  {"question": "Où et quand se déroule le séminaire annuel 2026 ?", "reponse_attendue": "À Grand-Popo, du mercredi 18 au vendredi 20 mars 2026.", "page": "Séminaire annuel"},
+  {"question": "Quelle équipe a gagné l'AEIG Hack 2025 et avec quel projet ?", "reponse_attendue": "L'équipe Kpota Santé (Cotonou), avec des rappels de vaccination par SMS en fon et en français.", "page": "AEIG Hack"},
+  {"question": "Combien de personnes faut-il par équipe à l'AEIG Hack ?", "reponse_attendue": "De 4 à 6 personnes, avec au moins un collaborateur et un apprenant.", "page": "AEIG Hack"},
+  {"question": "Quand est la fête de fin d'année 2026 et à quelle heure finit la journée de travail ?", "reponse_attendue": "Le vendredi 18 décembre 2026 (3e vendredi de décembre) ; la journée de travail se termine à 14h.", "page": "Fête de fin d'année"},
+  {"question": "Où et quand a lieu le foot du vendredi à Cotonou ?", "reponse_attendue": "Chaque vendredi à 17h au Stade de l'Amitié ; responsable Prosper AVOCE.", "page": "Clubs sportifs"},
+  {"question": "Quel livre le club lecture a-t-il lu en avril 2025 ?", "reponse_attendue": "Une si longue lettre, de Mariama Bâ (livre le mieux noté de 2025).", "page": "Club lecture"},
+  {"question": "Combien d'arbres ont été plantés lors de la Journée RSE 2025 ?", "reponse_attendue": "400 arbres, et 60 ordinateurs donnés à 5 écoles.", "page": "RSE et solidarité"},
+  {"question": "Combien de jours de mécénat de compétences puis-je faire par an ?", "reponse_attendue": "Deux jours par an sur le temps de travail, à poser dans Kalia RH (« Mécénat de compétences ») avec validation du manager.", "page": "RSE et solidarité"}
+]

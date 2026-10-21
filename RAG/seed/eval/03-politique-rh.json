@@ -1,0 +1,17 @@
+[
+  {"question": "Combien de jours de congés payés ai-je par an en Côte d'Ivoire ?", "reponse_attendue": "26 jours ouvrables par an (2,2 jours par mois), +1 jour par tranche de 5 ans d'ancienneté.", "page": "Congés payés"},
+  {"question": "Combien de jours de congés payés au Bénin ?", "reponse_attendue": "24 jours ouvrables par an (2 jours par mois), +1 jour par tranche de 5 ans d'ancienneté.", "page": "Congés payés"},
+  {"question": "Jusqu'à quand puis-je utiliser mes congés reportés ?", "reponse_attendue": "5 jours maximum peuvent être reportés, à utiliser avant le 31 mars de l'année suivante.", "page": "Congés payés"},
+  {"question": "Combien de temps à l'avance dois-je demander une semaine de congé ?", "reponse_attendue": "15 jours calendaires avant pour 3 jours ou plus (48 h pour 1 ou 2 jours), dans Kalia RH, validation manager puis RH.", "page": "Congés payés"},
+  {"question": "Quand est versée la paie ?", "reponse_attendue": "Par virement le 28 du mois (jour ouvré précédent si week-end ou férié) ; bulletin dans Kalia RH le 30.", "page": "Rémunération et paie"},
+  {"question": "Combien de jours de télétravail ai-je droit par semaine ?", "reponse_attendue": "Jusqu'à 2 jours par semaine, après la période d'essai, jamais le lundi, avec accord du manager ; indemnité de 10 000 FCFA par mois.", "page": "Télétravail"},
+  {"question": "Que dois-je faire si je suis malade ?", "reponse_attendue": "Prévenir son manager avant 10h le jour même et transmettre le certificat médical à la RH sous 48 h dans Kalia RH.", "page": "Absences et arrêt maladie"},
+  {"question": "Combien de jours de congé pour mon mariage ?", "reponse_attendue": "4 jours de congé payé pour le mariage du salarié.", "page": "Congés spéciaux, maternité et paternité"},
+  {"question": "Quelle est la durée du congé de maternité et le salaire est-il maintenu ?", "reponse_attendue": "14 semaines, salaire maintenu à 100 % par AEIG.", "page": "Congés spéciaux, maternité et paternité"},
+  {"question": "Quel est le per diem pour une mission en Côte d'Ivoire ?", "reponse_attendue": "20 000 FCFA par jour (15 000 FCFA au Bénin, 60 € à l'international).", "page": "Notes de frais et missions"},
+  {"question": "Avant quelle date dois-je soumettre mes notes de frais ?", "reponse_attendue": "Avant le 5 du mois suivant, dans Kalia RH, avec justificatifs ; remboursement avec la paie.", "page": "Notes de frais et missions"},
+  {"question": "Quel est mon budget formation annuel ?", "reponse_attendue": "300 000 FCFA par an et 5 jours de formation par an.", "page": "Formation et développement"},
+  {"question": "Quelle est la durée de la période d'essai pour un cadre ?", "reponse_attendue": "3 mois, renouvelable une fois (soit 6 mois maximum).", "page": "Période d'essai"},
+  {"question": "Quelles sont les conditions pour partir travailler à Abidjan depuis Cotonou ?", "reponse_attendue": "Après 2 ans d'ancienneté ; prime d'installation d'un mois de salaire, billet d'avion et 15 jours d'hébergement pris en charge.", "page": "Mobilité interne et entre filiales"},
+  {"question": "Quelle part de la mutuelle est prise en charge par AEIG ?", "reponse_attendue": "70 % de la cotisation ; Sanu Assurances couvre 80 % des frais pour le salarié, le conjoint et jusqu'à 4 enfants.", "page": "Mutuelle santé"}
+]
