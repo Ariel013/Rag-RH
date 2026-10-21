@@ -82,12 +82,15 @@ def _init_rag() -> None:
         if _rag is not None:
             return
         _rag = RAGPipeline()
-        # Incrémental : évite de purger/réingérer tout Notion à chaque redémarrage
-        # (cold start HF Spaces, reprise après pause Supabase...). Le full resync
-        # reste disponible via le bouton admin pour une reconstruction volontaire.
-        _sync_notion_blocking(_rag, full=False)
         seed_default_topics(_rag)
+    # Prêt dès que le pipeline existe : le chat répond sur l'index déjà en base
+    # pendant le sync de démarrage, qui peut durer longtemps (OCR, rate-limit
+    # Notion) — avant, le chat restait bloqué en « initializing » tout ce temps.
     _rag_ready.set()
+    # Incrémental : évite de purger/réingérer tout Notion à chaque redémarrage
+    # (cold start HF Spaces, reprise après pause Supabase...). Le full resync
+    # reste disponible via le bouton admin pour une reconstruction volontaire.
+    _sync_notion_blocking(_rag, full=False)
 
 
 def get_rag() -> RAGPipeline:
