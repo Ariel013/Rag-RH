@@ -2,6 +2,8 @@
 Vector store — PostgreSQL + pgvector (Supabase).
 Remplace ChromaDB : persistant, pas de dépendance lourde.
 """
+import re
+
 import psycopg2.extras
 
 from .db import enable_rls, get_conn
@@ -55,6 +57,19 @@ def init_vector_db() -> None:
             cur.execute("""
                 CREATE INDEX IF NOT EXISTS idx_chunks_hnsw
                     ON document_chunks USING hnsw (embedding vector_cosine_ops)
+            """)
+
+            # Recherche plein texte (volet mots-clés de la recherche hybride).
+            # Colonne générée : rien à maintenir à l'écriture des chunks.
+            cur.execute("""
+                ALTER TABLE document_chunks ADD COLUMN IF NOT EXISTS tsv tsvector
+                    GENERATED ALWAYS AS (
+                        to_tsvector('french', coalesce(title, '') || ' ' || content)
+                    ) STORED
+            """)
+            cur.execute("""
+                CREATE INDEX IF NOT EXISTS idx_chunks_tsv
+                    ON document_chunks USING gin (tsv)
             """)
 
             cur.execute("""
@@ -139,6 +154,44 @@ class VectorStore:
                     ORDER BY embedding <=> %s::vector
                     LIMIT %s
                 """, (query_embedding, query_embedding, n_results))
+                rows = cur.fetchall()
+
+        return [
+            {
+                "content": r["content"],
+                "metadata": {
+                    "doc_id":      r["doc_id"],
+                    "title":       r["title"]    or "Document",
+                    "source":      r["source"]   or "",
+                    "category":    r["category"] or "Général",
+                    "chunk_index": r["chunk_index"],
+                },
+                "score": float(r["score"]),
+            }
+            for r in rows
+        ]
+
+    def search_keywords(self, query: str, n_results: int = 30) -> list[dict]:
+        """
+        Recherche plein texte (français, racinisé) : un chunk remonte s'il contient
+        au moins un des mots de la question, classé par ts_rank_cd.
+        Seuls les mots alphanumériques sont gardés : aucune syntaxe tsquery
+        venue de l'utilisateur n'atteint to_tsquery.
+        """
+        words = re.findall(r"\w{2,}", query.lower())
+        if not words:
+            return []
+        tsquery = " | ".join(words)
+        with get_conn() as conn:
+            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                cur.execute("""
+                    SELECT content, doc_id, title, source, category, chunk_index,
+                           ts_rank_cd(tsv, q) AS score
+                    FROM document_chunks, to_tsquery('french', %s) AS q
+                    WHERE tsv @@ q
+                    ORDER BY score DESC
+                    LIMIT %s
+                """, (tsquery, n_results))
                 rows = cur.fetchall()
 
         return [
