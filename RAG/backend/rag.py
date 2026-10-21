@@ -11,7 +11,7 @@ import os
 from typing import AsyncGenerator
 
 from fastembed import TextEmbedding
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, NotFoundError, RateLimitError
 
 from .vector_store import VectorStore
 
@@ -26,6 +26,15 @@ CONTEXT_MAX_CHARS  = 9000
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1")
 OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "llama3.2")
+
+# Modèles de secours, essayés dans l'ordre si le modèle principal est saturé
+# (quota Groq gratuit : 8 000 jetons/min et 200 000 jetons/jour, comptés par
+# modèle) ou retiré. Liste séparée par des virgules ; vide = pas de secours.
+_DEFAULT_FALLBACK = "openai/gpt-oss-20b" if "groq.com" in OLLAMA_BASE_URL else ""
+LLM_FALLBACK_MODELS = [
+    m.strip() for m in os.getenv("LLM_FALLBACK_MODELS", _DEFAULT_FALLBACK).split(",")
+    if m.strip() and m.strip() != OLLAMA_MODEL
+]
 
 # Mots courts qui signalent une question de suivi (pas de sens seuls pour la recherche)
 _FOLLOWUP_TRIGGERS = {
@@ -54,6 +63,13 @@ def _build_search_query(question: str, history: list[dict]) -> str:
 
     # Concaténer contexte + question actuelle comme requête enrichie
     return " ".join(recent) + " " + question
+
+
+_LLM_UNAVAILABLE = (
+    "L'assistant a atteint sa limite d'utilisation pour le moment. "
+    "Réessayez dans quelques minutes, ou contactez la RH : "
+    "rh.benin@aeig.example (Bénin) ou rh.ci@aeig.example (CI)."
+)
 
 
 class RAGPipeline:
@@ -107,6 +123,29 @@ class RAGPipeline:
         return sorted(fused.values(), key=lambda r: -r["rrf"])[:n_results]
 
     # ── Génération streaming ───────────────────────────────────────────────
+
+    async def _open_stream(self, messages: list[dict]):
+        """
+        Ouvre le flux sur le premier modèle disponible. Groq renvoie le 429
+        (quota) ou le 404 (modèle retiré) dès la requête, avant tout jeton :
+        on peut donc basculer sans rien avoir envoyé à l'utilisateur.
+        Renvoie None si tous les modèles sont indisponibles.
+        """
+        for model in [OLLAMA_MODEL, *LLM_FALLBACK_MODELS]:
+            try:
+                return await self._llm.chat.completions.create(
+                    model=model,
+                    messages=messages,
+                    max_tokens=1024,
+                    temperature=0.1,
+                    top_p=0.9,
+                    stream=True,
+                )
+            except (RateLimitError, NotFoundError) as exc:
+                # Détail complet dans les logs serveur seulement : le message
+                # Groq contient l'identifiant de l'organisation.
+                print(f"  ⚠ LLM {model} indisponible ({exc.status_code}) : {exc}")
+        return None
 
     async def generate_stream(
         self,
@@ -174,16 +213,12 @@ RÈGLES STRICTES — à respecter sans exception :
         messages += list((history or []))[-8:]
         messages.append({"role": "user", "content": question})
 
-        # 4. Streaming LLM
+        # 4. Streaming LLM (modèle principal, puis secours si saturé ou retiré)
         try:
-            stream = await self._llm.chat.completions.create(
-                model=OLLAMA_MODEL,
-                messages=messages,
-                max_tokens=1024,
-                temperature=0.1,
-                top_p=0.9,
-                stream=True,
-            )
+            stream = await self._open_stream(messages)
+            if stream is None:
+                yield f"data: {json.dumps({'type': 'error', 'message': _LLM_UNAVAILABLE})}\n\n"
+                return
             async for chunk in stream:
                 delta = chunk.choices[0].delta
                 if delta.content:
@@ -192,8 +227,11 @@ RÈGLES STRICTES — à respecter sans exception :
             yield f"data: {json.dumps({'type': 'done'})}\n\n"
 
         except Exception as e:
-            msg = str(e)
-            if "connection" in msg.lower() or "refused" in msg.lower():
+            # Le texte brut d'une erreur d'API peut contenir des identifiants
+            # internes (organisation Groq…) : il reste dans les logs serveur.
+            print(f"  ✗ Erreur LLM : {e!r}")
+            msg = "Une erreur est survenue lors de la génération de la réponse. Réessayez dans un instant."
+            if "connection" in str(e).lower() or "refused" in str(e).lower():
                 msg = (
                     "Impossible de joindre le LLM. "
                     "Vérifiez la variable OLLAMA_BASE_URL et que le service est démarré."

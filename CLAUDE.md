@@ -139,7 +139,8 @@ Voir `RAG/.env.example` pour la liste complète. Points clés :
 - `SUPABASE_URL` / `SUPABASE_SERVICE_KEY` : Storage des uploads (optionnel — si absent, upload fonctionne mais sans persistance du fichier source).
 - `NOTION_TOKEN` / `NOTION_ROOT_PAGE_ID` : intégration Notion, source de vérité principale.
 - `OLLAMA_BASE_URL` / `OLLAMA_MODEL` / `GROQ_API_KEY` : LLM (compatible OpenAI). Le nom `OLLAMA_*` est trompeur une fois pointé vers Groq — hérité de l'implémentation initiale 100% locale. Sur HF, `OLLAMA_MODEL` est une **variable** (pas un secret) : un secret et une variable de même nom bloquent le Space (`Collision on variables and secrets names`). Groq retire régulièrement des modèles : vérifier https://console.groq.com/docs/deprecations en cas d'erreur `model_not_found`.
-- `GROQ_VISION_MODEL` : modèle vision pour l'OCR des images Notion (défaut `qwen/qwen3.6-27b`).
+- `LLM_FALLBACK_MODELS` : modèles de secours (liste séparée par des virgules), essayés si le modèle principal renvoie 429 (quota) ou 404 (retiré). Défaut `openai/gpt-oss-20b` quand l'URL pointe vers Groq. **Quota Groq gratuit, par modèle** : 8 000 jetons/min, 200 000 jetons/jour — environ 70 questions/jour à ~2 700 jetons. Ne pas rejouer les 62 questions de `seed/eval/` contre la prod : cela consomme la moitié du quota du jour.
+- `GROQ_VISION_MODEL` : modèle vision pour l'OCR des images Notion (défaut `qwen/qwen3.6-27b` — absent de la page des limites Groq au 2026-10-22, qui liste `qwen/qwen3.8-27b` : à vérifier).
 - `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_TOKEN` : auth admin — **un seul compte admin possible actuellement**.
 - `ALLOWED_ORIGINS` : CORS, `*` par défaut.
 - `RELEVANCE_THRESHOLD` : seuil de similarité cosinus pour filtrer les résultats de recherche (0–1). Le `.env` réel de prod ne définit pas cette clé, donc le défaut du code (`rag.py`, 0.40) s'applique — confirmé comme l'état voulu, pas un oubli.

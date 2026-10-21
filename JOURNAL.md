@@ -32,9 +32,14 @@ Carte des documents :
     contexte pour 59 questions sur 62, contre 53 avant.
   - Le score en prod après la recherche hybride reste à mesurer.
 - **Branches** : `main` alignée avec `origin/main`.
-- **Prochaine action** : relancer les 62 questions sur la prod, et vérifier
-  qu'une question hors sujet est bien refusée (ADR 0002, conséquences). Critère :
-  au plus 3 « je ne dispose pas », aucun hors sujet répondu.
+- **Mesuré en prod le 2026-10-22, avec la recherche hybride** : 1 seul « je ne
+  dispose pas » (la part de la mutuelle) et environ 56 bonnes réponses sur 57
+  (relues à la main). Les 5 dernières questions ont été bloquées par le quota
+  Groq. Une question hors sujet est bien refusée.
+- **Prochaine action** : déployer les modèles de secours LLM, puis vérifier dans
+  les logs HF qu'une saturation bascule bien vers `openai/gpt-oss-20b`. Offre Groq :
+  **gratuite maintenue** (décision du 2026-10-22), soit environ 140 questions/jour
+  avec le modèle de secours. À revoir avant tout vrai déploiement.
 
 ## 📓 Journal des sessions
 
@@ -69,6 +74,10 @@ visible à la plus cachée :
    policy.
 8. **Réponses « je ne dispose pas » alors que le contenu était indexé** : la
    recherche est devenue hybride (ADR 0002), mesurée sur 62 questions.
+9. **Quota Groq épuisé par les tests** (200 000 jetons/jour pour le modèle) :
+   des modèles de secours sont essayés en cas de 429 ou de 404, et le texte brut
+   des erreurs d'API (qui contient l'identifiant d'organisation Groq) n'est plus
+   envoyé à l'utilisateur.
 
 Restent ouverts :
 
