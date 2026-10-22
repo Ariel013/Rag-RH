@@ -156,7 +156,7 @@ Voir `RAG/.env.example` pour la liste complète. Points clés :
 - **Aucun test automatisé** dans le repo actuellement — confirmé comme une lacune à combler prochainement, pas un choix définitif (voir §9). `RAG/seed/eval/` (62 questions) en est la première brique.
 - **Dépendances non figées** (sauf `notion-client`) : un rebuild peut installer une version incompatible, comme notion-client 2.6 l'a fait. fastembed est passé en 0.9 le 2026-10-07. À figer.
 - **API Notion ancienne** (2022-06-28, via notion-client 2.5.0) : migration vers `data_sources` à faire.
-- **Keep-alive Supabase cassé** : `.github/workflows/keep-alive.yml` passe par l'appli (donc échoue quand la base dort) et GitHub l'a désactivé pour inactivité. Le projet Supabase (gratuit) s'est mis en pause en juillet 2026 sans que personne ne le voie. Remplacement prévu : cron externe interrogeant Supabase directement (voir `A-FAIRE.md`).
+- **Anti-pause Supabase** : assuré par un cron externe (cron-job.org, quotidien), qui interroge directement l'API REST Supabase (clé publique, RLS → `[]`) et `/api/health` (voir `A-FAIRE.md`). L'ancien workflow GitHub `keep-alive.yml` passait par l'appli et a été désactivé par GitHub : il a été supprimé le 2026-10-22.
 
 ## 9. Roadmap — dette à combler en priorité
 
