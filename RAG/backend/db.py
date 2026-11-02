@@ -33,7 +33,9 @@ def _parse_db_url(url: str) -> dict:
         "dbname":   dbname,
         "user":     user,
         "password": password,
-        "sslmode":  "require",
+        # « require » en prod (Supabase) ; « disable » pour un Postgres local
+        # sans TLS, comme celui de l'évaluation (seed/eval_recherche.py).
+        "sslmode":  os.getenv("DATABASE_SSLMODE", "require"),
     }
 
 
