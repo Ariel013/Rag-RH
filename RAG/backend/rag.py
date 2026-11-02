@@ -181,16 +181,17 @@ class RAGPipeline:
         if results:
             context = build_context(results)
 
-            sources, seen = [], set()
-            for r in results:
+            # Une source par page, avec les passages exacts envoyés au LLM :
+            # l'utilisateur peut vérifier la réponse sur le texte d'origine.
+            sources: dict[str, dict] = {}
+            for r in context_results(results):
                 t = r["metadata"].get("title", "Document")
-                if t not in seen:
-                    seen.add(t)
-                    sources.append({
-                        "title":    t,
-                        "category": r["metadata"].get("category", "Général"),
-                    })
-            yield f"data: {json.dumps({'type': 'sources', 'sources': sources})}\n\n"
+                sources.setdefault(t, {
+                    "title":    t,
+                    "category": r["metadata"].get("category", "Général"),
+                    "extraits": [],
+                })["extraits"].append(r["content"])
+            yield f"data: {json.dumps({'type': 'sources', 'sources': list(sources.values())})}\n\n"
         else:
             context = "Aucun document pertinent trouvé dans la base de connaissances."
 

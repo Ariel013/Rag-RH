@@ -87,7 +87,7 @@ Rag-RH/
 
 ### Côté utilisateur (chat)
 
-- Chat streaming (SSE) avec citations des sources (titre + catégorie du document).
+- Chat streaming (SSE) avec les **passages consultés** sous la réponse : une pastille par page, qui déplie le texte exact envoyé au LLM. Masqués si la réponse est « sans réponse » (`is_unanswered`, signalé dans l'événement `done`). Seuls titre et catégorie sont journalisés.
 - Enrichissement de requête pour les questions de suivi vagues (« dis-m'en plus », « et le reste ? ») en réinjectant les 2 derniers messages utilisateur — voir `_build_search_query` dans `rag.py`.
 - Historique de conversation limité aux 4 derniers échanges (8 messages) envoyés au LLM.
 - Persistance locale des conversations (24h, localStorage) côté frontend.
