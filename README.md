@@ -26,9 +26,10 @@ Space peut mettre un moment à se réveiller.
 
 | Mesure | Résultat | Comment |
 | --- | --- | --- |
-| Réponse attendue présente dans le contexte du LLM | **58 / 62** | `RAG/seed/eval_recherche.py`, rejoué en CI sur chaque PR |
-| Page attendue présente dans le contexte | 48 / 62 (MRR 0,519) | même script, mesure plus stricte |
+| Réponse attendue présente dans le contexte du LLM | **60 / 62** | `RAG/seed/eval_recherche.py`, rejoué en CI sur chaque PR |
+| Page attendue présente dans le contexte | 50 / 62 (MRR 0,554) | même script, mesure plus stricte |
 | Effet de la recherche hybride (ADR 0002) | 53 → 59 / 62 | banc local, 2026-10-22 |
+| Effet du filtre des mots trop fréquents | 58 → 60 / 62 | `eval_recherche.py`, 2026-11-02 |
 | Réponses justes en prod, relues à la main | ≈ 56 / 57 | 2026-10-22 ; 5 questions bloquées par le quota |
 
 Le jeu de test (`RAG/seed/eval/`) compte 62 questions écrites avec leur réponse
@@ -70,7 +71,10 @@ flowchart LR
   ([ADR 0002](docs/decisions/0002-recherche-hybride-plutot-qu-un-modele-d-embeddings-plus-gros.md)).
   Le petit modèle multilingue classe mal les passages précis : chiffres, termes
   exacts, tableaux. Un volet plein texte fusionné par RRF les rattrape, sans
-  changer l'image Docker ni réindexer : 53 → 59 questions sur 62.
+  changer l'image Docker ni réindexer : 53 → 59 questions sur 62. Le volet plein
+  texte ignore ensuite les mots présents dans plus de la moitié des passages
+  (« AEIG ») : sans pondération par la rareté, ils noyaient le mot utile de la
+  question. Mesuré : 58 → 60.
 - **Un jeu de test avant tout réglage.** Le seuil de pertinence avait été réglé
   plusieurs fois « à l'impression ». Désormais, toute modification de la recherche
   se mesure sur les 62 questions, et la CI bloque une régression.

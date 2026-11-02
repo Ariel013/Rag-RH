@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 env:
-  MIN_TROUVEES: 58   # mesuré le 2026-11-02 — à relever quand la recherche progresse
+  MIN_TROUVEES: 60   # mesuré le 2026-11-02 — à relever quand la recherche progresse
 
 jobs:
   eval:
