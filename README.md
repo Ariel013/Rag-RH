@@ -22,6 +22,8 @@ l'entreprise, synchronisée depuis Notion. Sinon, il le dit et renvoie vers la R
 diem pour une mission en Côte d'Ivoire ? ». Après une période sans visite, le
 Space peut mettre un moment à se réveiller.
 
+![Conversation avec l'assistant RH : « Combien de jours de congé ai-je pour mon mariage ? », réponse « 4 jours »](https://raw.githubusercontent.com/Ariel013/Rag-RH/assets/captures/capture-chat.png)
+
 ## Ce qui est mesuré
 
 | Mesure | Résultat | Comment |
