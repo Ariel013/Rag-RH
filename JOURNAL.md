@@ -20,28 +20,49 @@ Carte des documents :
 
 ## 📍 État actuel & prochaine action
 
-*(Mis à jour le 2026-10-22.)*
+*(Mis à jour le 2026-11-05.)*
 
-- **En prod** : commit `4e4d038` (recherche hybride) sur le Space HF
-  `arieldev13/assistant-rh-rag`. Le modèle est `openai/gpt-oss-120b`, et le Notion
-  est le Notion personnel alimenté par `RAG/seed/` (170 pages, 299 chunks).
-- **Qualité mesurée** :
-  - Avant la recherche hybride, en prod, sur les 62 questions de `seed/eval/` :
-    environ 49 bonnes réponses, 12 « je ne dispose pas », 1 fausse.
-  - Banc local (code de prod sur un Postgres local) : la réponse atteint le
-    contexte pour 59 questions sur 62, contre 53 avant.
-  - Le score en prod après la recherche hybride reste à mesurer.
-- **Branches** : `main` alignée avec `origin/main`.
-- **Mesuré en prod le 2026-10-22, avec la recherche hybride** : 1 seul « je ne
-  dispose pas » (la part de la mutuelle) et environ 56 bonnes réponses sur 57
-  (relues à la main). Les 5 dernières questions ont été bloquées par le quota
-  Groq. Une question hors sujet est bien refusée.
-- **Prochaine action** : déployer les modèles de secours LLM, puis vérifier dans
-  les logs HF qu'une saturation bascule bien vers `openai/gpt-oss-20b`. Offre Groq :
-  **gratuite maintenue** (décision du 2026-10-22), soit environ 140 questions/jour
-  avec le modèle de secours. À revoir avant tout vrai déploiement.
+- **En prod** : PR #1 `feat/vitrine-recruteur` fusionnée (`9ef85a8`), déployée
+  le 2026-11-04 sur le Space HF `arieldev13/assistant-rh-rag`
+  (`openai/gpt-oss-120b`, Notion personnel alimenté par `RAG/seed/`) :
+  évaluation de la recherche en CI (verte), README vitrine, filtre des mots trop
+  fréquents, passages consultés sous les réponses.
+- **Vérifié en prod le 2026-11-05** (une question) : « Quelle part de la
+  mutuelle… » → « 70 % de la cotisation », 8 sources avec leurs extraits,
+  `had_answer` vrai. Le 2026-10-22, c'était la seule question sans réponse.
+- **Qualité mesurée** (`seed/eval_recherche.py`, sans LLM) : réponse dans le
+  contexte 60/62, page attendue 50/62, MRR 0,554. Échecs restants : « malade ce
+  matin » (limite de la mesure, formes de mots) et la date du séminaire 2026.
+  En prod, le 2026-10-22 : ≈ 56/57 bonnes réponses relues à la main.
+- **Branches** : `dev` (52 commits de retard) et `feature_v2` sont abandonnées ;
+  les branches de travail partent de `main`. `assets` (orpheline) héberge les
+  images du README hors du déploiement HF.
+- **Prochaine action** : refaire la capture du README avec un passage déplié.
+  Ensuite, dans l'ordre : démo résistante au quota, admin en démo, widget
+  intégrable (bulle de chat), citations [n] par le LLM, juge LLM.
+- **Reste ouvert du 2026-10-22** : vérifier dans les logs HF qu'une saturation
+  bascule bien vers `openai/gpt-oss-20b`. Offre Groq gratuite maintenue
+  (≈ 140 questions/jour avec le secours), à revoir avant tout vrai déploiement.
 
 ## 📓 Journal des sessions
+
+### 2026-11-02 / 04 — Vitrine pour recruteurs
+
+Objectif : rendre le projet lisible par un recruteur (postes IA/ML et
+backend/full stack). Fait, sur `feat/vitrine-recruteur` :
+
+1. **Évaluation de la recherche rejouable** : le chargeur Notion de prod tourne
+   sur un Notion simulé depuis `seed/notion/` (170 pages, 299 chunks, comme la
+   prod), puis les 62 questions passent par la recherche de prod. CI sur chaque
+   PR, minimum 60. Le contrôle a trouvé un titre faux dans le jeu de test.
+2. **README refait** : démo, chiffres avec leur source, architecture, choix,
+   incidents. Capture sur la branche `assets` (un lien d'image glissé dans un
+   brouillon d'issue GitHub renvoie 404 aux visiteurs).
+3. **Mots trop fréquents ignorés par le plein texte** : « AEIG » (79 % des
+   chunks) noyait « mutuelle ». 58 → 60/62 (ADR 0002 complété).
+4. **Passages consultés** sous les réponses, dépliables ; l'affichage des
+   sources avait disparu à la refonte de mars. Masqués sous « sans réponse ».
+
 
 ### 2026-10-21 / 22 — Reprise après trois mois de panne
 
