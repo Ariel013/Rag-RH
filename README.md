@@ -22,7 +22,10 @@ l'entreprise, synchronisée depuis Notion. Sinon, il le dit et renvoie vers la R
 diem pour une mission en Côte d'Ivoire ? ». Après une période sans visite, le
 Space peut mettre un moment à se réveiller.
 
-![Conversation avec l'assistant RH : « Combien de jours de congé ai-je pour mon mariage ? », réponse « 4 jours »](https://raw.githubusercontent.com/Ariel013/Rag-RH/assets/captures/capture-chat.png)
+![Conversation avec l'assistant RH : « Quelle part de la mutuelle est prise en charge par AEIG ? », réponse « 70 % de la cotisation », passage source « Mutuelle santé » déplié sous la réponse](https://raw.githubusercontent.com/Ariel013/Rag-RH/assets/captures/capture-sources.png)
+
+Sous chaque réponse, les pages consultées ; un clic affiche le passage exact
+envoyé au LLM.
 
 ## Ce qui est mesuré
 
