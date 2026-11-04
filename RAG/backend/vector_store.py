@@ -2,6 +2,7 @@
 Vector store — PostgreSQL + pgvector (Supabase).
 Remplace ChromaDB : persistant, pas de dépendance lourde.
 """
+import os
 import re
 
 import psycopg2.extras
@@ -9,6 +10,10 @@ import psycopg2.extras
 from .db import enable_rls, get_conn
 
 EMBEDDING_DIM = 384  # paraphrase-multilingual-MiniLM-L12-v2
+
+# Recherche plein texte : part maximale des chunks où un mot de la question
+# peut apparaître pour compter (voir _drop_common_words). Mesuré sur seed/eval.
+MAX_KEYWORD_DOC_FREQ = float(os.getenv("MAX_KEYWORD_DOC_FREQ", "0.5"))
 
 
 def init_vector_db() -> None:
@@ -178,12 +183,13 @@ class VectorStore:
         Seuls les mots alphanumériques sont gardés : aucune syntaxe tsquery
         venue de l'utilisateur n'atteint to_tsquery.
         """
-        words = re.findall(r"\w{2,}", query.lower())
+        words = list(dict.fromkeys(re.findall(r"\w{2,}", query.lower())))
         if not words:
             return []
-        tsquery = " | ".join(words)
         with get_conn() as conn:
             with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                words   = self._drop_common_words(cur, words)
+                tsquery = " | ".join(words)
                 cur.execute("""
                     SELECT content, doc_id, title, source, category, chunk_index,
                            ts_rank_cd(tsv, q) AS score
@@ -208,6 +214,27 @@ class VectorStore:
             }
             for r in rows
         ]
+
+    @staticmethod
+    def _drop_common_words(cur, words: list[str]) -> list[str]:
+        """
+        Retire les mots présents dans plus de MAX_KEYWORD_DOC_FREQ des chunks
+        (« AEIG », présent presque partout). ts_rank_cd ne pondère pas par la
+        rareté : sans ce filtre, ces mots classent en tête les chunks qui les
+        répètent, devant ceux qui contiennent le mot rare de la question.
+        Si tous les mots sont fréquents, la question est gardée telle quelle.
+        """
+        cur.execute("""
+            SELECT w AS word,
+                   (SELECT count(*) FROM document_chunks
+                     WHERE tsv @@ to_tsquery('french', w)) AS ndoc,
+                   (SELECT count(*) FROM document_chunks) AS total
+            FROM unnest(%s::text[]) AS w
+        """, (words,))
+        rows = cur.fetchall()
+        kept = [r["word"] for r in rows
+                if not r["total"] or r["ndoc"] <= MAX_KEYWORD_DOC_FREQ * r["total"]]
+        return kept or words
 
     def list_documents(self) -> list[dict]:
         with get_conn() as conn:

@@ -102,6 +102,7 @@ function loadConversationIntoDOM(conv) {
           </div>
           <div class="flex flex-col gap-1.5 max-w-[85%]">
             <div class="bg-primary text-white p-4 rounded-xl rounded-tl-none text-[15px] leading-relaxed">${msg.html}</div>
+            ${sourcesHTML(msg.sources)}
             <span class="text-[10px] text-slate-400 ml-1">Assistant • ${msg.time}</span>
           </div>
         </div>`);

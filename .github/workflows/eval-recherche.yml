@@ -1,0 +1,62 @@
+# Évaluation de la recherche sur le jeu de test RAG/seed/eval/ (62 questions).
+# Postgres + pgvector éphémère, aucun secret, aucun appel au LLM ni à Notion.
+# Échoue si moins de MIN_TROUVEES réponses atteignent le contexte du LLM :
+# toute baisse de la qualité de recherche bloque la PR.
+name: Évaluation de la recherche
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  MIN_TROUVEES: 60   # mesuré le 2026-11-02 — à relever quand la recherche progresse
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: eval
+          POSTGRES_DB: rag_eval
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: RAG/requirements.txt
+
+      - name: Cache du modèle d'embeddings
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/fastembed
+          key: fastembed-paraphrase-multilingual-MiniLM-L12-v2
+
+      - name: Dépendances
+        run: pip install -r RAG/requirements.txt
+
+      - name: Évaluation
+        working-directory: RAG
+        env:
+          DATABASE_URL: postgresql://postgres:eval@localhost:5432/rag_eval
+          DATABASE_SSLMODE: disable
+          FASTEMBED_CACHE_PATH: ${{ runner.temp }}/fastembed
+        run: python seed/eval_recherche.py --min-trouvees "$MIN_TROUVEES" --detail

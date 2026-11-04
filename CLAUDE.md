@@ -33,6 +33,7 @@ Chatbot RH basé sur un pipeline **RAG (Retrieval-Augmented Generation)** pour l
 Rag-RH/
 ├── Dockerfile                      # Build HF Spaces, port 7860
 ├── .github/workflows/deploy-hf.yml # git push --force vers le Space HF à chaque push main
+├── .github/workflows/eval-recherche.yml # Évaluation de la recherche sur chaque PR (seuil bloquant)
 ├── README.md                       # Carte HF Space (front-matter YAML obligatoire)
 └── RAG/
     ├── .env / .env.example         # Config — .env est gitignored (secrets réels dedans)
@@ -65,6 +66,8 @@ Rag-RH/
     │   ├── referentiel.md          # Faits de référence (53 collaborateurs, règles RH chiffrées…) — non publié
     │   ├── notion/                 # 81 pages + 4 bases, en Markdown/JSON, publiées dans Notion
     │   ├── eval/                   # 62 questions avec réponse attendue (mesure de la qualité)
+    │   ├── eval_recherche.py       # Évaluation de la recherche sur eval/ (Postgres local, sans LLM)
+    │   ├── notion_simule.py        # Notion simulé depuis seed/notion/, pour l'évaluation
     │   └── push_notion.py          # Publie seed/notion/ dans Notion (--dry-run, --reset)
     └── uploads/                     # Fichiers temporaires (gitignored, supprimés après traitement)
 ```
@@ -84,12 +87,12 @@ Rag-RH/
 
 ### Côté utilisateur (chat)
 
-- Chat streaming (SSE) avec citations des sources (titre + catégorie du document).
+- Chat streaming (SSE) avec les **passages consultés** sous la réponse : une pastille par page, qui déplie le texte exact envoyé au LLM. Masqués si la réponse est « sans réponse » (`is_unanswered`, signalé dans l'événement `done`). Seuls titre et catégorie sont journalisés.
 - Enrichissement de requête pour les questions de suivi vagues (« dis-m'en plus », « et le reste ? ») en réinjectant les 2 derniers messages utilisateur — voir `_build_search_query` dans `rag.py`.
 - Historique de conversation limité aux 4 derniers échanges (8 messages) envoyés au LLM.
 - Persistance locale des conversations (24h, localStorage) côté frontend.
 - Garde-fous stricts dans le prompt système : réponse uniquement à partir du contexte fourni, formulations d'attribution interdites (« selon le contexte », etc.), retranscription intégrale des listes, sinon réponse standard invitant à contacter la RH ; refus des questions sur la vie privée d'un collaborateur (règle 9).
-- **Recherche hybride** (ADR 0002) : 30 candidats sémantiques (pgvector, filtrés par `RELEVANCE_THRESHOLD`) + 30 candidats plein texte (`tsv`, config `french`), fusionnés par RRF ; 8 chunks, 9000 caractères max envoyés au LLM.
+- **Recherche hybride** (ADR 0002) : 30 candidats sémantiques (pgvector, filtrés par `RELEVANCE_THRESHOLD`) + 30 candidats plein texte (`tsv`, config `french`), fusionnés par RRF ; 8 chunks, 9000 caractères max envoyés au LLM. Le volet plein texte ignore les mots présents dans plus de 50 % des chunks (`MAX_KEYWORD_DOC_FREQ`, ex. « AEIG ») : 58 → 60/62 sur `seed/eval_recherche.py`.
 - Le chat est disponible **dès le chargement du modèle**, pendant le sync Notion de démarrage (qui peut durer longtemps : OCR, rate-limit Notion).
 
 ### Côté admin (protégé par token)
@@ -153,10 +156,10 @@ Voir `RAG/.env.example` pour la liste complète. Points clés :
 - **Détection "sans réponse"** basée sur du pattern-matching de phrases dans `analytics.py::_NO_ANSWER` — couplée au wording exact du prompt système dans `rag.py`. Si le prompt change, penser à mettre à jour la liste (et vice-versa).
 - **Un seul compte admin** (`ADMIN_EMAIL`/`ADMIN_PASSWORD` fixes dans l'env, token statique unique) — pas de multi-utilisateur, pas d'expiration de token. À revoir avant un vrai déploiement (voir §9).
 - **Déploiement par force-push** : `deploy-hf.yml` fait un `git push hf main --force` à chaque push sur `main` — pas de rollback automatique, pas d'environnement de staging, pas de CI de test avant déploiement.
-- **Aucun test automatisé** dans le repo actuellement — confirmé comme une lacune à combler prochainement, pas un choix définitif (voir §9). `RAG/seed/eval/` (62 questions) en est la première brique.
+- **Pas de tests unitaires** — confirmé comme une lacune à combler prochainement (voir §9). Seule l'évaluation de la recherche tourne en CI (`seed/eval_recherche.py`, 60/62 réponses dans le contexte au 2026-11-02) ; elle ne bloque pas le déploiement, qui part en parallèle sur push `main`.
 - **Dépendances non figées** (sauf `notion-client`) : un rebuild peut installer une version incompatible, comme notion-client 2.6 l'a fait. fastembed est passé en 0.9 le 2026-10-07. À figer.
 - **API Notion ancienne** (2022-06-28, via notion-client 2.5.0) : migration vers `data_sources` à faire.
-- **Keep-alive Supabase cassé** : `.github/workflows/keep-alive.yml` passe par l'appli (donc échoue quand la base dort) et GitHub l'a désactivé pour inactivité. Le projet Supabase (gratuit) s'est mis en pause en juillet 2026 sans que personne ne le voie. Remplacement prévu : cron externe interrogeant Supabase directement (voir `A-FAIRE.md`).
+- **Anti-pause Supabase** : assuré par un cron externe (cron-job.org, quotidien), qui interroge directement l'API REST Supabase (clé publique, RLS → `[]`) et `/api/health` (voir `A-FAIRE.md`). L'ancien workflow GitHub `keep-alive.yml` passait par l'appli et a été désactivé par GitHub : il a été supprimé le 2026-10-22.
 
 ## 9. Roadmap — dette à combler en priorité
 
@@ -188,4 +191,4 @@ Le projet vise un vrai déploiement futur (§1), donc l'ordre de traitement rete
 - Lancer en local avec `RAG/start.sh` (installe les dépendances, vérifie Ollama si config locale, démarre uvicorn avec reload).
 - Le déploiement prod se fait uniquement via push sur `main` (GitHub Actions → force-push vers le Space HF `arieldev13/assistant-rh-rag`). **Un push sur `main` déploie en prod immédiatement** — pas de CI de test avant.
 - Pour enrichir la base de connaissances : modifier `RAG/seed/notion/` puis republier (`python seed/push_notion.py --reset`, depuis `RAG/`), ou upload via l'onglet admin du frontend — les deux canaux sont légitimes (§5). Une modification faite **seulement dans Notion** sera perdue au prochain `--reset`.
-- Mesurer la qualité : `RAG/seed/eval/` contient 62 questions avec la réponse attendue ; toute modification de la recherche ou du prompt se mesure dessus avant d'être poussée.
+- Mesurer la qualité : `RAG/seed/eval/` contient 62 questions avec la réponse attendue ; toute modification de la recherche ou du prompt se mesure dessus avant d'être poussée. La recherche se mesure sans LLM par `seed/eval_recherche.py` (voir `seed/README.md`), aussi lancé par la CI sur chaque PR ; la qualité des réponses générées n'a pas encore d'outil.

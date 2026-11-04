@@ -75,7 +75,7 @@ def init_db() -> None:
             enable_rls(cur, ["conversations", "messages", "unanswered"])
 
 
-def _is_unanswered(answer: str) -> bool:
+def is_unanswered(answer: str) -> bool:
     low = (answer or "").lower()
     return any(p in low for p in _NO_ANSWER)
 
@@ -85,7 +85,7 @@ def log_message(
     topic_id: str | None = None,
 ) -> str:
     msg_id  = str(uuid.uuid4())
-    had_ans = 0 if _is_unanswered(answer) else 1
+    had_ans = 0 if is_unanswered(answer) else 1
     with get_conn() as conn:
         with conn.cursor() as cur:
             cur.execute(

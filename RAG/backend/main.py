@@ -31,6 +31,7 @@ from .analytics import (
     delete_unanswered,
     get_unanswered,
     init_db,
+    is_unanswered,
     log_message,
     resolve_unanswered,
 )
@@ -372,15 +373,26 @@ async def _stream_with_logging(
                 if t == "text_delta":
                     full_text.append(data.get("content", ""))
                 elif t == "sources":
-                    sources = data.get("sources", [])
+                    # Les extraits servent à l'affichage : seuls titre et
+                    # catégorie sont journalisés.
+                    sources = [
+                        {k: v for k, v in s.items() if k != "extraits"}
+                        for s in data.get("sources", [])
+                    ]
                 elif t == "error" and conversation_id and full_text:
                     asyncio.create_task(
                         _do_log(rag, conversation_id, question, list(full_text), list(sources))
                     )
-                elif t == "done" and conversation_id:
-                    asyncio.create_task(
-                        _do_log(rag, conversation_id, question, list(full_text), list(sources))
-                    )
+                elif t == "done":
+                    # Le front n'affiche les sources que si l'assistant a répondu :
+                    # sous « je ne dispose pas », elles n'appuieraient rien.
+                    chunk = "data: " + json.dumps({
+                        "type": "done", "had_answer": not is_unanswered("".join(full_text)),
+                    }) + "\n\n"
+                    if conversation_id:
+                        asyncio.create_task(
+                            _do_log(rag, conversation_id, question, list(full_text), list(sources))
+                        )
             except Exception:
                 pass
         yield chunk

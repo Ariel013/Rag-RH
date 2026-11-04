@@ -13,15 +13,13 @@ datée, et se coche ou se supprime une fois faite.
 - [ ] **2026-10-21 — Nettoyer les statistiques admin.** Les questions de test
   posées les 2026-10-21 et 2026-10-22 faussent les statistiques admin, et il y en
   a plus de 130 : 62 + 62 + 12, plus quelques questions isolées.
-- [ ] **2026-10-21 — Mettre en place l'anti-pause Supabase.** Le plan gratuit
-  met le projet en pause après environ 7 jours sans activité. À faire sur
-  cron-job.org (compte gratuit) :
-  1. Une tâche quotidienne `GET https://<ref>.supabase.co/rest/v1/topics?select=id&limit=1`,
-     avec les en-têtes `apikey: <clé anon>` et `Authorization: Bearer <clé anon>`.
-     Avec le RLS actif, la clé anon ne lit rien, mais la requête atteint Postgres.
-  2. Une tâche quotidienne `GET https://arieldev13-assistant-rh-rag.hf.space/api/health`
-     (garde le Space HF éveillé).
+- [x] **2026-10-22 — Anti-pause Supabase en place** sur cron-job.org, avec
+  notification par e-mail en cas d'échec :
+  - chaque jour à 06:00 : `GET …supabase.co/rest/v1/topics?select=id&limit=1`
+    avec l'en-tête `apikey` (clé publique). Le 2026-10-22, le test a renvoyé
+    `200 []`, ce qui confirme que le RLS est actif en prod ;
+  - chaque jour à 06:15 : `GET …hf.space/api/health`.
 
-  Ensuite, supprimer `.github/workflows/keep-alive.yml`.
+  L'ancien workflow GitHub `keep-alive.yml` a été supprimé du dépôt.
 - [ ] **2026-10-21 — Supprimer l'ancien projet Supabase en pause** (celui mis en
   pause pour libérer une place) ou le migrer vers un autre compte, comme prévu.

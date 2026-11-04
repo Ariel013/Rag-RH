@@ -65,6 +65,28 @@ def _build_search_query(question: str, history: list[dict]) -> str:
     return " ".join(recent) + " " + question
 
 
+def _context_part(r: dict) -> str:
+    return f"[{r['metadata'].get('title', 'Document')}]\n{r['content']}"
+
+
+def context_results(results: list[dict]) -> list[dict]:
+    """Les résultats qui entrent dans le contexte du LLM : entiers, dans l'ordre, jusqu'à CONTEXT_MAX_CHARS."""
+    kept, total = [], 0
+    for r in results:
+        # Pas de troncature du contenu : le LLM doit recevoir les listes complètes
+        size = len(_context_part(r))
+        if total + size > CONTEXT_MAX_CHARS:
+            break
+        kept.append(r)
+        total += size
+    return kept
+
+
+def build_context(results: list[dict]) -> str:
+    """Contexte envoyé au LLM."""
+    return "\n\n---\n\n".join(_context_part(r) for r in context_results(results))
+
+
 _LLM_UNAVAILABLE = (
     "L'assistant a atteint sa limite d'utilisation pour le moment. "
     "Réessayez dans quelques minutes, ou contactez la RH : "
@@ -157,28 +179,19 @@ class RAGPipeline:
         results = await self.search(question, history=history)
 
         if results:
-            context_parts = []
-            total_chars   = 0
-            for r in results:
-                content = r["content"]
-                # Pas de troncature du contenu : le LLM doit recevoir les listes complètes
-                part = f"[{r['metadata'].get('title', 'Document')}]\n{content}"
-                if total_chars + len(part) > CONTEXT_MAX_CHARS:
-                    break
-                context_parts.append(part)
-                total_chars += len(part)
-            context = "\n\n---\n\n".join(context_parts)
+            context = build_context(results)
 
-            sources, seen = [], set()
-            for r in results:
+            # Une source par page, avec les passages exacts envoyés au LLM :
+            # l'utilisateur peut vérifier la réponse sur le texte d'origine.
+            sources: dict[str, dict] = {}
+            for r in context_results(results):
                 t = r["metadata"].get("title", "Document")
-                if t not in seen:
-                    seen.add(t)
-                    sources.append({
-                        "title":    t,
-                        "category": r["metadata"].get("category", "Général"),
-                    })
-            yield f"data: {json.dumps({'type': 'sources', 'sources': sources})}\n\n"
+                sources.setdefault(t, {
+                    "title":    t,
+                    "category": r["metadata"].get("category", "Général"),
+                    "extraits": [],
+                })["extraits"].append(r["content"])
+            yield f"data: {json.dumps({'type': 'sources', 'sources': list(sources.values())})}\n\n"
         else:
             context = "Aucun document pertinent trouvé dans la base de connaissances."
 

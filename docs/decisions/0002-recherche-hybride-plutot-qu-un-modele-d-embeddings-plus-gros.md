@@ -61,3 +61,16 @@ reçoit 8 chunks, avec un plafond de 9 000 caractères.
 - Le changement de modèle d'embeddings reste ouvert. S'il redevient nécessaire,
   il passe par une vraie migration (roadmap §9, point 2).
 - `RELEVANCE_THRESHOLD` ne filtre plus que le volet sémantique.
+
+## Complément (2026-11-02) — mots trop fréquents ignorés par le volet plein texte
+
+`ts_rank_cd` ne pondère pas les mots par leur rareté. Dans « Quelle part de la
+mutuelle est prise en charge par AEIG ? », « AEIG » (présent dans 79 % des
+chunks) classait en tête les chunks qui le répètent, et la page « Mutuelle
+santé » finissait 15e du volet plein texte, hors du contexte. Le volet plein
+texte ignore désormais les mots présents dans plus de 50 % des chunks
+(`MAX_KEYWORD_DOC_FREQ`), sauf si tous les mots de la question le sont.
+
+Mesuré avec `seed/eval_recherche.py` : 58 → 60/62 réponses dans le contexte,
+48 → 50/62 pages attendues, MRR 0,519 → 0,554. Le résultat est le même entre 30 %
+et 50 % (60/62), et 59/62 à 70 % : 50 % est retenu, le moins agressif du palier.

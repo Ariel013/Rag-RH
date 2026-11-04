@@ -22,12 +22,12 @@
   {
     "question": "Quel est le per diem pour une mission en Côte d'Ivoire ?",
     "reponse_attendue": "20 000 FCFA par jour.",
-    "page": "Procédures > Organiser une mission"
+    "page": "Procédures > Organiser une mission ou un déplacement"
   },
   {
     "question": "Combien de temps avant une mission faut-il créer l'ordre de mission ?",
     "reponse_attendue": "10 jours avant le départ, dans Kalia RH.",
-    "page": "Procédures > Organiser une mission"
+    "page": "Procédures > Organiser une mission ou un déplacement"
   },
   {
     "question": "Quelle est la prime de cooptation ?",

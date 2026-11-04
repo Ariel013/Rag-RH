@@ -40,6 +40,7 @@ async function sendMessage(question) {
   const history = chatHistory.slice(0, -1);
   let botText = '';
   let sources = null;
+  let hadAnswer = true;
   let streamDone = false;
   const botTime = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
 
@@ -82,15 +83,20 @@ async function sendMessage(question) {
             textNode.innerHTML = `<span class="text-red-300">⚠ ${escapeHtml(data.message)}</span>`;
             streamDone = true; break;
           } else if (data.type === 'done') {
+            hadAnswer = data.had_answer !== false;
             streamDone = true; break;
           }
         } catch { /* ignore malformed */ }
       }
     }
 
+    // Sources, seulement si l'assistant a répondu
+    const shownSources = hadAnswer && sources ? sources : [];
+    textNode.insertAdjacentHTML('afterend', sourcesHTML(shownSources));
+
     // Persister
     if (botText) {
-      _msgLog.push({ type: 'bot', html: renderMarkdown(botText), sources: sources || [], time: botTime });
+      _msgLog.push({ type: 'bot', html: renderMarkdown(botText), sources: shownSources, time: botTime });
       chatHistory.push({ role: 'assistant', content: botText });
       persistCurrent(chatHistory);
     }
@@ -164,4 +170,41 @@ function appendBotBubble() {
     </div>`;
   container.appendChild(div);
   return div;
+}
+
+// ─── Sources : pages consultées, et passages exacts envoyés au LLM ───────
+let _sourcesSeq = 0;
+
+function sourcesHTML(sources) {
+  if (!sources || !sources.length) return '';
+  const uid = `src-${++_sourcesSeq}`;
+  const chips = sources.map((s, i) => {
+    const hasText = Array.isArray(s.extraits) && s.extraits.length;
+    const label = `<span class="material-symbols-outlined text-[14px]" aria-hidden="true">description</span>${escapeHtml(s.title)}`;
+    return hasText
+      ? `<button type="button" onclick="toggleSource(this)" aria-expanded="false" aria-controls="${uid}-${i}"
+           class="source-chip inline-flex items-center gap-1 px-2.5 py-1 bg-primary/10 text-primary dark:text-slate-200 dark:bg-primary/30 rounded-full text-[11px] font-semibold border border-primary/20 hover:bg-primary/20 transition-colors">${label}</button>`
+      : `<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-primary/10 text-primary dark:text-slate-200 dark:bg-primary/30 rounded-full text-[11px] font-semibold border border-primary/20">${label}</span>`;
+  }).join('');
+  const panels = sources.map((s, i) => {
+    if (!Array.isArray(s.extraits) || !s.extraits.length) return '';
+    const texte = s.extraits.map(escapeHtml).join('\n\n[…]\n\n');
+    return `<div id="${uid}-${i}" class="source-extrait hidden mt-2 p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[13px] leading-relaxed text-slate-700 dark:text-slate-200 whitespace-pre-line max-h-64 overflow-y-auto"><p class="font-semibold text-slate-900 dark:text-slate-100 mb-1">${escapeHtml(s.title)}</p>${texte}</div>`;
+  }).join('');
+  return `<div class="sources px-1">
+      <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Passages consultés</p>
+      <div class="flex flex-wrap gap-1.5">${chips}</div>${panels}
+    </div>`;
+}
+
+function toggleSource(btn) {
+  const box   = btn.closest('.sources');
+  const panel = document.getElementById(btn.getAttribute('aria-controls'));
+  const open  = btn.getAttribute('aria-expanded') !== 'true';
+  box.querySelectorAll('.source-chip').forEach(b => b.setAttribute('aria-expanded', 'false'));
+  box.querySelectorAll('.source-extrait').forEach(p => p.classList.add('hidden'));
+  if (open) {
+    btn.setAttribute('aria-expanded', 'true');
+    panel.classList.remove('hidden');
+  }
 }
